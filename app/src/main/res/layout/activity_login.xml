@@ -10,8 +10,72 @@
 
     <TextView
         android:id="@+id/tvWelcomeMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/welcome_message"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    
+    <TextView
+        android:id="@+id/tvDescriptionMessage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/out_application_require_firebase_authentication"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeMessage"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        />
+    
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvDescriptionMessage"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:inputType="textEmailAddress"
+        android:hint="@string/hint_email"
+    />
+    
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etEmail"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:hint="@string/hint_password"
+    />
+    
+    <Button
+        android:id="@+id/btLogin"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etPassword"
+        android:text="@string/login"
+        android:layout_marginTop="15dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/etPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/circular_button_green"
+    />
+    
+    <Button
+        android:id="@+id/signButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/create_account"
+        android:layout_marginTop="15dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/btLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/circular_button_green"
+    />
 
 
 
