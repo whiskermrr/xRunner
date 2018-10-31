@@ -1,4 +1,4 @@
-package domain
+package com.whisker.mrr.xrunner.domain
 
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth

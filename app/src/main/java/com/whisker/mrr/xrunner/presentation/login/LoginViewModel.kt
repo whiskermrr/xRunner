@@ -1,8 +1,8 @@
 package com.whisker.mrr.xrunner.presentation.login
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import domain.LoginRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.whisker.mrr.xrunner.domain.LoginRepository
 import io.reactivex.disposables.CompositeDisposable
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
