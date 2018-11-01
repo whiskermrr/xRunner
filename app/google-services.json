@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "396868613924-52ijr953plccdn2apbn0qut88pbl4f9e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whisker.mrr.xrunner",
+            "certificate_hash": "493cc0631792cd4f0d4e3c61bd9273c83fb33eca"
+          }
+        },
+        {
           "client_id": "396868613924-7tcutd97dh52q1f4s43onfsd7vb3mhva.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396868613924-7tcutd97dh52q1f4s43onfsd7vb3mhva.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
