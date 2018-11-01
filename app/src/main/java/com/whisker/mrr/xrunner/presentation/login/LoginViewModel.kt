@@ -4,8 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.xrunner.domain.LoginRepository
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel
+@Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
     private val loginStatus = MutableLiveData<Boolean>()
