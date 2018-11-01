@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.whisker.mrr.xrunner.App
+import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
 import com.whisker.mrr.xrunner.domain.LoginRepository
 import dagger.Module
 import dagger.Provides
@@ -31,6 +32,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLoginRepository(firebaseAuth: FirebaseAuth) : LoginRepository {
-        return LoginRepository(firebaseAuth)
+        return LoginDataRepository(firebaseAuth)
     }
 }

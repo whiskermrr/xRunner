@@ -7,7 +7,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class LoginViewModel
-@Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
+@Inject constructor(private val loginDataRepository: LoginRepository) : ViewModel() {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
     private val loginStatus = MutableLiveData<Boolean>()
@@ -15,7 +15,7 @@ class LoginViewModel
 
     fun firebaseLogin(email: String, password: String) {
         disposables.add(
-            loginRepository.login(email, password)
+            loginDataRepository.login(email, password)
                 .subscribe {
                     loginStatus.postValue(true)
                 }
@@ -24,7 +24,7 @@ class LoginViewModel
 
     fun firebaseCreateAccount(email: String, password: String) {
         disposables.add(
-            loginRepository.createAccount(email, password)
+            loginDataRepository.createAccount(email, password)
                 .subscribe {
                     createAccountStatus.postValue(true)
                 }
