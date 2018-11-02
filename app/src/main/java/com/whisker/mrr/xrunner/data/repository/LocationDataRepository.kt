@@ -2,10 +2,10 @@ package com.whisker.mrr.xrunner.data.repository
 
 import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
+import com.whisker.mrr.xrunner.domain.LocationMapper
 import com.whisker.mrr.xrunner.domain.LocationRepository
 import com.whisker.mrr.xrunner.domain.model.RoutePoint
 import io.reactivex.Flowable
-import java.util.*
 import javax.inject.Inject
 
 class LocationDataRepository
@@ -15,9 +15,9 @@ class LocationDataRepository
 ) : LocationRepository {
 
     override fun startTracking() : Flowable<RoutePoint> {
-        return userDataSource.getUserId()
-            .flatMapPublisher {
-                locationDataSource.startTracking(it, Date().toString())
+        return locationDataSource.startTracking()
+            .flatMap {
+                LocationMapper.transform(it)
             }
     }
 

@@ -11,12 +11,10 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.*
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
-import com.whisker.mrr.xrunner.domain.model.RoutePoint
 
 class LocationService : Service(), Handler.Callback, LocationListener {
     companion object {
@@ -94,8 +92,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
 
     override fun onLocationChanged(newLocation: Location?) {
         if(newLocation != null) {
-            val routePoint = RoutePoint(newLocation.latitude, newLocation.longitude)
-            RxBus.publish(LocationEvent(routePoint))
+            RxBus.publish(LocationEvent(newLocation))
         }
     }
 

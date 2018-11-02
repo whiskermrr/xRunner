@@ -2,44 +2,33 @@ package com.whisker.mrr.xrunner.data.datasource
 
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Build
-import android.util.Log
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
-import com.whisker.mrr.xrunner.domain.model.Route
-import com.whisker.mrr.xrunner.domain.model.RoutePoint
 import com.whisker.mrr.xrunner.infrastructure.LocationService
-import durdinapps.rxfirebase2.DataSnapshotMapper
-import durdinapps.rxfirebase2.RxFirebaseDatabase
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.functions.Consumer
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class LocationDataSource
 @Inject constructor(
-    private val context: Context,
-    private val firebaseDatabase: FirebaseDatabase
+    private val context: Context
 ) {
 
     companion object {
         var routeIndex: Int = 0
     }
 
-    lateinit var mReference: DatabaseReference
+    private lateinit var locationSubject: PublishSubject<Location>
 
-    fun startTracking(userId: String, routeName: String) : Flowable<RoutePoint> {
+    fun startTracking() : Flowable<Location> {
         startLocationService()
-        firebaseDatabase.reference.child("Users").child(userId).child(routeName).setValue(Route(routeName))
-        mReference = firebaseDatabase.reference.child("Users").child(userId).child(routeName).child("waypoints")
-
+        locationSubject = PublishSubject.create()
         subscribeToLocationEvents()
-
-        return RxFirebaseDatabase.observeChildEvent(mReference, RoutePoint::class.java)
-            .map {
-                it.value
-            }
+        return locationSubject.toFlowable(BackpressureStrategy.LATEST)
     }
 
     private fun startLocationService() {
@@ -55,8 +44,7 @@ class LocationDataSource
     private fun subscribeToLocationEvents() {
         RxBus.subscribe(LocationEvent::class.java.name, this, Consumer { event ->
             if(event is LocationEvent) {
-                val routePoint = RoutePoint(event.location.latitude, event.location.longitude)
-                mReference.child(routeIndex.toString()).setValue(routePoint)
+                locationSubject.onNext(event.location)
                 routeIndex++
             }
         })

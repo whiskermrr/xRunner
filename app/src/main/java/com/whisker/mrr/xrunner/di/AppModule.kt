@@ -47,8 +47,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocationDataSOurce(context: Context, firebaseDatabase: FirebaseDatabase) : LocationDataSource {
-        return LocationDataSource(context, firebaseDatabase)
+    fun provideLocationDataSource(context: Context) : LocationDataSource {
+        return LocationDataSource(context)
     }
 
     @Provides

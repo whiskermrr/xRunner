@@ -1,5 +1,5 @@
 package com.whisker.mrr.xrunner.domain.bus.event
 
-import com.whisker.mrr.xrunner.domain.model.RoutePoint
+import android.location.Location
 
-data class LocationEvent(val location: RoutePoint)
+data class LocationEvent(val location: Location)

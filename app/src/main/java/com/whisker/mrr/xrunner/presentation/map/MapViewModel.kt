@@ -1,5 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.map
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.xrunner.domain.LocationRepository
@@ -21,6 +22,7 @@ class MapViewModel
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    Log.e("MAP VIEW MODEL", "onSubscribe")
                     lastRoutePoint.postValue(it)
                 }, {
                     it.printStackTrace()
