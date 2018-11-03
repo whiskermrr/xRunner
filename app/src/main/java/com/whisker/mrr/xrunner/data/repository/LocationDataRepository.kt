@@ -1,10 +1,10 @@
 package com.whisker.mrr.xrunner.data.repository
 
+import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
-import com.whisker.mrr.xrunner.domain.LocationMapper
+import com.whisker.mrr.xrunner.domain.mapper.LocationMapper
 import com.whisker.mrr.xrunner.domain.LocationRepository
-import com.whisker.mrr.xrunner.domain.model.RoutePoint
 import io.reactivex.Flowable
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class LocationDataRepository
     private val userDataSource: UserDataSource
 ) : LocationRepository {
 
-    override fun startTracking() : Flowable<RoutePoint> {
+    override fun startTracking() : Flowable<LatLng> {
         return locationDataSource.startTracking()
             .flatMap {
                 LocationMapper.transform(it)

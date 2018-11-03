@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">xRunner</string>
     <string name="welcome_message">Welcome!</string>
-    <string name="out_application_require_firebase_authentication">Out application require Firebase Authentication</string>
+    <string name="out_application_require_firebase_authentication">Out application require Firebase Authentication
+    </string>
     <string name="hint_email">email</string>
     <string name="hint_password">password</string>
     <string name="create_account">Create Account</string>
