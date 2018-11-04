@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
+import com.whisker.mrr.xrunner.presentation.map.MapFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
@@ -35,9 +37,17 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
             checkLocationPermission()
         }
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.mainContainer, LoginFragment())
-            .commit()
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.mainContainer, MapFragment())
+                .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.mainContainer, LoginFragment())
+                .commit()
+        }
+
+
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector

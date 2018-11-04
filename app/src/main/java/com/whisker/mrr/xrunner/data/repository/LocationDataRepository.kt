@@ -6,6 +6,7 @@ import com.whisker.mrr.xrunner.data.datasource.UserDataSource
 import com.whisker.mrr.xrunner.domain.mapper.LocationMapper
 import com.whisker.mrr.xrunner.domain.LocationRepository
 import io.reactivex.Flowable
+import io.reactivex.Single
 import javax.inject.Inject
 
 class LocationDataRepository
@@ -17,7 +18,7 @@ class LocationDataRepository
     override fun startTracking() : Flowable<LatLng> {
         return locationDataSource.startTracking()
             .flatMap {
-                LocationMapper.transform(it)
+                LocationMapper.transformFlowable(it)
             }
     }
 
@@ -27,6 +28,13 @@ class LocationDataRepository
 
     override fun stopTracking() {
         locationDataSource.stopTracking()
+    }
+
+    override fun getLastKnownLocation(): Single<LatLng> {
+        return locationDataSource.getBestLastKnownLocation()
+            .flatMap {
+            LocationMapper.transformSingle(it)
+        }
     }
 
 }

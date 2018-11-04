@@ -1,14 +1,17 @@
 package com.whisker.mrr.xrunner.data.datasource
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
 import com.whisker.mrr.xrunner.infrastructure.LocationService
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -53,5 +56,21 @@ class LocationDataSource
     fun stopTracking() {
         RxBus.unsubscribe(this)
         routeIndex = 0
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getBestLastKnownLocation() : Single<Location> {
+        val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val providers = locationManager.getProviders(true)
+        var bestLocation: Location? = null
+
+        for(provider in providers) {
+            val location: Location = locationManager.getLastKnownLocation(provider) ?: continue
+            if(bestLocation == null || location.accuracy < bestLocation.accuracy) {
+                bestLocation = location
+            }
+        }
+
+        return Single.just(bestLocation)
     }
 }

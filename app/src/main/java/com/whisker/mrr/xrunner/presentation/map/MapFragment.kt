@@ -1,5 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.map
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,6 +34,7 @@ class MapFragment : BaseFragment() {
         return view
     }
 
+    @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
@@ -41,13 +43,19 @@ class MapFragment : BaseFragment() {
         mapView.onResume()
         mapView.getMapAsync {map ->
             mMap = map
+            mMap.isMyLocationEnabled = true
+            myRun = mMap.addPolyline(polylineOptions)
+            viewModel.onMapShown()
         }
 
-        viewModel.getLastRoutePoint().observe(this, Observer {
-            val points = myRun.points
-            points.add(it)
-            myRun.points = points
+        viewModel.getLastKnownLocation().observe(this, Observer {
+            myRun.points = listOf(it)
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
+        })
+
+        viewModel.getRoutePoints().observe(this, Observer {
+            myRun.points = it
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
         })
 
         bStart.setOnClickListener {
@@ -56,7 +64,6 @@ class MapFragment : BaseFragment() {
     }
 
     private fun startRunning() {
-        myRun = mMap.addPolyline(polylineOptions)
         viewModel.startTracking()
     }
 }
