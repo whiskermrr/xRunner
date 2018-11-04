@@ -8,8 +8,8 @@ import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
-import com.whisker.mrr.xrunner.domain.LocationRepository
-import com.whisker.mrr.xrunner.domain.LoginRepository
+import com.whisker.mrr.xrunner.domain.repository.LocationRepository
+import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

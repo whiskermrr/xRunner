@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.domain
+package com.whisker.mrr.xrunner.domain.repository
 
 import com.google.firebase.auth.AuthResult
 import io.reactivex.Maybe

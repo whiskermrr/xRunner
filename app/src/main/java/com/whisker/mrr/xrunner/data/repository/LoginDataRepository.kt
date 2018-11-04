@@ -2,7 +2,7 @@ package com.whisker.mrr.xrunner.data.repository
 
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.whisker.mrr.xrunner.domain.LoginRepository
+import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import io.reactivex.Maybe
 

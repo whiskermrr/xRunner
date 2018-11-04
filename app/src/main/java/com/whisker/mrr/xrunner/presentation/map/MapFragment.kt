@@ -51,6 +51,7 @@ class MapFragment : BaseFragment() {
         viewModel.getLastKnownLocation().observe(this, Observer {
             myRun.points = listOf(it)
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
+            viewModel.getLastKnownLocation().removeObservers(this)
         })
 
         viewModel.getRoutePoints().observe(this, Observer {

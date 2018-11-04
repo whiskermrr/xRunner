@@ -3,7 +3,7 @@ package com.whisker.mrr.xrunner.presentation.map
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.LocationRepository
+import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
