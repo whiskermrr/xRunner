@@ -34,6 +34,12 @@ class LocationDataSource
         return locationSubject.toFlowable(BackpressureStrategy.LATEST)
     }
 
+    fun stopTracking() {
+        stopLocationService()
+        RxBus.unsubscribe(this)
+        routeIndex = 0
+    }
+
     private fun startLocationService() {
         val intent = Intent(LocationService.ACTION_START_TRACKING)
         intent.setPackage(context.packageName)
@@ -44,6 +50,10 @@ class LocationDataSource
         }
     }
 
+    private fun stopLocationService() {
+        // TODO
+    }
+
     private fun subscribeToLocationEvents() {
         RxBus.subscribe(LocationEvent::class.java.name, this, Consumer { event ->
             if(event is LocationEvent) {
@@ -51,11 +61,6 @@ class LocationDataSource
                 routeIndex++
             }
         })
-    }
-
-    fun stopTracking() {
-        RxBus.unsubscribe(this)
-        routeIndex = 0
     }
 
     @SuppressLint("MissingPermission")
@@ -70,7 +75,6 @@ class LocationDataSource
                 bestLocation = location
             }
         }
-
         return Single.just(bestLocation)
     }
 }
