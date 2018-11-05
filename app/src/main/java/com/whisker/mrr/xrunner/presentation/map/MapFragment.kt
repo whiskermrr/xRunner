@@ -3,6 +3,7 @@ package com.whisker.mrr.xrunner.presentation.map
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.BaseFragment
 import kotlinx.android.synthetic.main.fragment_map.*
+import java.lang.StringBuilder
 
 class MapFragment : BaseFragment() {
 
@@ -22,6 +24,7 @@ class MapFragment : BaseFragment() {
     private lateinit var polylineOptions: PolylineOptions
     private lateinit var mMap: GoogleMap
     private lateinit var myRun: Polyline
+    var isTracking: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
@@ -59,12 +62,25 @@ class MapFragment : BaseFragment() {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
         })
 
-        bStart.setOnClickListener {
-            startRunning()
-        }
-    }
+        viewModel.getRouteStats().observe(this, Observer {
+            val stringBuilder = StringBuilder()
+            stringBuilder.append(it.kilometers).append("\n")
+            stringBuilder.append(it.meters).append("\n").append("\n")
+            stringBuilder.append(it.hours).append("\n")
+            stringBuilder.append(it.minutes).append("\n")
+            stringBuilder.append(it.seconds).append("\n").append("\n")
+            stringBuilder.append(it.averageSpeed)
 
-    private fun startRunning() {
-        viewModel.startTracking()
+            tvStats.text = stringBuilder.toString()
+        })
+
+        bStart.setOnClickListener {
+            if(!isTracking) {
+                isTracking = true
+                viewModel.startTracking()
+            } else {
+                viewModel.stopTracking()
+            }
+        }
     }
 }

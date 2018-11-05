@@ -37,6 +37,7 @@ class LocationDataSource
     fun stopTracking() {
         stopLocationService()
         RxBus.unsubscribe(this)
+        locationSubject.onComplete()
         routeIndex = 0
     }
 
@@ -51,7 +52,8 @@ class LocationDataSource
     }
 
     private fun stopLocationService() {
-        // TODO
+        val intent = Intent(context, LocationService::class.java)
+        context.stopService(intent)
     }
 
     private fun subscribeToLocationEvents() {

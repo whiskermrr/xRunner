@@ -81,6 +81,7 @@ dependencies {
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
     // Firebase
