@@ -1,7 +1,14 @@
 package com.whisker.mrr.xrunner.domain.model
 
-data class Route(val routeName: String) {
+import com.google.android.gms.maps.model.LatLng
 
-    var waypoints: List<RoutePoint> = listOf()
+data class Route(val name: String) {
+
+    constructor(routeName: String, waypoints: List<LatLng>, routeStats: RouteStats) : this(routeName) {
+        this.waypoints = waypoints
+        this.routeStats = routeStats
+    }
+
+    var waypoints: List<LatLng> = listOf()
     var routeStats: RouteStats = RouteStats()
 }

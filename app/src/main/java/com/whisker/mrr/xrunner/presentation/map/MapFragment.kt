@@ -3,7 +3,6 @@ package com.whisker.mrr.xrunner.presentation.map
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,19 +46,19 @@ class MapFragment : BaseFragment() {
         mapView.getMapAsync {map ->
             mMap = map
             mMap.isMyLocationEnabled = true
-            myRun = mMap.addPolyline(polylineOptions)
             viewModel.onMapShown()
         }
 
         viewModel.getLastKnownLocation().observe(this, Observer {
-            myRun.points = listOf(it)
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
             viewModel.getLastKnownLocation().removeObservers(this)
         })
 
         viewModel.getRoutePoints().observe(this, Observer {
             myRun.points = it
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
+            if(it.isNotEmpty()) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
+            }
         })
 
         viewModel.getRouteStats().observe(this, Observer {
@@ -77,9 +76,14 @@ class MapFragment : BaseFragment() {
         bStart.setOnClickListener {
             if(!isTracking) {
                 isTracking = true
+                mMap.clear()
+                myRun = mMap.addPolyline(polylineOptions)
                 viewModel.startTracking()
+                bStart.text = "STOP"
             } else {
+                isTracking = false
                 viewModel.stopTracking()
+                bStart.text = "START"
             }
         }
     }

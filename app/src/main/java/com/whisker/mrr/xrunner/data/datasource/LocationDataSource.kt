@@ -11,7 +11,7 @@ import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
 import com.whisker.mrr.xrunner.infrastructure.LocationService
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.Single
+import io.reactivex.Maybe
 import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -66,7 +66,7 @@ class LocationDataSource
     }
 
     @SuppressLint("MissingPermission")
-    fun getBestLastKnownLocation() : Single<Location> {
+    fun getBestLastKnownLocation() : Maybe<Location> {
         val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val providers = locationManager.getProviders(true)
         var bestLocation: Location? = null
@@ -77,6 +77,10 @@ class LocationDataSource
                 bestLocation = location
             }
         }
-        return Single.just(bestLocation)
+        return if(bestLocation != null) {
+            Maybe.just(bestLocation)
+        } else {
+            Maybe.empty()
+        }
     }
 }

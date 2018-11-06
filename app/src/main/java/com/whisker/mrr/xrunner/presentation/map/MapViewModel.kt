@@ -1,9 +1,9 @@
 package com.whisker.mrr.xrunner.presentation.map
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.utils.LocationUtils
@@ -21,7 +21,6 @@ class MapViewModel
 
     private val disposables: CompositeDisposable = CompositeDisposable()
     private var startTime: Long = 0
-    private var endTime: Long = 0
 
     fun onMapShown() {
         disposables.add(
@@ -38,12 +37,13 @@ class MapViewModel
 
     fun startTracking() {
         startTime = System.currentTimeMillis()
+        routePoints.value = arrayListOf()
+        routeStats.value = RouteStats()
         disposables.add(
             locationRepository.startTracking()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.e("MAP VIEW MODEL", "subscribe")
                     val points = routePoints.value?.toMutableList() ?: arrayListOf()
                     routeStats.postValue(LocationUtils.calculateDistance(
                         routeStats = routeStats.value ?: RouteStats(),
@@ -63,8 +63,18 @@ class MapViewModel
     }
 
     fun stopTracking() {
-        endTime = System.currentTimeMillis()
-        locationRepository.stopTracking()
+        if(routePoints.value != null && routeStats.value != null) {
+            disposables.add(
+                locationRepository.stopTracking(Route(startTime.toString(), routePoints.value!!, routeStats.value!!))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+
+                    }, {
+                        it.printStackTrace()
+                    })
+            )
+        }
     }
 
     fun getRoutePoints() = routePoints
