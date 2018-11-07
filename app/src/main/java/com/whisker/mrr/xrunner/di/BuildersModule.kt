@@ -3,6 +3,7 @@ package com.whisker.mrr.xrunner.di
 import com.whisker.mrr.xrunner.presentation.MainActivity
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.map.MapFragment
+import com.whisker.mrr.xrunner.presentation.map.RunFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -17,4 +18,7 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun bindMapFragment() : MapFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindRunFragment() : RunFragment
 }

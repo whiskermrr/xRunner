@@ -23,7 +23,7 @@ class MapFragment : BaseFragment() {
     private lateinit var polylineOptions: PolylineOptions
     private lateinit var mMap: GoogleMap
     private lateinit var myRun: Polyline
-    var isTracking: Boolean = false
+    private var isTracking: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = layoutInflater.inflate(R.layout.fragment_map, container, false)

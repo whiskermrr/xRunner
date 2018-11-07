@@ -1,5 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.map
 
+import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -36,7 +37,7 @@ class MapViewModel
     }
 
     fun startTracking() {
-        startTime = System.currentTimeMillis()
+        startTime = SystemClock.elapsedRealtime()
         routePoints.value = arrayListOf()
         routeStats.value = RouteStats()
         disposables.add(
@@ -53,7 +54,7 @@ class MapViewModel
                             it
                         },
                         secondCoords = it,
-                        time = System.currentTimeMillis() - startTime
+                        time = SystemClock.elapsedRealtime() - startTime
                     ))
                     points.add(it)
                     routePoints.postValue(points)
@@ -65,8 +66,14 @@ class MapViewModel
 
     fun stopTracking() {
         if(routePoints.value != null && routeStats.value != null) {
+            val endTime = SystemClock.elapsedRealtime() - startTime
+            val stats = routeStats.value!!
+            LocationUtils.calculateRouteAverageSpeedAndPeace(stats, endTime)
+            LocationUtils.calculateRouteTime(stats, endTime)
+            routeStats.postValue(stats)
+
             disposables.add(
-                locationRepository.stopTracking(Route(startTime.toString(), routePoints.value!!, routeStats.value!!))
+                locationRepository.stopTracking(Route(startTime.toString(), routePoints.value!!, stats))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

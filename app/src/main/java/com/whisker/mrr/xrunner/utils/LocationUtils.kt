@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 
@@ -26,26 +27,34 @@ class LocationUtils {
             return firstLocation.distanceTo(secondLocation)
         }
 
-        fun calculateDistance(routeStats: RouteStats, firstCoords: LatLng, secondCoords: LatLng) : RouteStats {
+        private fun calculateDistance(routeStats: RouteStats, firstCoords: LatLng, secondCoords: LatLng) {
             routeStats.wgs84distance += calculateWGS84Distance(firstCoords, secondCoords)
             routeStats.kilometers = (routeStats.wgs84distance / MILLISECONDS_PER_SECOND).toInt()
             routeStats.meters = (routeStats.wgs84distance - routeStats.kilometers * MILLISECONDS_PER_SECOND).toInt()
-
-            return routeStats
         }
 
-        fun calculateRouteStats(routeStats: RouteStats, firstCoords: LatLng, secondCoords: LatLng, time: Long) : RouteStats {
-            calculateDistance(routeStats, firstCoords, secondCoords)
-
+        fun calculateRouteTime(routeStats: RouteStats, time: Long) : RouteStats {
             routeStats.hours = (time / MILLISECONDS_PER_HOUR).toInt()
             routeStats.minutes = ((time % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
             routeStats.seconds = ((time % MILLISECONDS_PER_MINUTE) / MILLISECONDS_PER_SECOND).toInt()
 
+            return routeStats
+        }
+
+        fun calculateRouteAverageSpeedAndPeace(routeStats: RouteStats, time: Long) {
             val totalDistanceInMeters = routeStats.wgs84distance.toInt()
             val totalTimeInSeconds = (time / MILLISECONDS_PER_SECOND).toInt()
 
-            routeStats.averageSpeed = (totalDistanceInMeters / totalTimeInSeconds) * 3.6f
-            routeStats.pace = MINUTES_PER_HOUR / routeStats.averageSpeed
+            if(totalTimeInSeconds > 0) {
+                routeStats.averageSpeed = (totalDistanceInMeters / totalTimeInSeconds) * 3.6f
+                Log.e("UTILS", totalTimeInSeconds.toString())
+                routeStats.pace = MINUTES_PER_HOUR / routeStats.averageSpeed
+            }
+        }
+
+        fun calculateRouteStats(routeStats: RouteStats, firstCoords: LatLng, secondCoords: LatLng, time: Long) : RouteStats {
+            calculateDistance(routeStats, firstCoords, secondCoords)
+            calculateRouteAverageSpeedAndPeace(routeStats, time)
 
             return routeStats
         }

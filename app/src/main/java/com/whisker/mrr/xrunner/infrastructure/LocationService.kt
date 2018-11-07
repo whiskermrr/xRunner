@@ -11,7 +11,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.*
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.xrunner.domain.bus.RxBus
@@ -24,7 +23,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         const val HANDLER_THREAD_NAME: String = "LocationThread"
         const val CHANNEL_ID: String = "channel_01"
         const val NOTIFICATION_TITLE: String = "Readable title"
-        const val REQUIRED_ACCURACY: Int = 10
+        const val REQUIRED_ACCURACY: Int = 50
     }
 
     private lateinit var looper: Looper

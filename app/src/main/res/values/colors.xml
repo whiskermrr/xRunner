@@ -8,6 +8,21 @@
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#BDBDBD</color>
     <color name="colorBackgroud">#22AAA1</color>
-    <color name="buttonGreen">#03BB3F</color>
+    <color name="colorSolarGreen">#03BB3F</color>
     <color name="colorSaltBlue">#0A369D</color>
+    
+    <color name="colorBlackHell">#2A2A2A</color>
+    <color name="colorYellowSoft">#F0ED62</color>
+    <color name="colorWhite">#FAFAFA</color>
+    <color name="colorDarkOceanBlue">#355282</color>
+    <color name="colorFortniteDarkBlue">#33549B</color>
+    <color name="colorSoloBlue">#19C2FE</color>
+    <color name="colorStatsBackground">#E5ECF6</color>
+    <color name="colorDarkFactoryBlue">#708BB4</color>
+    <color name="colorTurkishOrange">#EC9157</color>
+    <color name="colorLightFortniteViolet">#B83CF2</color>
+    <color name="colorFuckingGray">#353535</color>
+    
+    <color name="colorCatalogGrayTitle">#657496</color>
+    <color name="colorCatalogLightGrayTitle">#ABBDD5</color>
 </resources>
