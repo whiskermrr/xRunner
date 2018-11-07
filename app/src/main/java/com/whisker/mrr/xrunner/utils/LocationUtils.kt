@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 
@@ -45,10 +46,10 @@ class LocationUtils {
             val totalTimeInSeconds = (time / MILLISECONDS_PER_SECOND).toInt()
 
             if(totalTimeInSeconds > 0 && totalDistanceInMeters > 0) {
-                routeStats.averageSpeed = (totalDistanceInMeters / totalTimeInSeconds) * 3.6f
+                routeStats.averageSpeed = (totalDistanceInMeters.toFloat() / totalTimeInSeconds) * 3.6f
                 val pace = MINUTES_PER_HOUR / routeStats.averageSpeed
                 routeStats.paceMin = pace.toInt()
-                routeStats.paceSec = (pace % 1 * 100).toInt()
+                routeStats.paceSec = (pace % 1 * 60).toInt()
             }
         }
 

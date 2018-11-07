@@ -23,11 +23,11 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         const val HANDLER_THREAD_NAME: String = "LocationThread"
         const val CHANNEL_ID: String = "channel_01"
         const val NOTIFICATION_TITLE: String = "Readable title"
-        const val REQUIRED_ACCURACY: Int = 50
+        const val REQUIRED_ACCURACY: Int = 10
     }
 
     private lateinit var looper: Looper
-    lateinit var handler: Handler
+    private lateinit var handler: Handler
     private lateinit var locationManager: LocationManager
 
     override fun onBind(p0: Intent?): IBinder? {

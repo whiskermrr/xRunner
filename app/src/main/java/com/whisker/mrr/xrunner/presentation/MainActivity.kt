@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +15,6 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.map.MapFragment
-import com.whisker.mrr.xrunner.presentation.map.RunFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
