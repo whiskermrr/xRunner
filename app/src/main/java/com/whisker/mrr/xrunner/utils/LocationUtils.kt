@@ -11,6 +11,7 @@ class LocationUtils {
         private const val MILLISECONDS_PER_HOUR = 3600000
         private const val MILLISECONDS_PER_MINUTE = 60000
         private const val MILLISECONDS_PER_SECOND = 1000
+        private const val MINUTES_PER_HOUR = 60
 
         private fun calculateWGS84Distance(firstCoords: LatLng, secondCoords: LatLng) : Float {
             val firstLocation = Location("A")
@@ -40,13 +41,11 @@ class LocationUtils {
             routeStats.minutes = ((time % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
             routeStats.seconds = ((time % MILLISECONDS_PER_MINUTE) / MILLISECONDS_PER_SECOND).toInt()
 
-            val totalDistanceInMeters = (routeStats.kilometers * MILLISECONDS_PER_SECOND) + routeStats.meters
-            val totalTimeInSeconds =
-                    (routeStats.hours * MILLISECONDS_PER_HOUR / MILLISECONDS_PER_SECOND) +
-                    (routeStats.minutes * MILLISECONDS_PER_MINUTE / MILLISECONDS_PER_SECOND) +
-                            routeStats.seconds
+            val totalDistanceInMeters = routeStats.wgs84distance.toInt()
+            val totalTimeInSeconds = (time / MILLISECONDS_PER_SECOND).toInt()
 
             routeStats.averageSpeed = (totalDistanceInMeters / totalTimeInSeconds) * 3.6f
+            routeStats.pace = MINUTES_PER_HOUR / routeStats.averageSpeed
 
             return routeStats
         }
