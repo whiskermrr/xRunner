@@ -19,6 +19,7 @@ class MapViewModel
     private val routePoints = MutableLiveData<List<LatLng>>()
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeStats = MutableLiveData<RouteStats>()
+    private val isTracking = MutableLiveData<Boolean>()
 
     private val disposables: CompositeDisposable = CompositeDisposable()
     private var startTime: Long = 0
@@ -38,6 +39,7 @@ class MapViewModel
 
     fun startTracking() {
         startTime = SystemClock.elapsedRealtime()
+        isTracking.postValue(true)
         routePoints.value = arrayListOf()
         routeStats.value = RouteStats()
         disposables.add(
@@ -65,7 +67,10 @@ class MapViewModel
     }
 
     fun stopTracking() {
+        isTracking.postValue(false)
         if(routePoints.value != null && routeStats.value != null) {
+            if(routeStats.value!!.wgs84distance == 0f) return
+
             val endTime = SystemClock.elapsedRealtime() - startTime
             val stats = routeStats.value!!
             LocationUtils.calculateRouteAverageSpeedAndPeace(stats, endTime)
@@ -88,6 +93,7 @@ class MapViewModel
     fun getRoutePoints() = routePoints
     fun getLastKnownLocation() = lastKnownLocation
     fun getRouteStats() = routeStats
+    fun getIsTracking() = isTracking
 
     override fun onCleared() {
         super.onCleared()

@@ -7,6 +7,7 @@ class RouteStats {
     var minutes = 0
     var seconds = 0
     var averageSpeed = 0f
-    var pace = 0f
+    var paceMin = 0
+    var paceSec = 0
     var wgs84distance = 0f
 }

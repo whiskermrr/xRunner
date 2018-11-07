@@ -10,20 +10,38 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.BaseFragment
 import kotlinx.android.synthetic.main.fragment_map.*
-import java.lang.StringBuilder
 
-class MapFragment : BaseFragment() {
+class MapFragment : BaseFragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: MapViewModel
     private lateinit var polylineOptions: PolylineOptions
     private lateinit var mMap: GoogleMap
     private lateinit var myRun: Polyline
     private var isTracking: Boolean = false
+
+    private val lastLocationObserver = Observer<LatLng> { lastLocation ->
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 18f))
+        viewModel.getLastKnownLocation().removeObservers(this)
+    }
+
+    private val routeObserver = Observer<List<LatLng>> { points ->
+        myRun.points = points
+        if(points.isNotEmpty()) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.last(), 18f))
+        }
+    }
+
+    private val isTrackingObserver = Observer<Boolean> {
+        isTracking = it
+        initView()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
@@ -36,55 +54,47 @@ class MapFragment : BaseFragment() {
         return view
     }
 
-    @SuppressLint("MissingPermission")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        viewModel = mainActivity.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        }
+
+        viewModel.getIsTracking().observe(this, isTrackingObserver)
 
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
-        mapView.getMapAsync {map ->
-            mMap = map
-            mMap.isMyLocationEnabled = true
-            viewModel.onMapShown()
-        }
-
-        viewModel.getLastKnownLocation().observe(this, Observer {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 18f))
-            viewModel.getLastKnownLocation().removeObservers(this)
-        })
-
-        viewModel.getRoutePoints().observe(this, Observer {
-            myRun.points = it
-            if(it.isNotEmpty()) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
-            }
-        })
-
-        viewModel.getRouteStats().observe(this, Observer {
-            val stringBuilder = StringBuilder()
-            stringBuilder.append(it.kilometers).append("\n")
-            stringBuilder.append(it.meters).append("\n").append("\n")
-            stringBuilder.append(it.hours).append("\n")
-            stringBuilder.append(it.minutes).append("\n")
-            stringBuilder.append(it.seconds).append("\n").append("\n")
-            stringBuilder.append(it.averageSpeed)
-
-            tvStats.text = stringBuilder.toString()
-        })
+        mapView.getMapAsync(this)
+        initView()
 
         bStart.setOnClickListener {
-            if(!isTracking) {
-                isTracking = true
-                mMap.clear()
-                myRun = mMap.addPolyline(polylineOptions)
-                viewModel.startTracking()
-                bStart.text = "STOP"
-            } else {
-                isTracking = false
-                viewModel.stopTracking()
-                bStart.text = "START"
-            }
+            mainActivity.switchContent(RunFragment())
+        }
+
+        bDismiss.setOnClickListener {
+            mainActivity.onBackPressed()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onMapReady(p0: GoogleMap?) {
+        mMap = p0!!
+        mMap.isMyLocationEnabled = true
+        viewModel.onMapShown()
+        myRun = mMap.addPolyline(polylineOptions)
+
+        viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
+        viewModel.getRoutePoints().observe(this, routeObserver)
+    }
+
+    private fun initView() {
+        if(isTracking) {
+            bStart.visibility = View.GONE
+            bDismiss.visibility = View.VISIBLE
+        } else {
+            bStart.visibility = View.VISIBLE
+            bDismiss.visibility = View.GONE
         }
     }
 }

@@ -8,14 +8,23 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
+import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.presentation.BaseFragment
 import kotlinx.android.synthetic.main.fragment_run.*
-import java.util.*
 
 class RunFragment : BaseFragment() {
 
     private lateinit var viewModel: MapViewModel
     private var isTracking: Boolean = false
+
+    private val routeStatsObserver = Observer<RouteStats> { stats ->
+        tvDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
+        tvPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
+    }
+
+    private val isTrackingObserver = Observer<Boolean> {
+        isTracking = it
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_run, container, false)
@@ -23,24 +32,26 @@ class RunFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        viewModel = mainActivity.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        }
 
-        viewModel.getRouteStats().observe(this, Observer {stats ->
-            tvDistance.text = String.format(Locale.getDefault(), "%d.%d", stats.kilometers, stats.meters)
-            tvPace.text = String.format(Locale.getDefault(), "%d'%02d''", stats.pace.toInt(), (stats.pace % 1 * 100).toInt())
-        })
+        viewModel.getRouteStats().observe(this, routeStatsObserver)
+        viewModel.getIsTracking().observe(this, isTrackingObserver)
 
         bStartRun.setOnClickListener {
-            isTracking = if(!isTracking) {
+            if(!isTracking) {
                 viewModel.startTracking()
                 tvTime.base = SystemClock.elapsedRealtime()
                 tvTime.start()
-                true
             } else {
                 viewModel.stopTracking()
                 tvTime.stop()
-                false
             }
+        }
+
+        ibStopMusic.setOnClickListener {
+            mainActivity.addContent(MapFragment())
         }
     }
 }

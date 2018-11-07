@@ -55,11 +55,11 @@
         android:layout_below="@id/etPassword"
         android:text="@string/login"
         android:layout_marginTop="15dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@id/etPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/circular_button_green"
+        android:background="@drawable/circular_button_black"
     />
     
     <Button
@@ -68,11 +68,11 @@
         android:layout_height="wrap_content"
         android:text="@string/create_account"
         android:layout_marginTop="15dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@id/btLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/circular_button_green"
+        android:background="@drawable/circular_button_black"
     />
 
 

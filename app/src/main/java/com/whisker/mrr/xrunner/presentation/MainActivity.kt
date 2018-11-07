@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import com.whisker.mrr.xrunner.utils.xRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector {
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
 
         if(FirebaseAuth.getInstance().currentUser != null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.mainContainer, RunFragment())
+                .add(R.id.mainContainer, MapFragment())
                 .commit()
         } else {
             supportFragmentManager.beginTransaction()
@@ -54,7 +56,11 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
 
     fun switchContent(fragment: Fragment) {
-        switchContent(R.id.mainContainer, fragment)
+        switchContent(mainContainer.id, fragment)
+    }
+
+    fun addContent(fragment: Fragment) {
+        addContent(mainContainer.id, fragment)
     }
 
     private fun switchContent(@IdRes frameLayoutContainer: Int, fragment: Fragment) {
@@ -62,6 +68,29 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         ft.replace(frameLayoutContainer, fragment, fragment.javaClass.name)
         ft.addToBackStack(fragment.javaClass.name)
         ft.commit()
+    }
+
+    private fun addContent(@IdRes frameLayoutContainer: Int, fragment: androidx.fragment.app.Fragment) {
+        val fragmentTag = fragment.javaClass.name
+        val manager = supportFragmentManager
+        val previousFragment = getTopFragment(manager)
+        val ft = manager.beginTransaction()
+        ft.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        if (previousFragment != null) {
+            ft.hide(previousFragment)
+        }
+        ft.add(frameLayoutContainer, fragment, fragmentTag)
+        ft.addToBackStack(fragmentTag)
+        ft.commit()
+    }
+
+    private fun getTopFragment(manager: androidx.fragment.app.FragmentManager): androidx.fragment.app.Fragment? {
+        var previousFragment: androidx.fragment.app.Fragment? = null
+        if (manager.backStackEntryCount > 0) {
+            val backEntry = manager.getBackStackEntryAt(manager.backStackEntryCount - 1)
+            previousFragment = supportFragmentManager.findFragmentByTag(backEntry.name)
+        }
+        return previousFragment
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
