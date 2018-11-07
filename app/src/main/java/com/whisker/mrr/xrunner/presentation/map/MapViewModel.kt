@@ -45,14 +45,15 @@ class MapViewModel
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val points = routePoints.value?.toMutableList() ?: arrayListOf()
-                    routeStats.postValue(LocationUtils.calculateDistance(
+                    routeStats.postValue(LocationUtils.calculateRouteStats(
                         routeStats = routeStats.value ?: RouteStats(),
                         firstCoords = if(!points.isEmpty()) {
                             points.last()
                         } else {
                             it
                         },
-                        secondCoords = it
+                        secondCoords = it,
+                        time = System.currentTimeMillis() - startTime
                     ))
                     points.add(it)
                     routePoints.postValue(points)

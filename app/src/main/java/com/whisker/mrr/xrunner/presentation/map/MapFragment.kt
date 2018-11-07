@@ -57,7 +57,7 @@ class MapFragment : BaseFragment() {
         viewModel.getRoutePoints().observe(this, Observer {
             myRun.points = it
             if(it.isNotEmpty()) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it.last(), 18f))
             }
         })
 

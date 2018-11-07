@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) {
 
     fun saveRoute(route: Route, userId : String) : Completable {
-        val databaseReference = firebaseDatabase.reference.child("Users").child(route.name).child(userId)
+        val databaseReference = firebaseDatabase.reference.child("Users").child(userId).child(route.name)
         databaseReference.setValue(route)
         return Completable.complete()
     }

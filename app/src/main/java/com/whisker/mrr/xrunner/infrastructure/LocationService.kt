@@ -22,7 +22,9 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         const val ACTION_START_TRACKING: String = "com.example.mrr.action.START_TRACKING"
         const val ACTION_STOP_TRACKING: String = "com.example.mrr.action.STOP_TRACKING"
         const val HANDLER_THREAD_NAME: String = "LocationThread"
-        const val CHANNEL_ID = "channel_01"
+        const val CHANNEL_ID: String = "channel_01"
+        const val NOTIFICATION_TITLE: String = "Readable title"
+        const val REQUIRED_ACCURACY: Int = 10
     }
 
     private lateinit var looper: Looper
@@ -38,7 +40,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Readable title",
+                NOTIFICATION_TITLE,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
 
@@ -83,7 +85,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this, looper)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 2f, this, looper)
         }
     }
 
@@ -92,8 +94,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
     }
 
     override fun onLocationChanged(newLocation: Location?) {
-        Log.e("LOCATION SERVICE", "onLocationChanged")
-        if(newLocation != null) {
+        if(newLocation != null && newLocation.accuracy < REQUIRED_ACCURACY) {
             RxBus.publish(LocationEvent(newLocation))
         }
     }
