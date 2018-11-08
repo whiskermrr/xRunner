@@ -24,4 +24,7 @@
     
     <color name="colorCatalogGrayTitle">#657496</color>
     <color name="colorCatalogLightGrayTitle">#ABBDD5</color>
+    
+    <color name="colorBalticGreen">#008577</color>
+    <color name="colorGreenAlgae">#00574B</color>
 </resources>
