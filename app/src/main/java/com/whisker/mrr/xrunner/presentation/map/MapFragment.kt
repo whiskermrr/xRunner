@@ -24,7 +24,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var polylineOptions: PolylineOptions
     private lateinit var mMap: GoogleMap
     private lateinit var myRun: Polyline
-    private var isTracking: Boolean = false
 
     private val lastLocationObserver = Observer<LatLng> { lastLocation ->
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 18f))
@@ -36,11 +35,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         if(points.isNotEmpty()) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.last(), 18f))
         }
-    }
-
-    private val isTrackingObserver = Observer<Boolean> {
-        isTracking = it
-        initView()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,16 +55,9 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
         }
 
-        viewModel.getIsTracking().observe(this, isTrackingObserver)
-
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
         mapView.getMapAsync(this)
-        initView()
-
-        bStart.setOnClickListener {
-            mainActivity.switchContent(RunFragment())
-        }
 
         bDismiss.setOnClickListener {
             mainActivity.onBackPressed()
@@ -86,15 +73,5 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
 
         viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
         viewModel.getRoutePoints().observe(this, routeObserver)
-    }
-
-    private fun initView() {
-        if(isTracking) {
-            bStart.visibility = View.GONE
-            bDismiss.visibility = View.VISIBLE
-        } else {
-            bStart.visibility = View.VISIBLE
-            bDismiss.visibility = View.GONE
-        }
     }
 }

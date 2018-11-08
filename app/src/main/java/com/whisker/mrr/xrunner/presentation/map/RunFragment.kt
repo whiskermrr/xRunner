@@ -50,7 +50,7 @@ class RunFragment : BaseFragment() {
             }
         }
 
-        ibStopMusic.setOnClickListener {
+        bLocation.setOnClickListener {
             mainActivity.addContent(MapFragment())
         }
     }

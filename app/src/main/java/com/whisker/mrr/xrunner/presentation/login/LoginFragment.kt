@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.BaseFragment
-import com.whisker.mrr.xrunner.presentation.map.MapFragment
+import com.whisker.mrr.xrunner.presentation.map.RunFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseFragment() {
@@ -18,7 +18,7 @@ class LoginFragment : BaseFragment() {
 
     private val loginObserver = Observer<Boolean> {
         if(it) {
-            mainActivity.switchContent(MapFragment())
+            mainActivity.switchContent(RunFragment())
         } else {
             Toast.makeText(context, "Failed to login", Toast.LENGTH_SHORT).show()
         }

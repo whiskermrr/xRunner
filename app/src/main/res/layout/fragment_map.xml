@@ -12,20 +12,6 @@
     />
     
     <Button
-        android:id="@+id/bStart"
-        android:text="@string/start"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/circular_button_black"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="30dp"
-    />
-    
-    <Button
         android:id="@+id/bDismiss"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -34,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="30dp"
-        android:visibility="gone"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

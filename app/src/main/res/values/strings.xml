@@ -8,10 +8,10 @@
     <string name="create_account">Create Account</string>
     <string name="login">Login</string>
 	<string name="kilometers">Kilometers</string>
-	<string name="starting_distance">0.00</string>
+	<string name="starting_distance">0.000</string>
 	<string name="empty_record">---</string>
 	<string name="empty_time">--:--</string>
-	<string name="distance_format">%d.%d</string>
+	<string name="distance_format">%d.%03d</string>
 	<string name="pace_format">%d\'%02d\'\'</string>
 	<string name="start">START</string>
 </resources>
