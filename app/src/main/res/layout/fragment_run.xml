@@ -156,7 +156,6 @@
 		android:textAlignment="center"
 		android:layout_height="wrap_content"/>
 	
-	
 	<ImageButton
 		android:id="@+id/bStartRun"
 		android:src="@drawable/ic_pause"
