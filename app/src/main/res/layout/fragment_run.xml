@@ -31,7 +31,7 @@
 	
 	<View
 		android:id="@+id/vMusicPanel"
-		android:background="@color/colorBlackHell"
+		android:background="@color/colorPrimaryDark"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		app:layout_constraintStart_toStartOf="parent"
@@ -185,7 +185,7 @@
 	<ImageButton
 		android:id="@+id/ibPreviousSong"
 		android:src="@drawable/ic_previous_song"
-		android:background="@color/colorBlackHell"
+		android:background="@color/colorPrimaryDark"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:contentDescription="@null"
@@ -197,7 +197,7 @@
 	<ImageButton
 		android:id="@+id/ibStopMusic"
 		android:src="@drawable/ic_stop_music"
-		android:background="@color/colorBlackHell"
+		android:background="@color/colorPrimaryDark"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:contentDescription="@null"
@@ -211,7 +211,7 @@
 	<ImageButton
 		android:id="@+id/ibNextSong"
 		android:src="@drawable/ic_next_song"
-		android:background="@color/colorBlackHell"
+		android:background="@color/colorPrimaryDark"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:contentDescription="@null"
