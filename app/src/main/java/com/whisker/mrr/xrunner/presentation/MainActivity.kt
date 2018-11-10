@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         val manager = supportFragmentManager
         val previousFragment = getTopFragment(manager)
         val ft = manager.beginTransaction()
-        ft.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        ft.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         if (previousFragment != null) {
             ft.hide(previousFragment)
         }
