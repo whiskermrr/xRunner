@@ -144,12 +144,13 @@
 		android:textAlignment="center"
 		android:layout_height="wrap_content"/>
 	
-	<Chronometer
+	<TextView
 		android:id="@+id/tvTime"
 		android:layout_width="0dp"
 		android:textSize="28sp"
 		android:textColor="@color/colorWhite"
 		android:textStyle="bold"
+		android:text="@string/init_time"
 		app:layout_constraintWidth_percent="0.333"
 		app:layout_constraintTop_toTopOf="@id/tvHeartbeat"
 		app:layout_constraintStart_toEndOf="@id/tvHeartbeat"

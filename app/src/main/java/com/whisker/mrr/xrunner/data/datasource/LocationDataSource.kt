@@ -21,28 +21,31 @@ class LocationDataSource
     private val context: Context
 ) {
 
-    companion object {
-        var routeIndex: Int = 0
-    }
-
     private lateinit var locationSubject: PublishSubject<Location>
 
     fun startTracking() : Flowable<Location> {
-        startLocationService()
+        startLocationService(LocationService.ACTION_START_TRACKING)
         locationSubject = PublishSubject.create()
         subscribeToLocationEvents()
         return locationSubject.toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    fun pauseTracking() {
+        startLocationService(LocationService.ACTION_STOP_TRACKING)
+    }
+
+    fun resumeTracking() {
+        startLocationService(LocationService.ACTION_START_TRACKING)
     }
 
     fun stopTracking() {
         stopLocationService()
         RxBus.unsubscribe(this)
         locationSubject.onComplete()
-        routeIndex = 0
     }
 
-    private fun startLocationService() {
-        val intent = Intent(LocationService.ACTION_START_TRACKING)
+    private fun startLocationService(command: String) {
+        val intent = Intent(command)
         intent.setPackage(context.packageName)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent)
@@ -60,7 +63,6 @@ class LocationDataSource
         RxBus.subscribe(LocationEvent::class.java.name, this, Consumer { event ->
             if(event is LocationEvent) {
                 locationSubject.onNext(event.location)
-                routeIndex++
             }
         })
     }

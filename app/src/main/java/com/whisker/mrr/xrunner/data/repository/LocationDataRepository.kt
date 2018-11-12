@@ -27,7 +27,11 @@ class LocationDataRepository
     }
 
     override fun pauseTracking() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        locationDataSource.pauseTracking()
+    }
+
+    override fun resumeTracking() {
+        locationDataSource.resumeTracking()
     }
 
     override fun stopTracking(route: Route) : Completable {

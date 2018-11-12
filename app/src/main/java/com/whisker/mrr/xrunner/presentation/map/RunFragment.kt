@@ -1,7 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.map
 
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,10 @@ class RunFragment : BaseFragment() {
         isTracking = it
     }
 
+    private val runTimeObserver = Observer<String> {
+        tvTime.text = it
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_run, container, false)
     }
@@ -39,6 +42,7 @@ class RunFragment : BaseFragment() {
 
         viewModel.getRouteStats().observe(this, routeStatsObserver)
         viewModel.getIsTracking().observe(this, isTrackingObserver)
+        viewModel.getTime().observe(this, runTimeObserver)
 
         bStartRun.setOnClickListener { onStartClick() }
 
@@ -54,20 +58,19 @@ class RunFragment : BaseFragment() {
     private fun onStartClick() {
         pauseTime = 0L
         viewModel.startTracking()
-        startChronometer()
         bStartRun.visibility = View.GONE
         bPauseRun.visibility = View.VISIBLE
     }
 
     private fun onPauseClick() {
-        pauseChronometer()
+        viewModel.pauseTracking()
         bPauseRun.visibility = View.GONE
         bStopRun.visibility = View.VISIBLE
         bResumeRun.visibility = View.VISIBLE
     }
 
     private fun onResumeClick() {
-        startChronometer()
+        viewModel.resumeTracking()
         bStopRun.visibility = View.GONE
         bResumeRun.visibility = View.GONE
         bPauseRun.visibility = View.VISIBLE
@@ -78,20 +81,5 @@ class RunFragment : BaseFragment() {
         bStopRun.visibility = View.GONE
         bResumeRun.visibility = View.GONE
         bStartRun.visibility = View.VISIBLE
-    }
-
-    private fun pauseChronometer() {
-            tvTime.stop()
-            pauseTime = SystemClock.elapsedRealtime()
-        }
-
-    private fun startChronometer() {
-        if(pauseTime == 0L) {
-            tvTime.base = SystemClock.elapsedRealtime()
-        } else {
-            tvTime.base = tvTime.base + SystemClock.elapsedRealtime() - pauseTime
-        }
-
-        tvTime.start()
     }
 }

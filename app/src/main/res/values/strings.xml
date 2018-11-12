@@ -14,4 +14,5 @@
 	<string name="distance_format">%d.%03d</string>
 	<string name="pace_format">%d\'%02d\'\'</string>
 	<string name="start">START</string>
+	<string name="init_time">00:00</string>
 </resources>
