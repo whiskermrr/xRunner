@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
@@ -48,8 +47,6 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
                 .add(R.id.mainContainer, LoginFragment())
                 .commit()
         }
-
-
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector

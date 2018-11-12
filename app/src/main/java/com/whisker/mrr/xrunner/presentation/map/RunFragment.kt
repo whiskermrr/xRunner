@@ -16,6 +16,7 @@ class RunFragment : BaseFragment() {
 
     private lateinit var viewModel: MapViewModel
     private var isTracking: Boolean = false
+    private var pauseTime: Long = 0L
 
     private val routeStatsObserver = Observer<RouteStats> { stats ->
         tvDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
@@ -39,19 +40,58 @@ class RunFragment : BaseFragment() {
         viewModel.getRouteStats().observe(this, routeStatsObserver)
         viewModel.getIsTracking().observe(this, isTrackingObserver)
 
-        bStartRun.setOnClickListener {
-            if(!isTracking) {
-                viewModel.startTracking()
-                tvTime.base = SystemClock.elapsedRealtime()
-                tvTime.start()
-            } else {
-                viewModel.stopTracking()
-                tvTime.stop()
-            }
+        bStartRun.setOnClickListener { onStartClick() }
+
+        bPauseRun.setOnClickListener { onPauseClick() }
+
+        bResumeRun.setOnClickListener { onResumeClick() }
+
+        bStopRun.setOnClickListener { onStopClick() }
+
+        bLocation.setOnClickListener { mainActivity.addContent(MapFragment()) }
+    }
+
+    private fun onStartClick() {
+        pauseTime = 0L
+        viewModel.startTracking()
+        startChronometer()
+        bStartRun.visibility = View.GONE
+        bPauseRun.visibility = View.VISIBLE
+    }
+
+    private fun onPauseClick() {
+        pauseChronometer()
+        bPauseRun.visibility = View.GONE
+        bStopRun.visibility = View.VISIBLE
+        bResumeRun.visibility = View.VISIBLE
+    }
+
+    private fun onResumeClick() {
+        startChronometer()
+        bStopRun.visibility = View.GONE
+        bResumeRun.visibility = View.GONE
+        bPauseRun.visibility = View.VISIBLE
+    }
+
+    private fun onStopClick() {
+        viewModel.stopTracking()
+        bStopRun.visibility = View.GONE
+        bResumeRun.visibility = View.GONE
+        bStartRun.visibility = View.VISIBLE
+    }
+
+    private fun pauseChronometer() {
+            tvTime.stop()
+            pauseTime = SystemClock.elapsedRealtime()
         }
 
-        bLocation.setOnClickListener {
-            mainActivity.addContent(MapFragment())
+    private fun startChronometer() {
+        if(pauseTime == 0L) {
+            tvTime.base = SystemClock.elapsedRealtime()
+        } else {
+            tvTime.base = tvTime.base + SystemClock.elapsedRealtime() - pauseTime
         }
+
+        tvTime.start()
     }
 }
