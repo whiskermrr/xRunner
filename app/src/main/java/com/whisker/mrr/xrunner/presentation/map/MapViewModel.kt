@@ -8,12 +8,11 @@ import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.utils.LocationUtils
+import com.whisker.mrr.xrunner.utils.RunnerTimer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
-import kotlin.concurrent.timerTask
 
 class MapViewModel
 @Inject constructor(private val locationRepository: LocationRepository) : ViewModel() {
@@ -22,13 +21,9 @@ class MapViewModel
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeStats = MutableLiveData<RouteStats>()
     private val isTracking = MutableLiveData<Boolean>()
-    private val runTime = MutableLiveData<String>()
 
-    private val disposables: CompositeDisposable = CompositeDisposable()
-    private lateinit var timer: Timer
-    private var startTime: Long = 0L
-    private var pauseTime: Long = 0L
-    private var elapsedTime: Long  = 0L
+    private val disposables = CompositeDisposable()
+    private val runnerTimer = RunnerTimer()
 
     fun onMapShown() {
         disposables.add(
@@ -43,29 +38,13 @@ class MapViewModel
         )
     }
 
-    private fun startTimer() {
-        timer = Timer()
-        timer.scheduleAtFixedRate(timerTask {
-            elapsedTime = SystemClock.elapsedRealtime() - startTime
-            val seconds = elapsedTime / 1000 % 60
-            val minutes = elapsedTime / (1000 * 60) % 60
-            val hours = elapsedTime / (1000 * 60 * 60) % 24
 
-            val stringTime = if(hours == 0L) {
-                String.format("%02d:%02d", minutes, seconds)
-            } else {
-                String.format("%02d:%02d:%02d", hours, minutes, seconds)
-            }
-            runTime.postValue(stringTime)
-        }, 1000, 1000)
-    }
 
     fun startTracking() {
-        startTime = SystemClock.elapsedRealtime()
+        runnerTimer.startTimer()
         isTracking.postValue(true)
         routePoints.value = listOf()
         routeStats.value = RouteStats()
-        startTimer()
 
         disposables.add(
             locationRepository.startTracking()
@@ -81,7 +60,7 @@ class MapViewModel
                             it
                         },
                         secondCoords = it,
-                        time = SystemClock.elapsedRealtime() - startTime
+                        time = SystemClock.elapsedRealtime() - runnerTimer.getStartTime()
                     ))
                     points.add(it)
                     routePoints.postValue(points)
@@ -92,18 +71,17 @@ class MapViewModel
     }
 
     fun pauseTracking() {
-        timer.cancel()
-        pauseTime = SystemClock.elapsedRealtime()
+        runnerTimer.pause()
         locationRepository.pauseTracking()
     }
 
     fun resumeTracking() {
-        startTime = startTime + SystemClock.elapsedRealtime() - pauseTime
-        startTimer()
+        runnerTimer.resume()
         locationRepository.resumeTracking()
     }
 
     fun stopTracking() {
+        runnerTimer.stop()
         isTracking.postValue(false)
         if(routePoints.value != null && routeStats.value != null) {
             if(routeStats.value!!.wgs84distance == 0f) return
@@ -114,7 +92,8 @@ class MapViewModel
 
     private fun saveStats() {
         disposables.add(
-            locationRepository.stopTracking(Route(startTime.toString(), routePoints.value!!, routeStats.value!!))
+            locationRepository.stopTracking(
+                Route(runnerTimer.getStartTime().toString(), routePoints.value!!, routeStats.value!!))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -127,8 +106,8 @@ class MapViewModel
 
     private fun calculateFinalStats() {
         val stats = routeStats.value!!
-        LocationUtils.calculateRouteAverageSpeedAndPeace(stats, elapsedTime)
-        LocationUtils.calculateRouteTime(stats, elapsedTime)
+        LocationUtils.calculateRouteAverageSpeedAndPeace(stats, runnerTimer.getElapsedTime())
+        LocationUtils.calculateRouteTime(stats, runnerTimer.getElapsedTime())
         routeStats.postValue(stats)
     }
 
@@ -136,7 +115,7 @@ class MapViewModel
     fun getLastKnownLocation() = lastKnownLocation
     fun getRouteStats() = routeStats
     fun getIsTracking() = isTracking
-    fun getTime() = runTime
+    fun getTime() = runnerTimer.getTime()
 
     override fun onCleared() {
         super.onCleared()
