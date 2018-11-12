@@ -37,9 +37,7 @@ class MapViewModel
                 })
         )
     }
-
-
-
+    
     fun startTracking() {
         runnerTimer.startTimer()
         isTracking.postValue(true)
