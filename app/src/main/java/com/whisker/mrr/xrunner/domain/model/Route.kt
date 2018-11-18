@@ -6,6 +6,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Route(
-    private val name: String,
-    private var waypoints: List<LatLng> = listOf(),
-    private var routeStats: RouteStats = RouteStats()) : Parcelable
+    val name: String,
+    var waypoints: List<LatLng> = listOf(),
+    var routeStats: RouteStats = RouteStats()) : Parcelable
