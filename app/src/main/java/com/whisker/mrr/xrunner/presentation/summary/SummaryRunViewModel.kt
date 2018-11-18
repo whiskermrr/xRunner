@@ -25,4 +25,6 @@ class SummaryRunViewModel
                 }
         )
     }
+
+    fun getIsRouteSaved() = isRouteSaved
 }
