@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.xrunner.data.datasource.DatabaseSource
+import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
 import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
@@ -54,8 +54,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseSource(firebaseDatabase: FirebaseDatabase) : DatabaseSource {
-        return DatabaseSource(firebaseDatabase)
+    fun provideDatabaseSource(firebaseDatabase: FirebaseDatabase) : RouteDatabaseSource {
+        return RouteDatabaseSource(firebaseDatabase)
     }
 
     @Provides
@@ -63,7 +63,7 @@ class AppModule {
     fun provideLocationRepository(
         locationDataSource: LocationDataSource,
         userDataSource: UserDataSource,
-        databaseSource: DatabaseSource) : LocationRepository {
-        return LocationDataRepository(locationDataSource, userDataSource, databaseSource)
+        routeDatabaseSource: RouteDatabaseSource) : LocationRepository {
+        return LocationDataRepository(locationDataSource, userDataSource, routeDatabaseSource)
     }
 }

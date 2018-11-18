@@ -76,22 +76,11 @@ class MapViewModel
         if(routePoints.value != null && routeStats.value != null) {
             if(routeStats.value!!.wgs84distance == 0f) return
                 calculateFinalStats()
-                saveStats()
+            val route = Route(
+                runnerTimer.getStartTime().toString(),
+                routePoints.value!!, routeStats.value!!)
+            finalRoute.postValue(route)
         }
-    }
-
-    private fun saveStats() {
-        val route = Route(runnerTimer.getStartTime().toString(), routePoints.value!!, routeStats.value!!)
-        disposables.add(
-            locationRepository.stopTracking(route)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    finalRoute.postValue(route)
-                }, {
-                    it.printStackTrace()
-                })
-        )
     }
 
     private fun calculateStats(points: List<LatLng>, latLng: LatLng) : RouteStats {
@@ -119,6 +108,7 @@ class MapViewModel
     fun getRouteStats() = routeStats
     fun getIsTracking() = isTracking
     fun getTime() = runnerTimer.getTime()
+    fun getFinalRoute() = finalRoute
 
     override fun onCleared() {
         super.onCleared()
