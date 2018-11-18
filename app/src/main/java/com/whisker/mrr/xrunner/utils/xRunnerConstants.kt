@@ -8,4 +8,6 @@ object xRunnerConstants {
     const val SECONDS_PER_HOUR = 3600
 
     const val REQUEST_LOCATION_CODE = 99
+
+    const val EXTRA_FINAL_ROUTE_KEY = "finalRoute"
 }

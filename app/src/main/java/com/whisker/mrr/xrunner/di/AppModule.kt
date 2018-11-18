@@ -9,8 +9,10 @@ import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
+import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
+import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -60,10 +62,13 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocationRepository(
-        locationDataSource: LocationDataSource,
-        userDataSource: UserDataSource,
-        routeDatabaseSource: RouteDatabaseSource) : LocationRepository {
-        return LocationDataRepository(locationDataSource, userDataSource, routeDatabaseSource)
+    fun provideLocationRepository(locationDataSource: LocationDataSource) : LocationRepository {
+        return LocationDataRepository(locationDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRouteRepository(userDataSource: UserDataSource, routeDatabaseSource: RouteDatabaseSource) : RouteRepository {
+        return RouteDataRepository(userDataSource, routeDatabaseSource)
     }
 }

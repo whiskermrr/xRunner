@@ -78,7 +78,8 @@ class MapViewModel
                 calculateFinalStats()
             val route = Route(
                 runnerTimer.getStartTime().toString(),
-                routePoints.value!!, routeStats.value!!)
+                routePoints.value!!,
+                routeStats.value!!)
             finalRoute.postValue(route)
         }
     }
