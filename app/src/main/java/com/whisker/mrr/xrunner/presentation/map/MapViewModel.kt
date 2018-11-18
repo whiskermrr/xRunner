@@ -21,6 +21,7 @@ class MapViewModel
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeStats = MutableLiveData<RouteStats>()
     private val isTracking = MutableLiveData<Boolean>()
+    private val finalRoute = MutableLiveData<Route>()
 
     private val disposables = CompositeDisposable()
     private val runnerTimer = RunnerTimer()
@@ -50,16 +51,7 @@ class MapViewModel
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val points = routePoints.value?.toMutableList() ?: arrayListOf()
-                    routeStats.postValue(LocationUtils.calculateRouteStats(
-                        routeStats = routeStats.value ?: RouteStats(),
-                        firstCoords = if(!points.isEmpty()) {
-                            points.last()
-                        } else {
-                            it
-                        },
-                        secondCoords = it,
-                        time = SystemClock.elapsedRealtime() - runnerTimer.getStartTime()
-                    ))
+                    routeStats.postValue(calculateStats(points, it))
                     points.add(it)
                     routePoints.postValue(points)
                 }, {
@@ -89,17 +81,30 @@ class MapViewModel
     }
 
     private fun saveStats() {
+        val route = Route(runnerTimer.getStartTime().toString(), routePoints.value!!, routeStats.value!!)
         disposables.add(
-            locationRepository.stopTracking(
-                Route(runnerTimer.getStartTime().toString(), routePoints.value!!, routeStats.value!!))
+            locationRepository.stopTracking(route)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
+                    finalRoute.postValue(route)
                 }, {
                     it.printStackTrace()
                 })
         )
+    }
+
+    private fun calculateStats(points: List<LatLng>, latLng: LatLng) : RouteStats {
+        return LocationUtils.calculateRouteStats(
+                    routeStats = routeStats.value ?: RouteStats(),
+                    firstCoords = if(!points.isEmpty()) {
+                        points.last()
+                    } else {
+                        latLng
+                    },
+                    secondCoords = latLng,
+                    time = SystemClock.elapsedRealtime() - runnerTimer.getStartTime()
+                )
     }
 
     private fun calculateFinalStats() {
