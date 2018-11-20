@@ -17,13 +17,8 @@
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintDimensionRatio="1:1"
+			map:liteMode="true"
 		/>
-		
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="MRR"
-			app:layout_constraintTop_toBottomOf="@id/liteMapView"/>
 		
 		<androidx.cardview.widget.CardView
 			android:layout_width="0dp"
