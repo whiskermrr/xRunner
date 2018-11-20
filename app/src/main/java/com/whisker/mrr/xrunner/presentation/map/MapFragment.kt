@@ -1,29 +1,18 @@
 package com.whisker.mrr.xrunner.presentation.map
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Polyline
-import com.google.android.gms.maps.model.PolylineOptions
-import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.BaseFragment
+import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import kotlinx.android.synthetic.main.fragment_map.*
 
-class MapFragment : BaseFragment(), OnMapReadyCallback {
+class MapFragment : BaseMapFragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: MapViewModel
-    private lateinit var polylineOptions: PolylineOptions
-    private lateinit var mMap: GoogleMap
-    private lateinit var myRun: Polyline
 
     private val lastLocationObserver = Observer<LatLng> { lastLocation ->
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 18f))
@@ -36,18 +25,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.last(), 18f))
         }
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
-
-        polylineOptions = PolylineOptions()
-            .clickable(false)
-            .color(Color.BLUE)
-            .width(20f)
-
-        return view
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,13 +41,8 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onMapReady(p0: GoogleMap?) {
-        mMap = p0!!
-        mMap.isMyLocationEnabled = true
+    override fun onMapCreated() {
         viewModel.onMapShown()
-        myRun = mMap.addPolyline(polylineOptions)
-
         viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
         viewModel.getRoutePoints().observe(this, routeObserver)
     }

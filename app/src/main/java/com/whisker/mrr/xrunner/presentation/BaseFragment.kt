@@ -6,7 +6,7 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.di.ViewModelFactory
 import javax.inject.Inject
 
-open class BaseFragment : androidx.fragment.app.Fragment(), Injectable {
+abstract class BaseFragment : androidx.fragment.app.Fragment(), Injectable {
 
     companion object {
         val TAG = this::class.java.simpleName
