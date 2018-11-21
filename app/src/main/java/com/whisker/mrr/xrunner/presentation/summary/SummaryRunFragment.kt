@@ -1,5 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.summary
 
+import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
@@ -56,7 +56,14 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     override fun onMapCreated() {
-        val centroidLatLng: LatLng = LocationUtils.calculateCentroidOfRoute(finalRoute.waypoints)
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centroidLatLng, 19f))
+        val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(finalRoute.waypoints)
+        val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
+    }
+
+    private fun getScreenWidth() : Int {
+        val size = Point()
+        mainActivity.windowManager.defaultDisplay.getSize(size)
+        return size.x
     }
 }

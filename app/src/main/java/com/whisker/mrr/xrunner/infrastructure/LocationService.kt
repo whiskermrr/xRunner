@@ -11,7 +11,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.*
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.xrunner.domain.bus.RxBus
@@ -94,7 +93,6 @@ class LocationService : Service(), Handler.Callback, LocationListener {
     }
 
     override fun onLocationChanged(newLocation: Location?) {
-        Log.e("LOCATION SERVICE", "new Location")
         if(newLocation != null && newLocation.accuracy < REQUIRED_ACCURACY) {
             RxBus.publish(LocationEvent(newLocation))
         }
