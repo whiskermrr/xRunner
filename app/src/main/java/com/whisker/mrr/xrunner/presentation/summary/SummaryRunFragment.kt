@@ -19,6 +19,8 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: SummaryRunViewModel
     private lateinit var finalRoute: Route
+    override val isMyLocationEnabled: Boolean
+        get() = false
 
     private val routeSavedObserver = Observer<Boolean> {
         Toast.makeText(mainActivity, "Route Saved", Toast.LENGTH_SHORT).show()

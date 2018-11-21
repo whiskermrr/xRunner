@@ -13,6 +13,7 @@ abstract class BaseMapFragment : BaseFragment(), OnMapReadyCallback {
     protected lateinit var polylineOptions: PolylineOptions
     protected lateinit var mMap: GoogleMap
     protected lateinit var myRun: Polyline
+    protected open val isMyLocationEnabled = true
 
     abstract fun onMapCreated()
 
@@ -28,7 +29,7 @@ abstract class BaseMapFragment : BaseFragment(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
-        mMap.isMyLocationEnabled = true
+        mMap.isMyLocationEnabled = isMyLocationEnabled
         myRun = mMap.addPolyline(polylineOptions)
         onMapCreated()
     }
