@@ -9,9 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
+import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 
@@ -54,6 +56,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     override fun onMapCreated() {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myRun.points.last(), 18f))
+        val centroidLatLng: LatLng = LocationUtils.calculateCentroidOfRoute(finalRoute.waypoints)
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centroidLatLng, 19f))
     }
 }

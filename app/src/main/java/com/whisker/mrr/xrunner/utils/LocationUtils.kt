@@ -59,5 +59,20 @@ class LocationUtils {
 
             return routeStats
         }
+
+        fun calculateCentroidOfRoute(points: List<LatLng>) : LatLng {
+            var averageLat = 0.0
+            var averageLng = 0.0
+
+            for(point in points) {
+                averageLat += point.latitude
+                averageLng += point.longitude
+            }
+
+            averageLat /= points.size
+            averageLng /= points.size
+
+            return LatLng(averageLat, averageLng)
+        }
     }
 }
