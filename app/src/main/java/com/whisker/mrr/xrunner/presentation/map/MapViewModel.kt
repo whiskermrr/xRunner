@@ -82,6 +82,7 @@ class MapViewModel
                 routeStats.value!!)
             finalRoute.postValue(route)
         }
+        locationRepository.stopTracking()
     }
 
     private fun calculateStats(points: List<LatLng>, latLng: LatLng) : RouteStats {
