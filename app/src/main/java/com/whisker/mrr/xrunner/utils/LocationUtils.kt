@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import kotlin.math.pow
@@ -11,7 +12,7 @@ class LocationUtils {
 
         private const val EQUATOR_LENGTH_IN_METERS = 40075004.0
         private const val EQUATOR_LENGTH_IN_PIXELS = 256
-        private const val MAX_ZOOM = 20
+        private const val MAX_ZOOM = 19
         private const val MILLISECONDS_PER_HOUR = 3600000
         private const val MILLISECONDS_PER_MINUTE = 60000
         private const val MILLISECONDS_PER_SECOND = 1000
@@ -110,14 +111,34 @@ class LocationUtils {
             var currentZoom = MAX_ZOOM
             var visibleDistance: Double = metersPerPixel * screenWidth
 
+            Log.e("LOCATION UTILS", "Distance: " + distance.toString())
+            Log.e("LOCATION UTILS", "Screen Width: " + screenWidth.toString())
+            Log.e("LOCATION UTILS", "metersPerPixel: " + metersPerPixel.toString())
+            Log.e("LOCATION UTILS", "visibleDistance: " + visibleDistance.toString())
+            Log.e("LOCATION UTILS", "currentZoom: " + currentZoom.toString())
+
             while(visibleDistance < distance) {
                 metersPerPixel *= 2
                 visibleDistance = metersPerPixel * screenWidth
                 currentZoom--
             }
 
-            val ratio = currentZoom + (distance - visibleDistance / 2) / (visibleDistance / 2) - 1
-            return ratio.toFloat()
+            Log.e("LOCATION UTILS", "Distance: " + distance.toString())
+            Log.e("LOCATION UTILS", "Screen Width: " + screenWidth.toString())
+            Log.e("LOCATION UTILS", "metersPerPixel: " + metersPerPixel.toString())
+            Log.e("LOCATION UTILS", "visibleDistance: " + visibleDistance.toString())
+            Log.e("LOCATION UTILS", "currentZoom: " + currentZoom.toString())
+
+            val ratio = (distance - visibleDistance / 2) / (visibleDistance / 2)
+            Log.e("LOCATION UTILS", "ratio: " + ratio.toString())
+            val zoomRatio = if(ratio > 0.5) {
+                currentZoom - 1.0
+            } else {
+                currentZoom - ratio
+            }
+
+            Log.e("LOCATION UTILS", "zoomRatio: " + zoomRatio.toString())
+            return zoomRatio.toFloat()
         }
     }
 }
