@@ -1,5 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.summary
 
+import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,11 +16,17 @@ import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 
 class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
     private lateinit var viewModel: SummaryRunViewModel
+    private val disposables: CompositeDisposable = CompositeDisposable()
     private lateinit var finalRoute: Route
     override val isMyLocationEnabled: Boolean
         get() = false
@@ -51,6 +58,10 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         liteMapView.onResume()
         liteMapView.getMapAsync(this)
 
+        bSaveSnapshot.setOnClickListener {
+            takeSnapshot()
+        }
+
         viewModel.getIsRouteSaved().observe(this, routeSavedObserver)
         viewModel.saveRoute(finalRoute)
     }
@@ -65,5 +76,34 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         val size = Point()
         mainActivity.windowManager.defaultDisplay.getSize(size)
         return size.x
+    }
+
+    private fun onSnapshotSaveClicked() {
+        bSaveSnapshot.isEnabled = false
+    }
+
+    private fun onSnapshotSaved() {
+        bSaveSnapshot.isEnabled = true
+    }
+
+    private fun takeSnapshot() {
+        disposables.add(
+            Observable.create(ObservableOnSubscribe<Bitmap> { subscriber ->
+                mMap.snapshot { bitmap ->
+                    subscriber.onNext(bitmap)
+                }})
+                .doOnSubscribe {
+                    onSnapshotSaveClicked()
+                }
+                .observeOn(Schedulers.io())
+                .flatMapCompletable {
+                    viewModel.saveSnapshot(it)
+                }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    onSnapshotSaved()
+                }
+        )
     }
 }
