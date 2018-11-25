@@ -28,6 +28,7 @@
 			android:textColor="@color/colorAccent"
 			android:text="@string/save_snapshot"
 			android:textStyle="bold"
+			android:textSize="18sp"
 			app:layout_constraintTop_toBottomOf="@id/liteMapView"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"

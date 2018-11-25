@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,6 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_summary_run.*
+import org.jetbrains.anko.textColor
 
 class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
@@ -60,6 +62,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         liteMapView.getMapAsync(this)
 
         bSaveSnapshot.setOnClickListener {
+            bSaveSnapshot.isEnabled = false
             takeSnapshot()
         }
 
@@ -80,8 +83,9 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     private fun onSnapshotSaved() {
-        bSaveSnapshot.isEnabled = true
-        Toast.makeText(context, "Snapshot Saved!", Toast.LENGTH_SHORT).show()
+        bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_success)
+        bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorFlashGreen)
+        bSaveSnapshot.text = getString(R.string.saved)
     }
 
     private fun takeSnapshot() {
