@@ -33,6 +33,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
     private val routeSavedObserver = Observer<Boolean> {
         Toast.makeText(mainActivity, "Route Saved", Toast.LENGTH_SHORT).show()
+        viewModel.getIsRouteSaved().removeObservers(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

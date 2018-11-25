@@ -15,7 +15,7 @@ class SummaryRunViewModel
 @Inject constructor(private val routeRepository: RouteRepository) : ViewModel() {
 
     private val disposables = CompositeDisposable()
-    private val isRouteSaved =  MutableLiveData<Boolean> ();
+    private val isRouteSaved =  MutableLiveData<Boolean> ()
 
     fun saveRoute(route: Route) {
         disposables.add(

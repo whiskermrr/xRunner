@@ -111,23 +111,11 @@ class LocationUtils {
             var currentZoom = MAX_ZOOM
             var visibleDistance: Double = metersPerPixel * screenWidth
 
-            Log.e("LOCATION UTILS", "Distance: " + distance.toString())
-            Log.e("LOCATION UTILS", "Screen Width: " + screenWidth.toString())
-            Log.e("LOCATION UTILS", "metersPerPixel: " + metersPerPixel.toString())
-            Log.e("LOCATION UTILS", "visibleDistance: " + visibleDistance.toString())
-            Log.e("LOCATION UTILS", "currentZoom: " + currentZoom.toString())
-
             while(visibleDistance < distance) {
                 metersPerPixel *= 2
                 visibleDistance = metersPerPixel * screenWidth
                 currentZoom--
             }
-
-            Log.e("LOCATION UTILS", "Distance: " + distance.toString())
-            Log.e("LOCATION UTILS", "Screen Width: " + screenWidth.toString())
-            Log.e("LOCATION UTILS", "metersPerPixel: " + metersPerPixel.toString())
-            Log.e("LOCATION UTILS", "visibleDistance: " + visibleDistance.toString())
-            Log.e("LOCATION UTILS", "currentZoom: " + currentZoom.toString())
 
             val ratio = (distance - visibleDistance / 2) / (visibleDistance / 2)
             Log.e("LOCATION UTILS", "ratio: " + ratio.toString())
@@ -137,7 +125,6 @@ class LocationUtils {
                 currentZoom - ratio
             }
 
-            Log.e("LOCATION UTILS", "zoomRatio: " + zoomRatio.toString())
             return zoomRatio.toFloat()
         }
     }
