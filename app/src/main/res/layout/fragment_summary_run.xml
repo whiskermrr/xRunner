@@ -18,7 +18,21 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintDimensionRatio="1:1"
 			map:liteMode="true"
+			android:visibility="invisible"
 		/>
+		
+		<ProgressBar
+			android:id="@+id/routeProgressBar"
+			android:indeterminate="true"
+			android:indeterminateTint="@color/colorPrimary"
+			android:backgroundTint="@color/colorFlashGreen"
+			android:max="100"
+			app:layout_constraintTop_toTopOf="@id/liteMapView"
+			app:layout_constraintBottom_toBottomOf="@id/liteMapView"
+			app:layout_constraintStart_toStartOf="@id/liteMapView"
+			app:layout_constraintEnd_toEndOf="@id/liteMapView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
 		
 		<Button
 			android:id="@+id/bSaveSnapshot"

@@ -74,6 +74,12 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(finalRoute.waypoints)
         val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
+        showMapSnapshot()
+    }
+
+    private fun showMapSnapshot() {
+        routeProgressBar.visibility = View.GONE
+        liteMapView.visibility = View.VISIBLE
     }
 
     private fun getScreenWidth() : Int {
