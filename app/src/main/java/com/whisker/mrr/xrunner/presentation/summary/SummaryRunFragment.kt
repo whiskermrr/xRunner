@@ -16,8 +16,8 @@ import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Single
+import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -79,23 +79,17 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         return size.x
     }
 
-    private fun onSnapshotSaveClicked() {
-        bSaveSnapshot.isEnabled = false
-    }
-
     private fun onSnapshotSaved() {
         bSaveSnapshot.isEnabled = true
+        Toast.makeText(context, "Snapshot Saved!", Toast.LENGTH_SHORT).show()
     }
 
     private fun takeSnapshot() {
         disposables.add(
-            Observable.create(ObservableOnSubscribe<Bitmap> { subscriber ->
+            Single.create(SingleOnSubscribe<Bitmap> { subscriber ->
                 mMap.snapshot { bitmap ->
-                    subscriber.onNext(bitmap)
+                    subscriber.onSuccess(bitmap)
                 }})
-                .doOnSubscribe {
-                    onSnapshotSaveClicked()
-                }
                 .observeOn(Schedulers.io())
                 .flatMapCompletable {
                     viewModel.saveSnapshot(it)

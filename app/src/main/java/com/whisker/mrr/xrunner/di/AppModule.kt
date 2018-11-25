@@ -33,6 +33,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFirebaseDatabase() : FirebaseDatabase {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         return FirebaseDatabase.getInstance()
     }
 
