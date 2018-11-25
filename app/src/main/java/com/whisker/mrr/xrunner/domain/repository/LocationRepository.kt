@@ -11,6 +11,6 @@ interface LocationRepository {
     fun startTracking() : Flowable<LatLng>
     fun pauseTracking()
     fun resumeTracking()
-    fun stopTracking(route: Route) : Completable
+    fun stopTracking()
     fun getLastKnownLocation() : Single<LatLng>
 }

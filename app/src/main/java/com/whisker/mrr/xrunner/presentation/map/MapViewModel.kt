@@ -21,6 +21,7 @@ class MapViewModel
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeStats = MutableLiveData<RouteStats>()
     private val isTracking = MutableLiveData<Boolean>()
+    private val finalRoute = MutableLiveData<Route>()
 
     private val disposables = CompositeDisposable()
     private val runnerTimer = RunnerTimer()
@@ -50,16 +51,7 @@ class MapViewModel
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val points = routePoints.value?.toMutableList() ?: arrayListOf()
-                    routeStats.postValue(LocationUtils.calculateRouteStats(
-                        routeStats = routeStats.value ?: RouteStats(),
-                        firstCoords = if(!points.isEmpty()) {
-                            points.last()
-                        } else {
-                            it
-                        },
-                        secondCoords = it,
-                        time = SystemClock.elapsedRealtime() - runnerTimer.getStartTime()
-                    ))
+                    routeStats.postValue(calculateStats(points, it))
                     points.add(it)
                     routePoints.postValue(points)
                 }, {
@@ -84,22 +76,26 @@ class MapViewModel
         if(routePoints.value != null && routeStats.value != null) {
             if(routeStats.value!!.wgs84distance == 0f) return
                 calculateFinalStats()
-                saveStats()
+            val route = Route(
+                runnerTimer.getStartTime().toString(),
+                routePoints.value!!,
+                routeStats.value!!)
+            finalRoute.postValue(route)
         }
+        locationRepository.stopTracking()
     }
 
-    private fun saveStats() {
-        disposables.add(
-            locationRepository.stopTracking(
-                Route(runnerTimer.getStartTime().toString(), routePoints.value!!, routeStats.value!!))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-
-                }, {
-                    it.printStackTrace()
-                })
-        )
+    private fun calculateStats(points: List<LatLng>, latLng: LatLng) : RouteStats {
+        return LocationUtils.calculateRouteStats(
+                    routeStats = routeStats.value ?: RouteStats(),
+                    firstCoords = if(!points.isEmpty()) {
+                        points.last()
+                    } else {
+                        latLng
+                    },
+                    secondCoords = latLng,
+                    time = SystemClock.elapsedRealtime() - runnerTimer.getStartTime()
+                )
     }
 
     private fun calculateFinalStats() {
@@ -114,6 +110,7 @@ class MapViewModel
     fun getRouteStats() = routeStats
     fun getIsTracking() = isTracking
     fun getTime() = runnerTimer.getTime()
+    fun getFinalRoute() = finalRoute
 
     override fun onCleared() {
         super.onCleared()

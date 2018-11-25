@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
+import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.presentation.BaseFragment
+import com.whisker.mrr.xrunner.presentation.summary.SummaryRunFragment
+import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import kotlinx.android.synthetic.main.fragment_run.*
 
 class RunFragment : BaseFragment() {
@@ -30,6 +33,14 @@ class RunFragment : BaseFragment() {
         tvTime.text = it
     }
 
+    private val onRunFinishedObserver = Observer<Route> {
+        val bundle = Bundle()
+        bundle.putParcelable(xRunnerConstants.EXTRA_FINAL_ROUTE_KEY, it)
+        val fragment = SummaryRunFragment()
+        fragment.arguments = bundle
+        mainActivity.switchContent(fragment)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_run, container, false)
     }
@@ -43,6 +54,7 @@ class RunFragment : BaseFragment() {
         viewModel.getRouteStats().observe(this, routeStatsObserver)
         viewModel.getIsTracking().observe(this, isTrackingObserver)
         viewModel.getTime().observe(this, runTimeObserver)
+        viewModel.getFinalRoute().observe(this, onRunFinishedObserver)
 
         bStartRun.setOnClickListener { onStartClick() }
 

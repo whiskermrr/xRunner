@@ -4,13 +4,15 @@ import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.xrunner.data.datasource.DatabaseSource
+import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
 import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
+import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
+import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -31,6 +33,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFirebaseDatabase() : FirebaseDatabase {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         return FirebaseDatabase.getInstance()
     }
 
@@ -54,16 +57,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseSource(firebaseDatabase: FirebaseDatabase) : DatabaseSource {
-        return DatabaseSource(firebaseDatabase)
+    fun provideDatabaseSource(firebaseDatabase: FirebaseDatabase) : RouteDatabaseSource {
+        return RouteDatabaseSource(firebaseDatabase)
     }
 
     @Provides
     @Singleton
-    fun provideLocationRepository(
-        locationDataSource: LocationDataSource,
-        userDataSource: UserDataSource,
-        databaseSource: DatabaseSource) : LocationRepository {
-        return LocationDataRepository(locationDataSource, userDataSource, databaseSource)
+    fun provideLocationRepository(locationDataSource: LocationDataSource) : LocationRepository {
+        return LocationDataRepository(locationDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRouteRepository(userDataSource: UserDataSource, routeDatabaseSource: RouteDatabaseSource) : RouteRepository {
+        return RouteDataRepository(userDataSource, routeDatabaseSource)
     }
 }
