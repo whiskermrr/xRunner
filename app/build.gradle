@@ -70,12 +70,12 @@ dependencies {
     implementation "org.jetbrains.anko:anko-sdk15:${lib.anko}"
     implementation "org.jetbrains.anko:anko-common:${lib.anko}"
     //Android
-    implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.transition:transition:1.0.1'
-    implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     // Rx
@@ -93,6 +93,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.github.FrangSierra:RxFirebase:1.5.0'
+    implementation 'com.google.firebase:firebase-firestore:17.1.3'
     // Dagger
     implementation "com.google.dagger:dagger:${lib.dagger}"
     implementation "com.google.dagger:dagger-android:${lib.dagger}"
