@@ -52,6 +52,7 @@
 		/>
 		
 		<androidx.cardview.widget.CardView
+			android:id="@+id/cvStats"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="32dp"
@@ -209,11 +210,15 @@
 					android:paddingBottom="8dp"
 				/>
 				
-				
-				
 			</androidx.constraintlayout.widget.ConstraintLayout>
-			
 		</androidx.cardview.widget.CardView>
+		
+		<View
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/cvStats"
+			android:layout_width="0dp"
+			android:layout_height="30dp"/>
 		
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
