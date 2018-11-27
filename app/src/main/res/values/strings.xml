@@ -17,4 +17,9 @@
 	<string name="init_time">00:00</string>
 	<string name="save_snapshot">Save Snapshot</string>
 	<string name="saved">Saved!</string>
+	<string name="distance">Distance</string>
+	<string name="avg_pace">Avg. Pace</string>
+	<string name="duration">Duration</string>
+	<string name="kilometers_per_hour">km/h</string>
+	<string name="heart_rate">Heart Rate</string>
 </resources>

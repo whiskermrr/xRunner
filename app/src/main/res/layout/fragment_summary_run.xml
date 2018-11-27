@@ -4,7 +4,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:map="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
 	
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:background="@color/colorStatsBackground"
@@ -53,16 +53,165 @@
 		
 		<androidx.cardview.widget.CardView
 			android:layout_width="0dp"
-			android:layout_height="100dp"
+			android:layout_height="wrap_content"
 			android:layout_marginTop="32dp"
 			android:layout_marginStart="16dp"
 			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="16dp"
 			app:cardCornerRadius="8dp"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toBottomOf="@id/bSaveSnapshot">
 			
-			
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+				
+				<TextView
+					android:id="@+id/tvSummaryDistance"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textSize="30sp"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintWidth_percent=".333"
+					android:textAlignment="center"
+					android:text="6.78"
+					android:paddingTop="8dp"
+					android:paddingStart="8dp"
+					android:paddingEnd="8dp"
+					android:textColor="@color/colorPrimary"
+					android:textStyle="bold"
+				/>
+				
+				<TextView
+					android:id="@+id/tvSummaryPace"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textSize="30sp"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toEndOf="@id/tvSummaryDistance"
+					app:layout_constraintWidth_percent=".333"
+					android:textAlignment="center"
+					android:text="6'30''"
+					android:paddingTop="8dp"
+					android:paddingStart="8dp"
+					android:paddingEnd="8dp"
+					android:textColor="@color/colorPrimary"
+					android:textStyle="bold"
+				/>
+				
+				<TextView
+					android:id="@+id/tvSummaryTime"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textSize="30sp"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toEndOf="@id/tvSummaryPace"
+					app:layout_constraintWidth_percent=".333"
+					android:textAlignment="center"
+					android:text="45:12"
+					android:paddingTop="8dp"
+					android:paddingStart="8dp"
+					android:paddingEnd="8dp"
+					android:textColor="@color/colorPrimary"
+					android:textStyle="bold"
+				/>
+				
+				<TextView
+					android:id="@+id/tvDescriptionDistance"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="@id/tvSummaryDistance"
+					app:layout_constraintEnd_toEndOf="@id/tvSummaryDistance"
+					app:layout_constraintTop_toBottomOf="@id/tvSummaryDistance"
+					android:text="@string/distance"
+					android:textAlignment="center"
+				/>
+				
+				<TextView
+					android:id="@+id/tvDescriptionPace"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="@id/tvSummaryPace"
+					app:layout_constraintEnd_toEndOf="@id/tvSummaryPace"
+					app:layout_constraintTop_toBottomOf="@id/tvSummaryPace"
+					android:text="@string/avg_pace"
+					android:textAlignment="center"
+				/>
+				
+				<TextView
+					android:id="@+id/tvDescriptionTime"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="@id/tvSummaryTime"
+					app:layout_constraintEnd_toEndOf="@id/tvSummaryTime"
+					app:layout_constraintTop_toBottomOf="@id/tvSummaryTime"
+					android:text="@string/duration"
+					android:textAlignment="center"
+				/>
+				
+				<TextView
+					android:id="@+id/tvSummarySpeed"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textSize="30sp"
+					app:layout_constraintTop_toBottomOf="@id/tvDescriptionDistance"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintWidth_percent=".5"
+					android:textAlignment="center"
+					android:text="8.21"
+					android:paddingTop="8dp"
+					android:paddingStart="8dp"
+					android:paddingEnd="8dp"
+					android:textColor="@color/colorPrimary"
+					android:textStyle="bold"
+				/>
+				
+				<TextView
+					android:id="@+id/tvSummaryHeartbeat"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:textSize="30sp"
+					app:layout_constraintTop_toBottomOf="@id/tvDescriptionDistance"
+					app:layout_constraintStart_toEndOf="@id/tvSummarySpeed"
+					app:layout_constraintWidth_percent=".5"
+					android:textAlignment="center"
+					android:text="142"
+					android:paddingTop="8dp"
+					android:paddingStart="8dp"
+					android:paddingEnd="8dp"
+					android:textColor="@color/colorPrimary"
+					android:textStyle="bold"
+				/>
+				
+				<TextView
+					android:id="@+id/tvDescriptionSpeed"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="@id/tvSummarySpeed"
+					app:layout_constraintEnd_toEndOf="@id/tvSummarySpeed"
+					app:layout_constraintTop_toBottomOf="@id/tvSummarySpeed"
+					android:text="@string/kilometers_per_hour"
+					android:textAlignment="center"
+					android:paddingBottom="8dp"
+				/>
+				
+				<TextView
+					android:id="@+id/tvDescriptionHeartbeat"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					app:layout_constraintStart_toStartOf="@id/tvSummaryHeartbeat"
+					app:layout_constraintEnd_toEndOf="@id/tvSummaryHeartbeat"
+					app:layout_constraintTop_toBottomOf="@id/tvSummaryHeartbeat"
+					android:text="@string/heart_rate"
+					android:textAlignment="center"
+					android:paddingBottom="8dp"
+				/>
+				
+				
+				
+			</androidx.constraintlayout.widget.ConstraintLayout>
 			
 		</androidx.cardview.widget.CardView>
 		
