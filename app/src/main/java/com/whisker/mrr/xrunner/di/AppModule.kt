@@ -3,7 +3,7 @@ package com.whisker.mrr.xrunner.di
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.xrunner.data.datasource.*
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
@@ -38,8 +38,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseFirestore() : FirebaseFirestore {
-        return FirebaseFirestore.getInstance()
+    fun provideFirebaseFirestore() : FirebaseStorage {
+        return FirebaseStorage.getInstance()
     }
 
     @Provides
@@ -74,8 +74,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSnapshotRemoteSource(firebaseFirestore: FirebaseFirestore) : SnapshotRemoteSource {
-        return SnapshotRemoteSource(firebaseFirestore)
+    fun provideSnapshotRemoteSource(firebaseStorage: FirebaseStorage) : SnapshotRemoteSource {
+        return SnapshotRemoteSource(firebaseStorage)
     }
 
     @Provides
