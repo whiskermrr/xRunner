@@ -3,10 +3,9 @@ package com.whisker.mrr.xrunner.di
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
-import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
-import com.whisker.mrr.xrunner.data.datasource.UserDataSource
+import com.whisker.mrr.xrunner.data.datasource.*
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
 import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
@@ -39,6 +38,12 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseFirestore() : FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
+
+    @Provides
+    @Singleton
     fun provideLoginRepository(firebaseAuth: FirebaseAuth) : LoginRepository {
         return LoginDataRepository(firebaseAuth)
     }
@@ -63,13 +68,30 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideSnapshotLocalSource(context: Context) : SnapshotLocalSource {
+        return SnapshotLocalSource(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSnapshotRemoteSource(firebaseFirestore: FirebaseFirestore) : SnapshotRemoteSource {
+        return SnapshotRemoteSource(firebaseFirestore)
+    }
+
+    @Provides
+    @Singleton
     fun provideLocationRepository(locationDataSource: LocationDataSource) : LocationRepository {
         return LocationDataRepository(locationDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideRouteRepository(userDataSource: UserDataSource, routeDatabaseSource: RouteDatabaseSource) : RouteRepository {
-        return RouteDataRepository(userDataSource, routeDatabaseSource)
+    fun provideRouteRepository(
+                userDataSource: UserDataSource,
+                routeDatabaseSource: RouteDatabaseSource,
+                snapshotRemoteSource: SnapshotRemoteSource,
+                snapshotLocalSource: SnapshotLocalSource
+    ) : RouteRepository {
+        return RouteDataRepository(userDataSource, routeDatabaseSource, snapshotRemoteSource, snapshotLocalSource)
     }
 }

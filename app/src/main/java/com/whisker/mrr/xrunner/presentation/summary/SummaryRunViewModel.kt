@@ -29,7 +29,7 @@ class SummaryRunViewModel
     }
 
     fun saveSnapshot(bitmap: Bitmap) : Completable {
-        return Completable.complete()
+        return routeRepository.saveSnapshot(bitmap)
     }
 
     fun getIsRouteSaved() = isRouteSaved
