@@ -22,6 +22,7 @@ import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_run.*
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 import org.jetbrains.anko.textColor
 
@@ -61,6 +62,8 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         liteMapView.onResume()
         liteMapView.getMapAsync(this)
 
+        initStatsView()
+
         bSaveSnapshot.setOnClickListener {
             bSaveSnapshot.isEnabled = false
             takeSnapshot()
@@ -92,6 +95,19 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_success)
         bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorFlashGreen)
         bSaveSnapshot.text = getString(R.string.saved)
+    }
+
+    private fun initStatsView() {
+        val stats = finalRoute.routeStats
+        tvSummaryDistance.text = getString(R.string.distance_format_2, stats.kilometers, stats.meters)
+        tvSummaryPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
+        tvSummaryTime.text = if(stats.hours == 0) {
+            getString(R.string.minutes_time_format, stats.minutes, stats.seconds)
+        } else {
+            getString(R.string.hours_time_format, stats.hours, stats.minutes, stats.seconds)
+        }
+        tvSummarySpeed.text = getString(R.string.average_speed_format, stats.averageSpeed)
+        tvSummaryHeartbeat.text = getString(R.string.empty_record)
     }
 
     private fun takeSnapshot() {

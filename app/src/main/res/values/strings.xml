@@ -12,6 +12,10 @@
 	<string name="empty_record">---</string>
 	<string name="empty_time">--:--</string>
 	<string name="distance_format">%d.%03d</string>
+	<string name="distance_format_2">%d.%02d</string>
+	<string name="average_speed_format">%.2f</string>
+	<string name="minutes_time_format">%02d:%02d</string>
+	<string name="hours_time_format">%02d:%02d:%02d</string>
 	<string name="pace_format">%d\'%02d\'\'</string>
 	<string name="start">START</string>
 	<string name="init_time">00:00</string>
