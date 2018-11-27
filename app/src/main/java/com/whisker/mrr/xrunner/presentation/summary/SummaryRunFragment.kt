@@ -118,7 +118,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
                 }})
                 .observeOn(Schedulers.io())
                 .flatMapCompletable {
-                    viewModel.saveSnapshot(it)
+                    viewModel.saveSnapshot(it, finalRoute.name)
                 }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())

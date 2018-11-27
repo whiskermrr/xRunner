@@ -26,10 +26,13 @@ class RouteDataRepository
             }
     }
 
-    override fun saveSnapshot(bitmap: Bitmap): Completable {
-        return snapshotLocalSource.saveSnapshotLocal(bitmap)
+    override fun saveSnapshot(bitmap: Bitmap, fileName: String): Completable {
+        return snapshotLocalSource.saveSnapshotLocal(bitmap, fileName)
             .flatMapCompletable { filePath ->
-                snapshotRemoteSource.saveSnapshotRemote(filePath)
+                snapshotRemoteSource.saveSnapshotRemote(filePath, fileName)
+                    .doOnComplete {
+                        snapshotLocalSource.removeSnapshotFromLocal(fileName)
+                    }
             }
     }
 }

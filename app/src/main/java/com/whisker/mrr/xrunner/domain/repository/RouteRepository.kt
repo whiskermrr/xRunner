@@ -7,5 +7,5 @@ import io.reactivex.Completable
 interface RouteRepository {
 
     fun saveRoute(route: Route) : Completable
-    fun saveSnapshot(bitmap: Bitmap) : Completable
+    fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable
 }

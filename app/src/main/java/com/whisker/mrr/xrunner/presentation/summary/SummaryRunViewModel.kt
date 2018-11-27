@@ -28,8 +28,10 @@ class SummaryRunViewModel
         )
     }
 
-    fun saveSnapshot(bitmap: Bitmap) : Completable {
-        return routeRepository.saveSnapshot(bitmap)
+    fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable {
+        return routeRepository.saveSnapshot(bitmap, fileName)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getIsRouteSaved() = isRouteSaved
