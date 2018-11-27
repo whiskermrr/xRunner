@@ -22,7 +22,6 @@ import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_run.*
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 import org.jetbrains.anko.textColor
 
@@ -66,6 +65,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
         bSaveSnapshot.setOnClickListener {
             bSaveSnapshot.isEnabled = false
+            routeProgressBar.visibility = View.VISIBLE
             takeSnapshot()
         }
 
@@ -92,6 +92,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     private fun onSnapshotSaved() {
+        routeProgressBar.visibility = View.GONE
         bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_success)
         bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorFlashGreen)
         bSaveSnapshot.text = getString(R.string.saved)

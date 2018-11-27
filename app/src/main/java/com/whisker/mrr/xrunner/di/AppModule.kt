@@ -44,8 +44,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(firebaseAuth: FirebaseAuth) : LoginRepository {
-        return LoginDataRepository(firebaseAuth)
+    fun provideLoginRepository(userDataSource: UserDataSource) : LoginRepository {
+        return LoginDataRepository(userDataSource)
     }
 
     @Provides
