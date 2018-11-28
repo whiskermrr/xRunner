@@ -12,6 +12,6 @@ class NetworkStateReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
-        RxBus.publish(NetworkStateEvent((networkInfo != null && networkInfo.isConnected)))
+        RxBus.publishSticky(NetworkStateEvent((networkInfo != null && networkInfo.isConnected)))
     }
 }

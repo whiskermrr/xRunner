@@ -1,7 +1,6 @@
 package com.whisker.mrr.xrunner.data.repository
 
 import android.graphics.Bitmap
-import android.util.Log
 import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
 import com.whisker.mrr.xrunner.data.datasource.SnapshotLocalSource
 import com.whisker.mrr.xrunner.data.datasource.SnapshotRemoteSource
@@ -24,10 +23,10 @@ class RouteDataRepository
 )
 : RouteRepository {
 
-    private var isNetworkAvailable = true
+    private var isNetworkAvailable = false
 
     init {
-        RxBus.subscribe(NetworkStateEvent::class.java.name, this, Consumer { event ->
+        RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
             if(event is NetworkStateEvent) {
                 isNetworkAvailable = event.isNetworkAvailable
             }

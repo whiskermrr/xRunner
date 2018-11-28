@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
     override fun onResume() {
         super.onResume()
         registerReceiver(networkStateReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
+        networkStateReceiver.onReceive(this, null)
     }
 
     override fun onPause() {
