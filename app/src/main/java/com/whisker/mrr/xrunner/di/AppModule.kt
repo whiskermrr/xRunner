@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -12,6 +13,7 @@ import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
+import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -22,6 +24,12 @@ class AppModule {
     @Provides
     @Singleton
     fun provideContext(app: App) : Context = app.applicationContext
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(context: Context) : SharedPreferences {
+        return context.getSharedPreferences(xRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
 
     @Provides
     @Singleton
@@ -68,8 +76,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSnapshotLocalSource(context: Context) : SnapshotLocalSource {
-        return SnapshotLocalSource(context)
+    fun provideSnapshotLocalSource(context: Context, sharedPreferences: SharedPreferences) : SnapshotLocalSource {
+        return SnapshotLocalSource(context, sharedPreferences)
     }
 
     @Provides
