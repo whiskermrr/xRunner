@@ -43,10 +43,8 @@ class RouteDataRepository
 
     override fun saveSnapshot(bitmap: Bitmap, fileName: String): Completable {
         return if(isNetworkAvailable) {
-            Log.e("ROUTE REPO", "saveSnapshotRemote")
             saveSnapshotRemote(bitmap, fileName)
         } else {
-            Log.e("ROUTE REPO", "cacheSnapshot")
             cacheSnapshot(bitmap, fileName)
         }
     }
@@ -54,7 +52,7 @@ class RouteDataRepository
     private fun saveSnapshotRemote(bitmap: Bitmap, fileName: String) : Completable {
         return Single.create<String> {emitter ->
             emitter.onSuccess(snapshotLocalSource.saveSnapshotLocal(bitmap, fileName))
-        }
+            }
             .flatMapCompletable { filePath ->
                 snapshotRemoteSource.saveSnapshotRemote(filePath, fileName)
                     .doOnComplete {

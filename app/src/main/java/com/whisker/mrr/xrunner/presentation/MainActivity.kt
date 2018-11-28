@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.presentation
 
 import android.Manifest
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
+import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.map.RunFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
     @Inject
     @SuppressWarnings("WeakerAccess")
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var networkStateReceiver: NetworkStateReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -47,6 +52,16 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
                 .add(R.id.mainContainer, LoginFragment())
                 .commit()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(networkStateReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(networkStateReceiver)
     }
 
     override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
@@ -95,7 +110,6 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
                     } else {
                         Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show()
                     }

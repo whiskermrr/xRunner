@@ -13,6 +13,7 @@ import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
+import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -29,6 +30,12 @@ class AppModule {
     @Singleton
     fun provideSharedPreferences(context: Context) : SharedPreferences {
         return context.getSharedPreferences(xRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkStateReceiver() : NetworkStateReceiver {
+        return NetworkStateReceiver()
     }
 
     @Provides
