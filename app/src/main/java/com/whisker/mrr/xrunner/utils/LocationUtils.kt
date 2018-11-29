@@ -118,11 +118,10 @@ class LocationUtils {
             }
 
             val ratio = (distance - visibleDistance / 2) / (visibleDistance / 2)
-            Log.e("LOCATION UTILS", "ratio: " + ratio.toString())
             val zoomRatio = if(ratio > 0.5) {
-                currentZoom - 1.0
+                currentZoom - 1.0 - ratio
             } else {
-                currentZoom - ratio
+                currentZoom - ratio - 1.0
             }
 
             return zoomRatio.toFloat()

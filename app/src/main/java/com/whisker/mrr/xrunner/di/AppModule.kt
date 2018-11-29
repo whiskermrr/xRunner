@@ -1,18 +1,20 @@
 package com.whisker.mrr.xrunner.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
-import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
-import com.whisker.mrr.xrunner.data.datasource.UserDataSource
+import com.whisker.mrr.xrunner.data.datasource.*
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
 import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
+import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,6 +25,18 @@ class AppModule {
     @Provides
     @Singleton
     fun provideContext(app: App) : Context = app.applicationContext
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(context: Context) : SharedPreferences {
+        return context.getSharedPreferences(xRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkStateReceiver() : NetworkStateReceiver {
+        return NetworkStateReceiver()
+    }
 
     @Provides
     @Singleton
@@ -39,8 +53,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(firebaseAuth: FirebaseAuth) : LoginRepository {
-        return LoginDataRepository(firebaseAuth)
+    fun provideFirebaseStorage() : FirebaseStorage {
+        return FirebaseStorage.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginRepository(userDataSource: UserDataSource) : LoginRepository {
+        return LoginDataRepository(userDataSource)
     }
 
     @Provides
@@ -63,13 +83,30 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideSnapshotLocalSource(context: Context, sharedPreferences: SharedPreferences) : SnapshotLocalSource {
+        return SnapshotLocalSource(context, sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSnapshotRemoteSource(firebaseStorage: FirebaseStorage) : SnapshotRemoteSource {
+        return SnapshotRemoteSource(firebaseStorage)
+    }
+
+    @Provides
+    @Singleton
     fun provideLocationRepository(locationDataSource: LocationDataSource) : LocationRepository {
         return LocationDataRepository(locationDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideRouteRepository(userDataSource: UserDataSource, routeDatabaseSource: RouteDatabaseSource) : RouteRepository {
-        return RouteDataRepository(userDataSource, routeDatabaseSource)
+    fun provideRouteRepository(
+                userDataSource: UserDataSource,
+                routeDatabaseSource: RouteDatabaseSource,
+                snapshotRemoteSource: SnapshotRemoteSource,
+                snapshotLocalSource: SnapshotLocalSource
+    ) : RouteRepository {
+        return RouteDataRepository(userDataSource, routeDatabaseSource, snapshotRemoteSource, snapshotLocalSource)
     }
 }

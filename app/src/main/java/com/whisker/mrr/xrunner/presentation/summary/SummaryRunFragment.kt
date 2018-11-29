@@ -61,8 +61,11 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         liteMapView.onResume()
         liteMapView.getMapAsync(this)
 
+        initStatsView()
+
         bSaveSnapshot.setOnClickListener {
             bSaveSnapshot.isEnabled = false
+            routeProgressBar.visibility = View.VISIBLE
             takeSnapshot()
         }
 
@@ -74,6 +77,12 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(finalRoute.waypoints)
         val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
+        showMapSnapshot()
+    }
+
+    private fun showMapSnapshot() {
+        routeProgressBar.visibility = View.GONE
+        liteMapView.visibility = View.VISIBLE
     }
 
     private fun getScreenWidth() : Int {
@@ -83,9 +92,23 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     private fun onSnapshotSaved() {
+        routeProgressBar.visibility = View.GONE
         bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_success)
         bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorFlashGreen)
         bSaveSnapshot.text = getString(R.string.saved)
+    }
+
+    private fun initStatsView() {
+        val stats = finalRoute.routeStats
+        tvSummaryDistance.text = getString(R.string.distance_format_2, stats.kilometers, stats.meters)
+        tvSummaryPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
+        tvSummaryTime.text = if(stats.hours == 0) {
+            getString(R.string.minutes_time_format, stats.minutes, stats.seconds)
+        } else {
+            getString(R.string.hours_time_format, stats.hours, stats.minutes, stats.seconds)
+        }
+        tvSummarySpeed.text = getString(R.string.average_speed_format, stats.averageSpeed)
+        tvSummaryHeartbeat.text = getString(R.string.empty_record)
     }
 
     private fun takeSnapshot() {
@@ -96,7 +119,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
                 }})
                 .observeOn(Schedulers.io())
                 .flatMapCompletable {
-                    viewModel.saveSnapshot(it)
+                    viewModel.saveSnapshot(it, finalRoute.name)
                 }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())

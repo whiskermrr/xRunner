@@ -12,9 +12,18 @@
 	<string name="empty_record">---</string>
 	<string name="empty_time">--:--</string>
 	<string name="distance_format">%d.%03d</string>
+	<string name="distance_format_2">%d.%02d</string>
+	<string name="average_speed_format">%.2f</string>
+	<string name="minutes_time_format">%02d:%02d</string>
+	<string name="hours_time_format">%02d:%02d:%02d</string>
 	<string name="pace_format">%d\'%02d\'\'</string>
 	<string name="start">START</string>
 	<string name="init_time">00:00</string>
 	<string name="save_snapshot">Save Snapshot</string>
 	<string name="saved">Saved!</string>
+	<string name="distance">Distance</string>
+	<string name="avg_pace">Avg. Pace</string>
+	<string name="duration">Duration</string>
+	<string name="kilometers_per_hour">km/h</string>
+	<string name="heart_rate">Heart Rate</string>
 </resources>
