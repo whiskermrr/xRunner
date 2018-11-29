@@ -42,6 +42,5 @@ class LoginViewModel
     }
 
     fun getLoginStatus() = loginStatus
-
     fun getCreateAccountStatus() = createAccountStatus
 }

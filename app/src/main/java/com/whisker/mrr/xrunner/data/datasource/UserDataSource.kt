@@ -1,10 +1,8 @@
 package com.whisker.mrr.xrunner.data.datasource
 
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import durdinapps.rxfirebase2.RxFirebaseAuth
-import io.reactivex.Maybe
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -18,11 +16,29 @@ class UserDataSource
         return Single.error(FirebaseAuthInvalidUserException("", ""))
     }
 
-    fun login(email: String, password: String) : Maybe<AuthResult> {
-        return RxFirebaseAuth.signInWithEmailAndPassword(firebaseAuth, email, password)
+    fun login(email: String, password: String) : Completable {
+        return Completable.create { emitter ->
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        emitter.onComplete()
+                    } else if(task.exception != null) {
+                        emitter.onError(task.exception!!)
+                    }
+                }
+        }
     }
 
-    fun createAccount(email:String, password: String) : Maybe<AuthResult> {
-        return RxFirebaseAuth.createUserWithEmailAndPassword(firebaseAuth, email, password)
+    fun createAccount(email:String, password: String) : Completable {
+        return Completable.create { emitter ->
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        emitter.onComplete()
+                    } else if(task.exception != null) {
+                        emitter.onError(task.exception!!)
+                    }
+                }
+        }
     }
 }

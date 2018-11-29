@@ -1,9 +1,8 @@
 package com.whisker.mrr.xrunner.domain.repository
 
-import com.google.firebase.auth.AuthResult
-import io.reactivex.Maybe
+import io.reactivex.Completable
 
 interface LoginRepository {
-    fun login(email: String, password: String) : Maybe<AuthResult>
-    fun createAccount(email:String, password: String) : Maybe<AuthResult>
+    fun login(email: String, password: String) : Completable
+    fun createAccount(email:String, password: String) : Completable
 }
