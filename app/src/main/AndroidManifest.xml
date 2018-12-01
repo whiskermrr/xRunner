@@ -28,14 +28,18 @@
         
         <service android:name=".infrastructure.LocationService">
             <intent-filter>
-                <action android:name="com.example.mrr.action.START_TRACKING"/>
-                <action android:name="com.example.mrr.action.STOP_TRACKING"/>
+                <action android:name="com.whisker.mrr.action.START_TRACKING"/>
+                <action android:name="com.whisker.mrr.action.STOP_TRACKING"/>
             </intent-filter>
         </service>
         
         <service
             android:name=".infrastructure.SnapshotSyncService"
-            android:exported="false"/>
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.whisker.mrr.action.SYNC_SNAPSHOTS"/>
+            </intent-filter>
+        </service>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

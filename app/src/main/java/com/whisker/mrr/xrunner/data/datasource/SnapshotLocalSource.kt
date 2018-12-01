@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import com.whisker.mrr.xrunner.utils.BitmapUtils
 import com.whisker.mrr.xrunner.utils.FileUtils
-import com.whisker.mrr.xrunner.utils.xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET
+import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import javax.inject.Inject
 
 class SnapshotLocalSource
@@ -21,12 +21,12 @@ class SnapshotLocalSource
         val byteArray = BitmapUtils.convertBitmapToByteArray(bitmap, Bitmap.CompressFormat.JPEG)
         FileUtils.saveFile(context, byteArray, fileName)
 
-        val snapshotNames = sharedPreferences.getStringSet(EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         snapshotNames!!.add(fileName)
 
-        sharedPreferences.edit()
-            .putStringSet(EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
-            .apply()
+        val editor = sharedPreferences.edit()
+        editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+        editor.apply()
     }
 
     fun removeSnapshotFromLocal(fileName: String) {
