@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.domain.bus.RxBus
@@ -58,26 +57,21 @@ class SnapshotSyncService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if(intent?.action == ACTION_SYNC_SNAPSHOTS) {
-            Log.e("SYNCHROOO", "onStartCommand")
             syncSnapshots()
         } else {
-            Log.e("SYNCHROOO", "selfStop")
             stopSelf()
         }
         return START_NOT_STICKY
     }
 
     private fun syncSnapshots() {
-        Log.e("SYNCHROOO", "syncSnapshots")
         sharedPreferences = applicationContext.getSharedPreferences(xRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
         val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         if(snapshotNames!!.isEmpty()) {
-            Log.e("SYNCHROOO", "empty")
             stopSelf()
             return
         }
 
-        Log.e("SYNCHROOO", "NOT EMPTY!!!!")
         RxBus.publish(SyncEvent(true))
         val firebaseStorage = FirebaseStorage.getInstance()
         val completableList = ArrayList<Completable>()
@@ -106,6 +100,7 @@ class SnapshotSyncService : Service() {
                 .subscribeOn(Schedulers.io())
                 .subscribe( {
                     val editor = sharedPreferences.edit()
+                    editor.clear()
                     editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
                     editor.apply()
                     RxBus.publish(SyncEvent(false))
@@ -120,7 +115,6 @@ class SnapshotSyncService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e("SYNCHROOO", "onDestroy")
         disposables.dispose()
     }
 }

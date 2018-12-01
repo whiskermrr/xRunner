@@ -25,6 +25,7 @@ class SnapshotLocalSource
         snapshotNames!!.add(fileName)
 
         val editor = sharedPreferences.edit()
+        editor.clear()
         editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
         editor.apply()
     }
