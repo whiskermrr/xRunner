@@ -5,16 +5,11 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import com.whisker.mrr.xrunner.utils.BitmapUtils
 import com.whisker.mrr.xrunner.utils.FileUtils
-import io.reactivex.Completable
-import io.reactivex.Single
+import com.whisker.mrr.xrunner.utils.xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET
 import javax.inject.Inject
 
 class SnapshotLocalSource
 @Inject constructor(private val context: Context, private val sharedPreferences: SharedPreferences) {
-
-    companion object {
-        const val EXTRA_SNAPSHOT_PATHS_SET = "extra_snapshot_paths_set"
-    }
 
     fun saveSnapshotLocal(bitmap: Bitmap, fileName: String) : String {
         val byteArray = BitmapUtils.convertBitmapToByteArray(bitmap, Bitmap.CompressFormat.JPEG)
@@ -26,15 +21,16 @@ class SnapshotLocalSource
         val byteArray = BitmapUtils.convertBitmapToByteArray(bitmap, Bitmap.CompressFormat.JPEG)
         FileUtils.saveFile(context, byteArray, fileName)
 
-        val snapshotPaths = sharedPreferences.getStringSet(EXTRA_SNAPSHOT_PATHS_SET, mutableSetOf())
-        snapshotPaths!!.add(context.getFileStreamPath(fileName).absolutePath)
+        val snapshotNames = sharedPreferences.getStringSet(EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        snapshotNames!!.add(fileName)
 
         sharedPreferences.edit()
-            .putStringSet(EXTRA_SNAPSHOT_PATHS_SET, snapshotPaths)
+            .putStringSet(EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
             .apply()
     }
 
     fun removeSnapshotFromLocal(fileName: String) {
-        FileUtils.deleteFile(context.getFileStreamPath(fileName).absolutePath)
+        val filePath = context.getFileStreamPath(fileName).absolutePath
+        FileUtils.deleteFile(filePath)
     }
 }
