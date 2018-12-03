@@ -103,7 +103,6 @@ class SnapshotSyncService : Service() {
                     editor.clear()
                     editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
                     editor.apply()
-                    RxBus.publish(SyncEvent(false))
                     stopSelf()
                 },
                     {
@@ -115,6 +114,7 @@ class SnapshotSyncService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        RxBus.publish(SyncEvent(false))
         disposables.dispose()
     }
 }

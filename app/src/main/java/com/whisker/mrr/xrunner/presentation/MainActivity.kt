@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
+import com.whisker.mrr.xrunner.domain.bus.RxBus
+import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.map.RunFragment
@@ -22,6 +25,7 @@ import com.whisker.mrr.xrunner.utils.xRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -33,6 +37,16 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
 
     @Inject
     lateinit var networkStateReceiver: NetworkStateReceiver
+
+    private val syncConsumer = Consumer<Any> {
+        if(it is SyncEvent) {
+            if(it.isSyncRunning) {
+                tvSync.visibility = View.VISIBLE
+            } else {
+                tvSync.visibility = View.GONE
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -56,6 +70,7 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
 
     override fun onResume() {
         super.onResume()
+        RxBus.subscribe(SyncEvent::class.java.name, this, syncConsumer)
         registerReceiver(networkStateReceiver, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
         networkStateReceiver.onReceive(this, null)
     }
@@ -145,4 +160,8 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         return true
     }
 
+    override fun onStop() {
+        super.onStop()
+        RxBus.unsubscribe(this)
+    }
 }
