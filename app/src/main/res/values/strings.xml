@@ -26,4 +26,5 @@
 	<string name="duration">Duration</string>
 	<string name="kilometers_per_hour">km/h</string>
 	<string name="heart_rate">Heart Rate</string>
+	<string name="sync">Sync...</string>
 </resources>

@@ -29,5 +29,10 @@ class FileUtils {
                 Log.v("FileTools", "File does not exist!")
             }
         }
+
+        fun getFile(context: Context, fileName: String) : File {
+            val filePath = context.getFileStreamPath(fileName).absolutePath
+            return File(filePath)
+        }
     }
 }

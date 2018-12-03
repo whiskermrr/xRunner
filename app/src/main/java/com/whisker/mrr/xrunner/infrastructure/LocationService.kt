@@ -18,8 +18,8 @@ import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
 
 class LocationService : Service(), Handler.Callback, LocationListener {
     companion object {
-        const val ACTION_START_TRACKING: String = "com.example.mrr.action.START_TRACKING"
-        const val ACTION_STOP_TRACKING: String = "com.example.mrr.action.STOP_TRACKING"
+        const val ACTION_START_TRACKING: String = "com.whisker.mrr.action.START_TRACKING"
+        const val ACTION_STOP_TRACKING: String = "com.whisker.mrr.action.STOP_TRACKING"
         const val HANDLER_THREAD_NAME: String = "LocationThread"
         const val CHANNEL_ID: String = "channel_01"
         const val NOTIFICATION_TITLE: String = "Readable title"
