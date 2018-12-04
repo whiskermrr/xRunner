@@ -29,6 +29,7 @@
       </extensions>
     </Objective-C-extensions>
     <XML>
+      <option name="XML_ATTRIBUTE_WRAP" value="2" />
       <option name="XML_ALIGN_ATTRIBUTES" value="false" />
     </XML>
     <codeStyleSettings language="XML">
