@@ -37,6 +37,9 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
     @Inject
     lateinit var networkStateReceiver: NetworkStateReceiver
 
+    private val menuItems = listOf(R.id.action_run, R.id.action_achievements, R.id.action_past_routes)
+    var isBottomNavEnabled = true
+
     private val syncConsumer = Consumer<Any> {
         if(it is SyncEvent) {
             if(it.isSyncRunning) {
@@ -104,6 +107,22 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
 
     fun hideBottomNavigation() {
         navBottom.visibility = View.GONE
+    }
+
+    fun disableBottomNavigation() {
+        isBottomNavEnabled = false
+        for(item in menuItems) {
+            if(item != navBottom.selectedItemId) {
+                navBottom.menu.findItem(item).isEnabled = false
+            }
+        }
+    }
+
+    fun enableBottomNavigation() {
+        isBottomNavEnabled = true
+        for(item in menuItems) {
+            navBottom.menu.findItem(item).isEnabled = true
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

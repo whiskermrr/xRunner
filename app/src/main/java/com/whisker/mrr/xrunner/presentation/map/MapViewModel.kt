@@ -73,6 +73,7 @@ class MapViewModel
     fun stopTracking() {
         runnerTimer.stop()
         isTracking.postValue(false)
+        locationRepository.stopTracking()
         if(routePoints.value != null && routeStats.value != null) {
             if(routeStats.value!!.wgs84distance == 0f) return
                 calculateFinalStats()
@@ -82,7 +83,6 @@ class MapViewModel
                 routeStats.value!!)
             finalRoute.postValue(route)
         }
-        locationRepository.stopTracking()
     }
 
     private fun calculateStats(points: List<LatLng>, latLng: LatLng) : RouteStats {
