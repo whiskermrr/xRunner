@@ -128,6 +128,7 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
                         && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     } else {
                         Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show()
+                        finish()
                     }
                 }
             }
@@ -136,12 +137,7 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
     }
 
     private fun checkLocationPermission(): Boolean {
-
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(
                     this,
