@@ -35,6 +35,7 @@ class MapFragment : BaseMapFragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.hideBottomNavigation()
         viewModel = mainActivity.run {
             ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
         }
@@ -52,5 +53,10 @@ class MapFragment : BaseMapFragment(), OnMapReadyCallback {
         viewModel.onMapShown()
         viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
         viewModel.getRoutePoints().observe(this, routeObserver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity.showBottomNavigation()
     }
 }

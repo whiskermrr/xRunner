@@ -7,12 +7,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.IdRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.whisker.mrr.xrunner.BaseActivity
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.domain.bus.RxBus
@@ -29,7 +28,7 @@ import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector {
+class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
 
     @Inject
     @SuppressWarnings("WeakerAccess")
@@ -37,6 +36,9 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
 
     @Inject
     lateinit var networkStateReceiver: NetworkStateReceiver
+
+    private val menuItems = listOf(R.id.action_run, R.id.action_achievements, R.id.action_past_routes)
+    var isBottomNavEnabled = true
 
     private val syncConsumer = Consumer<Any> {
         if(it is SyncEvent) {
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         }
     }
 
+    override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -58,10 +62,9 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         }
 
         if(FirebaseAuth.getInstance().currentUser != null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.mainContainer, RunFragment())
-                .commit()
+            loggedIn()
         } else {
+            hideBottomNavigation()
             supportFragmentManager.beginTransaction()
                 .add(R.id.mainContainer, LoginFragment())
                 .commit()
@@ -75,49 +78,51 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
         networkStateReceiver.onReceive(this, null)
     }
 
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(networkStateReceiver)
-    }
-
-    override fun supportFragmentInjector() = fragmentDispatchingAndroidInjector
-
-    fun switchContent(fragment: Fragment) {
-        switchContent(mainContainer.id, fragment)
-    }
-
-    fun addContent(fragment: Fragment) {
-        addContent(mainContainer.id, fragment)
-    }
-
-    private fun switchContent(@IdRes frameLayoutContainer: Int, fragment: Fragment) {
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(frameLayoutContainer, fragment, fragment.javaClass.name)
-        ft.addToBackStack(fragment.javaClass.name)
-        ft.commit()
-    }
-
-    private fun addContent(@IdRes frameLayoutContainer: Int, fragment: androidx.fragment.app.Fragment) {
-        val fragmentTag = fragment.javaClass.name
-        val manager = supportFragmentManager
-        val previousFragment = getTopFragment(manager)
-        val ft = manager.beginTransaction()
-        ft.setTransition(androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        if (previousFragment != null) {
-            ft.hide(previousFragment)
+    fun loggedIn() {
+        showBottomNavigation()
+        navBottom.setOnNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.action_run -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainContainer, RunFragment())
+                        .commit()
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.action_past_routes -> {
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.action_achievements -> {
+                    return@setOnNavigationItemSelectedListener true
+                }
+                else -> return@setOnNavigationItemSelectedListener false
+            }
         }
-        ft.add(frameLayoutContainer, fragment, fragmentTag)
-        ft.addToBackStack(fragmentTag)
-        ft.commit()
+
+        navBottom.selectedItemId = R.id.action_run
     }
 
-    private fun getTopFragment(manager: androidx.fragment.app.FragmentManager): androidx.fragment.app.Fragment? {
-        var previousFragment: androidx.fragment.app.Fragment? = null
-        if (manager.backStackEntryCount > 0) {
-            val backEntry = manager.getBackStackEntryAt(manager.backStackEntryCount - 1)
-            previousFragment = supportFragmentManager.findFragmentByTag(backEntry.name)
+    fun showBottomNavigation() {
+        navBottom.visibility = View.VISIBLE
+    }
+
+    fun hideBottomNavigation() {
+        navBottom.visibility = View.GONE
+    }
+
+    fun disableBottomNavigation() {
+        isBottomNavEnabled = false
+        for(item in menuItems) {
+            if(item != navBottom.selectedItemId) {
+                navBottom.menu.findItem(item).isEnabled = false
+            }
         }
-        return previousFragment
+    }
+
+    fun enableBottomNavigation() {
+        isBottomNavEnabled = true
+        for(item in menuItems) {
+            navBottom.menu.findItem(item).isEnabled = true
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -154,6 +159,11 @@ class MainActivity : AppCompatActivity(), Injectable, HasSupportFragmentInjector
             return false
         }
         return true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(networkStateReceiver)
     }
 
     override fun onStop() {

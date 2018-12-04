@@ -18,7 +18,6 @@ class RunFragment : BaseFragment() {
 
     private lateinit var viewModel: MapViewModel
     private var isTracking: Boolean = false
-    private var pauseTime: Long = 0L
 
     private val routeStatsObserver = Observer<RouteStats> { stats ->
         tvDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
@@ -27,6 +26,11 @@ class RunFragment : BaseFragment() {
 
     private val isTrackingObserver = Observer<Boolean> {
         isTracking = it
+        if(isTracking && mainActivity.isBottomNavEnabled) {
+            mainActivity.disableBottomNavigation()
+        } else if(!isTracking && !mainActivity.isBottomNavEnabled) {
+            mainActivity.enableBottomNavigation()
+        }
     }
 
     private val runTimeObserver = Observer<String> {
@@ -68,7 +72,6 @@ class RunFragment : BaseFragment() {
     }
 
     private fun onStartClick() {
-        pauseTime = 0L
         viewModel.startTracking()
         bStartRun.visibility = View.GONE
         bPauseRun.visibility = View.VISIBLE
@@ -93,5 +96,12 @@ class RunFragment : BaseFragment() {
         bStopRun.visibility = View.GONE
         bResumeRun.visibility = View.GONE
         bStartRun.visibility = View.VISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(!mainActivity.isBottomNavEnabled) {
+            mainActivity.enableBottomNavigation()
+        }
     }
 }
