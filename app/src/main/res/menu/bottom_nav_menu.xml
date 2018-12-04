@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/action_run"
+		android:enabled="true"
+		android:icon="@drawable/ic_running"
+		android:title="@string/running"
+		/>
+	
+	<item
+		android:id="@+id/action_past_routes"
+		android:enabled="true"
+		android:icon="@drawable/ic_route"
+		android:title="@string/run_history"
+	/>
+	
+	<item
+		android:id="@+id/action_achievements"
+		android:enabled="true"
+		android:icon="@drawable/ic_award"
+		android:title="@string/achievements"
+	/>
+</menu>
