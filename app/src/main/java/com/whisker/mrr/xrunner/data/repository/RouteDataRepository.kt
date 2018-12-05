@@ -10,6 +10,7 @@ import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import javax.inject.Inject
@@ -35,8 +36,15 @@ class RouteDataRepository
 
     override fun saveRoute(route: Route): Completable {
         return userDataSource.getUserId()
-            .flatMapCompletable {
-                routeDatabaseSource.saveRoute(route, it)
+            .flatMapCompletable {userId ->
+                routeDatabaseSource.saveRoute(route, userId)
+            }
+    }
+
+    override fun getRouteList(): Flowable<Route> {
+        return userDataSource.getUserId()
+            .flatMapPublisher { userId ->
+                routeDatabaseSource.getRoutesByUserId(userId)
             }
     }
 
