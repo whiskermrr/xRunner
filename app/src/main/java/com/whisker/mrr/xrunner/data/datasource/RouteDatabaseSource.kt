@@ -10,7 +10,7 @@ import javax.inject.Inject
 class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) {
 
     fun saveRoute(route: Route, userId : String) : Completable {
-        val databaseReference = firebaseDatabase.reference.child("Users").child(userId)
+        val databaseReference = firebaseDatabase.reference.child("Users").child(userId).child("Routes")
         route.routeId = databaseReference.push().key!!
         return Completable.create { emitter ->
             databaseReference.child(route.routeId).setValue(route).addOnCompleteListener { task ->
@@ -19,13 +19,12 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
                 } else if(task.exception != null) {
                     emitter.onError(task.exception!!)
                 }
-
             }
         }
     }
 
     fun getRoutesByUserId(userId: String) : Flowable<List<Route>> {
-        val databaseReference = firebaseDatabase.reference.child("Users").child(userId)
+        val databaseReference = firebaseDatabase.reference.child("Users").child(userId).child("Routes")
         return Flowable.create({ emitter ->
             databaseReference.addChildEventListener(object: ChildEventListener {
                 override fun onCancelled(p0: DatabaseError) {

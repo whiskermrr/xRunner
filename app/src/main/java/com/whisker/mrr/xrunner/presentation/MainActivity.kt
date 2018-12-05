@@ -66,7 +66,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         } else {
             hideBottomNavigation()
             supportFragmentManager.beginTransaction()
-                .add(R.id.mainContainer, LoginFragment())
+                .add(mainContainer.id, LoginFragment())
                 .commit()
         }
     }
@@ -83,8 +83,9 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         navBottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.action_run -> {
+                    clearBackStack()
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainContainer, RunFragment())
+                        .replace(mainContainer.id, RunFragment())
                         .commit()
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -123,6 +124,14 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         for(item in menuItems) {
             navBottom.menu.findItem(item).isEnabled = true
         }
+    }
+
+    fun switchContent(fragment: Fragment) {
+        switchContent(mainContainer.id, fragment)
+    }
+
+    fun addContent(fragment: Fragment) {
+        addContent(mainContainer.id, fragment)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

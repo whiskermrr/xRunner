@@ -98,8 +98,8 @@ class RunFragment : BaseFragment() {
         bStartRun.visibility = View.VISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         if(!mainActivity.isBottomNavEnabled) {
             mainActivity.enableBottomNavigation()
         }
