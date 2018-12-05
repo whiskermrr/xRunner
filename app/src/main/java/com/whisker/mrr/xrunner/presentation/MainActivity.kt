@@ -103,7 +103,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         if(isFragmentInBackStack(RunFragment::class.java.name)) {
             popBackStackToFragment(RunFragment::class.java.name)
         } else {
-            popBackStackToFragment(null)
+            clearBackStack()
             switchContent(RunFragment())
         }
     }

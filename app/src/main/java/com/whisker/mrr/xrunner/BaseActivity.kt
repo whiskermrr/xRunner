@@ -43,6 +43,10 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun popBackStackToFragment(fragmentName: String?) {
-        supportFragmentManager.popBackStack(fragmentName, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.popBackStack(fragmentName, 0)
+    }
+
+    fun clearBackStack() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }
