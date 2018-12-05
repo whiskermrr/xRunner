@@ -83,10 +83,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         navBottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.action_run -> {
-                    clearBackStack()
-                    supportFragmentManager.beginTransaction()
-                        .replace(mainContainer.id, RunFragment())
-                        .commit()
+                    navigateToRunFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_past_routes -> {
@@ -100,6 +97,15 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         }
 
         navBottom.selectedItemId = R.id.action_run
+    }
+
+    private fun navigateToRunFragment() {
+        if(isFragmentInBackStack(RunFragment::class.java.name)) {
+            popBackStackToFragment(RunFragment::class.java.name)
+        } else {
+            popBackStackToFragment(null)
+            switchContent(RunFragment())
+        }
     }
 
     fun showBottomNavigation() {

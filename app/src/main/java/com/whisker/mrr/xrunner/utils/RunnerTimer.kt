@@ -37,6 +37,7 @@ class RunnerTimer {
 
     fun stop() {
         timer.cancel()
+        runTime.postValue(String.format("%02d:%02d", 0, 0))
     }
 
     fun pause() {

@@ -38,7 +38,11 @@ open class BaseActivity : AppCompatActivity() {
         return previousFragment
     }
 
-    fun clearBackStack() {
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    fun isFragmentInBackStack(fragmentName: String) : Boolean {
+        return supportFragmentManager.popBackStackImmediate(fragmentName, 0)
+    }
+
+    fun popBackStackToFragment(fragmentName: String?) {
+        supportFragmentManager.popBackStack(fragmentName, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }
