@@ -78,9 +78,9 @@ class MapViewModel
             if(routeStats.value!!.wgs84distance == 0f) return
                 calculateFinalStats()
             val route = Route(
-                runnerTimer.getStartTime().toString(),
-                routePoints.value!!,
-                routeStats.value!!)
+                name = runnerTimer.getStartTime().toString(),
+                waypoints = routePoints.value!!,
+                routeStats = routeStats.value!!)
             finalRoute.postValue(route)
         }
     }
