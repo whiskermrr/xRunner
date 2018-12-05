@@ -41,7 +41,7 @@ class RouteDataRepository
             }
     }
 
-    override fun getRouteList(): Flowable<Route> {
+    override fun getRouteList(): Flowable<List<Route>> {
         return userDataSource.getUserId()
             .flatMapPublisher { userId ->
                 routeDatabaseSource.getRoutesByUserId(userId)

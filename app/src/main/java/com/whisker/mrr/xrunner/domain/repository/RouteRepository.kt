@@ -9,5 +9,5 @@ interface RouteRepository {
 
     fun saveRoute(route: Route) : Completable
     fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable
-    fun getRouteList() : Flowable<Route>
+    fun getRouteList() : Flowable<List<Route>>
 }

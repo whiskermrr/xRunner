@@ -14,7 +14,7 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
         return Completable.complete()
     }
 
-    fun getRoutesByUserId(userId: String) : Flowable<Route> {
+    fun getRoutesByUserId(userId: String) : Flowable<List<Route>> {
         return Flowable.empty()
     }
 }
