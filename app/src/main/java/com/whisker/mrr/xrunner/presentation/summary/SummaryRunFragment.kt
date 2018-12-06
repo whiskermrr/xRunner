@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.whisker.mrr.xrunner.R
+import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
@@ -44,7 +45,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
             finalRoute = arguments?.getParcelable(xRunnerConstants.EXTRA_FINAL_ROUTE_KEY)!!
         }
 
-        polylineOptions.addAll(finalRoute.waypoints)
+        polylineOptions.addAll(LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -74,7 +75,9 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     override fun onMapCreated() {
-        val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(finalRoute.waypoints)
+        val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(
+                LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints)
+            )
         val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
         showMapSnapshot()

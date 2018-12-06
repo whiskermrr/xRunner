@@ -4,6 +4,7 @@ import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
@@ -79,7 +80,7 @@ class MapViewModel
                 calculateFinalStats()
             val route = Route(
                 name = runnerTimer.getStartTime().toString(),
-                waypoints = routePoints.value!!,
+                waypoints = LatLngMapper.latLngToCoordsTransform(routePoints.value!!),
                 routeStats = routeStats.value!!)
             finalRoute.postValue(route)
         }

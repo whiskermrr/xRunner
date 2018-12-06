@@ -25,8 +25,8 @@ class PastRoutesViewModel
             routeRepository.getRouteList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-
+                .subscribe { routes ->
+                    routeList.postValue(routes)
                 }
         )
     }

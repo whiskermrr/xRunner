@@ -1,12 +1,12 @@
 package com.whisker.mrr.xrunner.domain.model
 
 import android.os.Parcelable
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Route(
-    val name: String,
+    val name: String = "",
     var routeId: String = "",
-    var waypoints: List<LatLng> = listOf(),
-    var routeStats: RouteStats = RouteStats()) : Parcelable
+    var waypoints: List<Coords> = listOf(),
+    var routeStats: RouteStats = RouteStats())
+: Parcelable
