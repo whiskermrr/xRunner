@@ -29,23 +29,29 @@
     
     <EditText
         android:id="@+id/etEmail"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tvDescriptionMessage"
         android:layout_marginTop="30dp"
         android:textAlignment="center"
         android:inputType="textEmailAddress"
         android:hint="@string/hint_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"
     />
     
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/etEmail"
         android:inputType="textPassword"
         android:textAlignment="center"
         android:hint="@string/hint_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"
     />
     
     <Button
