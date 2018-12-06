@@ -17,6 +17,7 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.presentation.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.map.RunFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
@@ -87,6 +88,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_past_routes -> {
+                    navigateToPastHistory()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_achievements -> {
@@ -105,6 +107,15 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         } else {
             clearBackStack()
             switchContent(RunFragment())
+        }
+    }
+
+    private fun navigateToPastHistory() {
+        if(isFragmentInBackStack(PastRoutesFragment::class.java.name)) {
+            popBackStackToFragment(PastRoutesFragment::class.java.name)
+        } else {
+            clearBackStack()
+            switchContent(PastRoutesFragment())
         }
     }
 
