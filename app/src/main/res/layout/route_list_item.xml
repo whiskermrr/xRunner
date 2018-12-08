@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+	
+	<ImageView
+		android:id="@+id/ivRouteSnapshot"
+		android:layout_width="80dp"
+		android:layout_height="80dp"
+		android:background="@drawable/image_border"
+		app:layout_constraintStart_toStartOf="parent"
+		android:padding="2dp"
+		android:src="@drawable/test_route"
+		android:contentDescription="@null"
+	/>
+	
+	<TextView
+		android:id="@+id/tvRouteName"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toEndOf="@id/ivRouteSnapshot"
+		app:layout_constraintTop_toTopOf="@id/ivRouteSnapshot"
+		android:textSize="16sp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
+		tools:text="Dec 08, 2018, 23:04"
+	/>
+	
+	<TextView
+		android:id="@+id/tvRouteDescription"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/colorPrimary"
+		app:layout_constraintStart_toEndOf="@id/ivRouteSnapshot"
+		app:layout_constraintTop_toBottomOf="@id/tvRouteName"
+		android:textSize="21sp"
+		android:textStyle="bold"
+		android:layout_marginStart="8dp"
+		tools:text="7.89 km in 00:53:28"
+		
+	/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
