@@ -27,6 +27,11 @@ class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteViewHolder>() {
         holder.bind(routes[position])
     }
 
+    fun setRoutes(routes: List<Route>) {
+        this.routes = routes
+        notifyDataSetChanged()
+    }
+
     inner class RouteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var ivRouteSmapshot: ImageView = itemView.findViewById(R.id.ivRouteSnapshot)
@@ -38,7 +43,7 @@ class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteViewHolder>() {
             tvRouteDescription.text =
                     String.format(
                         Locale.getDefault(),
-                        "%d.%3d km in %2d:%2d:%2d",
+                        "%d.%03d km in %02d:%02d:%02d",
                         route.routeStats.kilometers,
                         route.routeStats.meters,
                         route.routeStats.hours,
