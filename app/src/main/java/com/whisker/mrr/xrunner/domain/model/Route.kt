@@ -5,8 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Route(
-    val name: String = "",
+    var name: String = "",
     var routeId: String = "",
     var waypoints: List<Coords> = listOf(),
-    var routeStats: RouteStats = RouteStats())
+    var routeStats: RouteStats = RouteStats(),
+    var date: Long = 0L)
 : Parcelable
