@@ -14,12 +14,6 @@ class SnapshotLocalSource
     fun saveSnapshotLocal(bitmap: Bitmap, fileName: String) : String {
         val byteArray = BitmapUtils.convertBitmapToByteArray(bitmap, Bitmap.CompressFormat.JPEG)
         FileUtils.saveFile(context, byteArray, fileName)
-        return context.getFileStreamPath(fileName).absolutePath
-    }
-
-    fun cacheSnapshotLocal(bitmap: Bitmap, fileName: String) {
-        val byteArray = BitmapUtils.convertBitmapToByteArray(bitmap, Bitmap.CompressFormat.JPEG)
-        FileUtils.saveFile(context, byteArray, fileName)
 
         val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         snapshotNames!!.add(fileName)
@@ -28,10 +22,16 @@ class SnapshotLocalSource
         editor.clear()
         editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
         editor.apply()
+
+        return context.getFileStreamPath(fileName).absolutePath
     }
 
-    fun removeSnapshotFromLocal(fileName: String) {
-        val filePath = context.getFileStreamPath(fileName).absolutePath
-        FileUtils.deleteFile(filePath)
+    fun markSnapshotAsSent(fileName: String) {
+        val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        snapshotNames?.remove(fileName)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+        editor.apply()
     }
 }

@@ -63,14 +63,14 @@ class RouteDataRepository
             .flatMapCompletable { filePath ->
                 snapshotRemoteSource.saveSnapshotRemote(filePath, fileName)
                     .doOnComplete {
-                        snapshotLocalSource.removeSnapshotFromLocal(fileName)
+                        snapshotLocalSource.markSnapshotAsSent(fileName)
                     }
             }
     }
 
     private fun cacheSnapshot(bitmap: Bitmap, fileName: String) : Completable {
         return Completable.create {emitter ->
-            snapshotLocalSource.cacheSnapshotLocal(bitmap, fileName)
+            snapshotLocalSource.saveSnapshotLocal(bitmap, fileName)
             emitter.onComplete()
         }
     }
