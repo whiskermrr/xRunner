@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.utils.loadSnapshot
 import org.jetbrains.anko.layoutInflater
 import java.util.*
 
@@ -34,11 +35,12 @@ class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteViewHolder>() {
 
     inner class RouteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var ivRouteSmapshot: ImageView = itemView.findViewById(R.id.ivRouteSnapshot)
+        private var ivRouteSnapshot: ImageView = itemView.findViewById(R.id.ivRouteSnapshot)
         private var tvRouteName: TextView = itemView.findViewById(R.id.tvRouteName)
         private var tvRouteDescription: TextView = itemView.findViewById(R.id.tvRouteDescription)
 
         fun bind(route: Route) {
+            ivRouteSnapshot.loadSnapshot(route.date.toString())
             tvRouteName.text = route.name
             tvRouteDescription.text =
                     String.format(

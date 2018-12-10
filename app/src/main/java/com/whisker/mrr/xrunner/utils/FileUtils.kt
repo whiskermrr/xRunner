@@ -34,5 +34,10 @@ class FileUtils {
             val filePath = context.getFileStreamPath(fileName).absolutePath
             return File(filePath)
         }
+
+        fun fileExists(context: Context, fileName: String) : Boolean {
+            val file = context.getFileStreamPath(fileName)
+            return file.exists()
+        }
     }
 }

@@ -12,7 +12,6 @@
 		android:layout_height="80dp"
 		app:layout_constraintStart_toStartOf="parent"
 		android:padding="2dp"
-		android:src="@drawable/test_route"
 		android:contentDescription="@null"
 	/>
 	
