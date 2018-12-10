@@ -91,6 +91,11 @@ class SnapshotSyncService : Service() {
                     }.addOnFailureListener {
                         emitter.onError(it)
                     }
+                }.doOnComplete {
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
+                    editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+                    editor.apply()
                 }
             )
         }
@@ -99,16 +104,12 @@ class SnapshotSyncService : Service() {
             Completable.concat(completableList)
                 .subscribeOn(Schedulers.io())
                 .subscribe( {
-                    val editor = sharedPreferences.edit()
-                    editor.clear()
-                    editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
-                    editor.apply()
                     stopSelf()
                 },
-                    {
-                        it.printStackTrace()
-                        stopSelf()
-                    })
+                {
+                    it.printStackTrace()
+                    stopSelf()
+                })
         )
     }
 

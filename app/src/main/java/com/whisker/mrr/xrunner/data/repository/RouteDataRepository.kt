@@ -36,7 +36,7 @@ class RouteDataRepository
 
     override fun saveRoute(route: Route): Completable {
         return userDataSource.getUserId()
-            .flatMapCompletable {userId ->
+            .flatMapCompletable { userId ->
                 routeDatabaseSource.saveRoute(route, userId)
             }
     }
