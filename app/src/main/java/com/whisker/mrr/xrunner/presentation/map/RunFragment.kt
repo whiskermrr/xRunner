@@ -95,17 +95,18 @@ class RunFragment : BaseMapFragment() {
     override fun onMapCreated() {
         viewModel.onMapShown()
         viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
-        viewModel.getRoutePoints().observe(this, routeObserver)
     }
 
     private fun showMap() {
         isMapShown = true
+        viewModel.getRoutePoints().observe(this, routeObserver)
         mapView.visibility = View.VISIBLE
         bDismiss.visibility = View.VISIBLE
     }
 
     private fun hideMap() {
         isMapShown = false
+        viewModel.getRoutePoints().removeObservers(this)
         mapView.visibility = View.GONE
         bDismiss.visibility = View.GONE
     }
