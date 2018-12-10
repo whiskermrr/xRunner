@@ -3,26 +3,19 @@ package com.whisker.mrr.xrunner
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.fragment.app.FragmentManager
 
 open class BaseActivity : AppCompatActivity() {
 
-    fun switchContent(fragment: Fragment) {
-        switchContent(mainContainer.id, fragment)
-    }
 
-    fun addContent(fragment: Fragment) {
-        addContent(mainContainer.id, fragment)
-    }
-
-    private fun switchContent(@IdRes frameLayoutContainer: Int, fragment: Fragment) {
+    protected fun switchContent(@IdRes frameLayoutContainer: Int, fragment: Fragment) {
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(frameLayoutContainer, fragment, fragment.javaClass.name)
         ft.addToBackStack(fragment.javaClass.name)
         ft.commit()
     }
 
-    private fun addContent(@IdRes frameLayoutContainer: Int, fragment: androidx.fragment.app.Fragment) {
+    protected fun addContent(@IdRes frameLayoutContainer: Int, fragment: androidx.fragment.app.Fragment) {
         val fragmentTag = fragment.javaClass.name
         val manager = supportFragmentManager
         val previousFragment = getTopFragment(manager)
@@ -43,5 +36,17 @@ open class BaseActivity : AppCompatActivity() {
             previousFragment = supportFragmentManager.findFragmentByTag(backEntry.name)
         }
         return previousFragment
+    }
+
+    fun isFragmentInBackStack(fragmentName: String) : Boolean {
+        return supportFragmentManager.popBackStackImmediate(fragmentName, 0)
+    }
+
+    fun popBackStackToFragment(fragmentName: String?) {
+        supportFragmentManager.popBackStack(fragmentName, 0)
+    }
+
+    fun clearBackStack() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }

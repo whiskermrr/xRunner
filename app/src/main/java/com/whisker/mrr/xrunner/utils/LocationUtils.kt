@@ -1,7 +1,6 @@
 package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import kotlin.math.pow

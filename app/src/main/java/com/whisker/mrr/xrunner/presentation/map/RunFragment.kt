@@ -6,22 +6,39 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
-import com.whisker.mrr.xrunner.presentation.BaseFragment
+import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import kotlinx.android.synthetic.main.fragment_run.*
 
-class RunFragment : BaseFragment() {
+class RunFragment : BaseMapFragment() {
 
     private lateinit var viewModel: MapViewModel
     private var isTracking: Boolean = false
+    private var isMapShown: Boolean = false
+
+    private val lastLocationObserver = Observer<LatLng> { lastLocation ->
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 18f))
+        viewModel.getLastKnownLocation().removeObservers(this)
+    }
 
     private val routeStatsObserver = Observer<RouteStats> { stats ->
         tvDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
         tvPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
+    }
+
+    private val routeObserver = Observer<List<LatLng>> { points ->
+        if(isMapShown) {
+            myRun.points = points
+            if(points.isNotEmpty()) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.last(), 18f))
+            }
+        }
     }
 
     private val isTrackingObserver = Observer<Boolean> {
@@ -51,9 +68,11 @@ class RunFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = mainActivity.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
-        }
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+
+        mapView.onCreate(savedInstanceState)
+        mapView.onResume()
+        mapView.getMapAsync(this)
 
         viewModel.getRouteStats().observe(this, routeStatsObserver)
         viewModel.getIsTracking().observe(this, isTrackingObserver)
@@ -68,7 +87,28 @@ class RunFragment : BaseFragment() {
 
         bStopRun.setOnClickListener { onStopClick() }
 
-        bLocation.setOnClickListener { mainActivity.addContent(MapFragment()) }
+        bLocation.setOnClickListener { showMap() }
+
+        bDismiss.setOnClickListener { hideMap() }
+    }
+
+    override fun onMapCreated() {
+        viewModel.onMapShown()
+        viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
+    }
+
+    private fun showMap() {
+        isMapShown = true
+        viewModel.getRoutePoints().observe(this, routeObserver)
+        mapView.visibility = View.VISIBLE
+        bDismiss.visibility = View.VISIBLE
+    }
+
+    private fun hideMap() {
+        isMapShown = false
+        viewModel.getRoutePoints().removeObservers(this)
+        mapView.visibility = View.GONE
+        bDismiss.visibility = View.GONE
     }
 
     private fun onStartClick() {
@@ -98,8 +138,8 @@ class RunFragment : BaseFragment() {
         bStartRun.visibility = View.VISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         if(!mainActivity.isBottomNavEnabled) {
             mainActivity.enableBottomNavigation()
         }

@@ -17,6 +17,7 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.presentation.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.map.RunFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
@@ -66,7 +67,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         } else {
             hideBottomNavigation()
             supportFragmentManager.beginTransaction()
-                .add(R.id.mainContainer, LoginFragment())
+                .add(mainContainer.id, LoginFragment())
                 .commit()
         }
     }
@@ -83,12 +84,11 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         navBottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.action_run -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainContainer, RunFragment())
-                        .commit()
+                    navigateToRunFragment()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_past_routes -> {
+                    navigateToPastHistory()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_achievements -> {
@@ -99,6 +99,24 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         }
 
         navBottom.selectedItemId = R.id.action_run
+    }
+
+    private fun navigateToRunFragment() {
+        if(isFragmentInBackStack(RunFragment::class.java.name)) {
+            popBackStackToFragment(RunFragment::class.java.name)
+        } else {
+            clearBackStack()
+            switchContent(RunFragment())
+        }
+    }
+
+    private fun navigateToPastHistory() {
+        if(isFragmentInBackStack(PastRoutesFragment::class.java.name)) {
+            popBackStackToFragment(PastRoutesFragment::class.java.name)
+        } else {
+            clearBackStack()
+            switchContent(PastRoutesFragment())
+        }
     }
 
     fun showBottomNavigation() {
@@ -123,6 +141,14 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         for(item in menuItems) {
             navBottom.menu.findItem(item).isEnabled = true
         }
+    }
+
+    fun switchContent(fragment: Fragment) {
+        switchContent(mainContainer.id, fragment)
+    }
+
+    fun addContent(fragment: Fragment) {
+        addContent(mainContainer.id, fragment)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

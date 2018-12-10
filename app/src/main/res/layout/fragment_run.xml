@@ -167,6 +167,7 @@
 		android:textSize="21sp"
 		android:fontFamily="sans-serif-smallcaps"
 		android:contentDescription="@null"
+		style="@style/Widget.AppCompat.Button.Borderless"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="@id/vBottomPanel"
@@ -269,6 +270,31 @@
 		app:layout_constraintStart_toEndOf="@id/ibStopMusic"
 		app:layout_constraintTop_toTopOf="@id/ibStopMusic"
 		app:layout_constraintEnd_toEndOf="parent"
+	/>
+	
+	<com.google.android.gms.maps.MapView
+		android:id="@+id/mapView"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:visibility="gone"
+	/>
+	
+	<ImageButton
+		android:id="@+id/bDismiss"
+		android:layout_width="50dp"
+		android:layout_height="50dp"
+		android:src="@drawable/ic_cross"
+		android:contentDescription="@null"
+		android:background="@drawable/circular_button_black"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:layout_marginBottom="30dp"
+		android:visibility="gone"
 	/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

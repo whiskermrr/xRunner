@@ -1,12 +1,13 @@
 package com.whisker.mrr.xrunner.presentation.map
 
-import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
+import com.whisker.mrr.xrunner.utils.DateUtils
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.RunnerTimer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,6 +26,7 @@ class MapViewModel
 
     private val disposables = CompositeDisposable()
     private val runnerTimer = RunnerTimer()
+    private val route: Route = Route()
 
     fun onMapShown() {
         disposables.add(
@@ -40,6 +42,7 @@ class MapViewModel
     }
     
     fun startTracking() {
+        route.date = System.currentTimeMillis()
         runnerTimer.startTimer()
         isTracking.postValue(true)
         routePoints.value = listOf()
@@ -75,12 +78,13 @@ class MapViewModel
         isTracking.postValue(false)
         locationRepository.stopTracking()
         if(routePoints.value != null && routeStats.value != null) {
-            if(routeStats.value!!.wgs84distance == 0f) return
-                calculateFinalStats()
-            val route = Route(
-                runnerTimer.getStartTime().toString(),
-                routePoints.value!!,
-                routeStats.value!!)
+            if(routeStats.value!!.wgs84distance == 0f) {
+                return
+            }
+            calculateFinalStats()
+            route.name = DateUtils.formatDate(route.date, DateUtils.EEE_MMM_d_yyyy)
+            route.routeStats = routeStats.value!!
+            route.waypoints = LatLngMapper.latLngToCoordsTransform(routePoints.value!!)
             finalRoute.postValue(route)
         }
     }
@@ -94,7 +98,7 @@ class MapViewModel
                         latLng
                     },
                     secondCoords = latLng,
-                    time = SystemClock.elapsedRealtime() - runnerTimer.getStartTime()
+                    time = runnerTimer.getElapsedTime()
                 )
     }
 

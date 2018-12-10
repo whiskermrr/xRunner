@@ -65,10 +65,12 @@ ext.lib = [
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     // Kotlin + Anko
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko-sdk15:${lib.anko}"
     implementation "org.jetbrains.anko:anko-common:${lib.anko}"
+
     //Android
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
@@ -78,27 +80,34 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+
     // Rx
     implementation "io.reactivex.rxjava2:rxjava:${lib.rxjava}"
     implementation "io.reactivex.rxjava2:rxandroid:${lib.rxandroid}"
     implementation "io.reactivex.rxjava2:rxkotlin:${lib.rxkotlin}"
+
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
+
     // Firebase
     implementation 'com.google.firebase:firebase-auth:16.0.4'
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.google.firebase:firebase-storage:16.0.4'
+
     // Dagger
     implementation "com.google.dagger:dagger:${lib.dagger}"
     implementation "com.google.dagger:dagger-android:${lib.dagger}"
     implementation "com.google.dagger:dagger-android-support:${lib.dagger}"
     kapt "com.google.dagger:dagger-compiler:${lib.dagger}"
     kapt "com.google.dagger:dagger-android-processor:${lib.dagger}"
+
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

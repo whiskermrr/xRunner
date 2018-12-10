@@ -2,6 +2,7 @@ package com.whisker.mrr.xrunner.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.whisker.mrr.xrunner.presentation.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.login.LoginViewModel
 import com.whisker.mrr.xrunner.presentation.map.MapViewModel
 import com.whisker.mrr.xrunner.presentation.summary.SummaryRunViewModel
@@ -29,4 +30,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SummaryRunViewModel::class)
     internal abstract fun bindSummaryRunViewModel(SummaryRunViewModel: SummaryRunViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PastRoutesViewModel::class)
+    internal abstract fun bindPastRoutesViewModel(pastRoutesViewModel: PastRoutesViewModel) : ViewModel
 }

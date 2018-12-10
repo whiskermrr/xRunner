@@ -1,13 +1,9 @@
 package com.whisker.mrr.xrunner.data.repository
 
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
 import com.whisker.mrr.xrunner.data.datasource.LocationDataSource
-import com.whisker.mrr.xrunner.data.datasource.UserDataSource
 import com.whisker.mrr.xrunner.domain.mapper.LocationMapper
-import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
-import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
