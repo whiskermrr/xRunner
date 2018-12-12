@@ -12,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.whisker.mrr.xrunner.R
+import com.whisker.mrr.xrunner.domain.bus.RxBus
+import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
@@ -21,6 +23,7 @@ import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 import org.jetbrains.anko.textColor
@@ -57,9 +60,14 @@ class SummaryRunFragment : BaseMapFragment() {
             ViewModelProviders.of(this, viewModelFactory).get(SummaryRunViewModel::class.java)
         }
 
-        liteMapView.onCreate(savedInstanceState)
-        liteMapView.onResume()
-        liteMapView.getMapAsync(this)
+        RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
+            if(event is NetworkStateEvent && event.isNetworkAvailable) {
+                routeProgressBar.visibility = View.VISIBLE
+                liteMapView.onCreate(savedInstanceState)
+                liteMapView.onResume()
+                liteMapView.getMapAsync(this)
+            }
+        })
 
         initStatsView()
 

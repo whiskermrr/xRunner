@@ -49,6 +49,8 @@
 			android:id="@+id/routeProgressBar"
 			android:backgroundTint="@color/colorPrimary"
 			android:max="100"
+			android:visibility="gone"
+			tools:visibility="visible"
 			app:layout_constraintTop_toTopOf="@id/liteMapView"
 			app:layout_constraintBottom_toBottomOf="@id/liteMapView"
 			app:layout_constraintStart_toStartOf="@id/liteMapView"
