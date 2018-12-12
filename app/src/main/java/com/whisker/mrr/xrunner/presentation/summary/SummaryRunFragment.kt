@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
@@ -26,7 +25,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 import org.jetbrains.anko.textColor
 
-class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
+class SummaryRunFragment : BaseMapFragment() {
 
     private lateinit var viewModel: SummaryRunViewModel
     private val disposables: CompositeDisposable = CompositeDisposable()
@@ -75,17 +74,26 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     override fun onMapCreated() {
+        mMap.setOnMapLoadedCallback {
+            enableSnapshotButton()
+            showMapSnapshot()
+        }
         val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(
                 LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints)
             )
         val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
-        showMapSnapshot()
     }
 
     private fun showMapSnapshot() {
         routeProgressBar.visibility = View.GONE
         liteMapView.visibility = View.VISIBLE
+    }
+
+    private fun enableSnapshotButton() {
+        bSaveSnapshot.isEnabled = true
+        bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_black)
+        bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorAccent)
     }
 
     private fun getScreenWidth() : Int {
