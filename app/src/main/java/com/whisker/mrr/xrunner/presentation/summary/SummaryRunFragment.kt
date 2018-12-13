@@ -46,7 +46,6 @@ class SummaryRunFragment : BaseMapFragment() {
         if(arguments != null) {
             finalRoute = arguments?.getParcelable(xRunnerConstants.EXTRA_FINAL_ROUTE_KEY)!!
         }
-
         polylineOptions.addAll(LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints))
     }
 

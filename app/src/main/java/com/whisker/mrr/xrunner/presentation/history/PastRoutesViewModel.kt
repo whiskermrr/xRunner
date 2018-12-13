@@ -13,7 +13,7 @@ class PastRoutesViewModel
 @Inject constructor(private val routeRepository: RouteRepository)
 : ViewModel() {
 
-    private val routeList = MutableLiveData<List<Route>>()
+    private val routeList = MutableLiveData<Map<Long, List<Route>>>()
     private val disposables = CompositeDisposable()
 
     init {

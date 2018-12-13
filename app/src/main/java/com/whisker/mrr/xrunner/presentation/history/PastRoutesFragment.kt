@@ -29,7 +29,7 @@ class PastRoutesFragment : BaseFragment() {
         rvRoutes.adapter = routesAdapter
 
         viewModel.getRouteList().observe(this, Observer {routes ->
-            routesAdapter.setRoutes(routes)
+            routesAdapter.setRoutes(routes.values.first())
         })
     }
 }

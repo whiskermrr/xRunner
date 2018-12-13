@@ -13,5 +13,17 @@ class DateUtils {
             val sdf = SimpleDateFormat(format, Locale.getDefault())
             return sdf.format(dateObj)
         }
+
+        fun getFirstDayOfTheMonthInMillis(time: Long) : Long {
+            val calendar = Calendar.getInstance(TimeZone.getDefault())
+            calendar.timeInMillis = time
+            calendar.set(Calendar.DAY_OF_MONTH, 1)
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+
+            return calendar.timeInMillis
+        }
     }
 }
