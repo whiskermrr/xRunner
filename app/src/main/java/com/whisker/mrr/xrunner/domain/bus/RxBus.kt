@@ -73,7 +73,7 @@ object RxBus {
     }
 
     fun unsubscribeSticky(lifecycle: Any) {
-        val subscription: CompositeDisposable? = subscriptionMap.remove(lifecycle)
+        val subscription: CompositeDisposable? = stickySubscripionMap.remove(lifecycle)
         subscription?.dispose()
     }
 

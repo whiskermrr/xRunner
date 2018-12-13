@@ -3,6 +3,7 @@ package com.whisker.mrr.xrunner.presentation.summary
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,17 +52,17 @@ class SummaryRunFragment : BaseMapFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.e(TAG, "onCreateView")
         return layoutInflater.inflate(R.layout.fragment_summary_run, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = mainActivity.run {
-            ViewModelProviders.of(this, viewModelFactory).get(SummaryRunViewModel::class.java)
-        }
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SummaryRunViewModel::class.java)
 
         RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
             if(event is NetworkStateEvent && event.isNetworkAvailable) {
+                tvCantLoadSnapshot.visibility = View.GONE
                 routeProgressBar.visibility = View.VISIBLE
                 liteMapView.onCreate(savedInstanceState)
                 liteMapView.onResume()
@@ -85,6 +86,7 @@ class SummaryRunFragment : BaseMapFragment() {
         mMap.setOnMapLoadedCallback {
             enableSnapshotButton()
             showMapSnapshot()
+            mMap.setOnMapLoadedCallback(null)
         }
         val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(
                 LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints)
@@ -119,6 +121,7 @@ class SummaryRunFragment : BaseMapFragment() {
 
     private fun initStatsView() {
         val stats = finalRoute.routeStats
+        tvRouteTitle.text = finalRoute.name
         tvSummaryDistance.text = getString(R.string.distance_format_2, stats.kilometers, stats.meters)
         tvSummaryPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
         tvSummaryTime.text = if(stats.hours == 0) {
@@ -146,5 +149,10 @@ class SummaryRunFragment : BaseMapFragment() {
                     onSnapshotSaved()
                 }
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        RxBus.unsubscribeSticky(this)
     }
 }

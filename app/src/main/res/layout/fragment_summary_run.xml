@@ -17,7 +17,7 @@
 			android:layout_height="wrap_content"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			android:text="Name:"
+			android:text="@string/name_label"
 			android:layout_margin="16dp"
 			android:textSize="18sp"
 		/>
@@ -26,7 +26,7 @@
 			android:id="@+id/tvRouteTitle"
 			android:textColor="@color/colorAccent"
 			android:textSize="18sp"
-			android:text="Sun 31 Dec 2018"
+			tools:text="Sun 31 Dec 2018"
 			app:layout_constraintStart_toEndOf="@id/tvRouteNameLabel"
 			app:layout_constraintTop_toTopOf="parent"
 			android:layout_margin="16dp"
@@ -57,6 +57,18 @@
 			app:layout_constraintEnd_toEndOf="@id/liteMapView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
+		
+		<TextView
+			android:id="@+id/tvCantLoadSnapshot"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/cant_load_snapshot"
+			android:gravity="center_horizontal"
+			app:layout_constraintTop_toTopOf="@id/liteMapView"
+			app:layout_constraintBottom_toBottomOf="@id/liteMapView"
+			app:layout_constraintStart_toStartOf="@id/liteMapView"
+			app:layout_constraintEnd_toEndOf="@id/liteMapView"
+		/>
 		
 		<Button
 			android:id="@+id/bSaveSnapshot"
