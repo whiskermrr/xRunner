@@ -1,7 +1,9 @@
 package com.whisker.mrr.xrunner.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.widget.ImageView
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
@@ -43,4 +45,10 @@ fun Context.getFile(fileName: String) : File {
 fun Context.fileExists(fileName: String) : Boolean {
     val file = getFileStreamPath(fileName)
     return file.exists()
+}
+
+fun Activity.getScreenWidth() : Int {
+    val size = Point()
+    windowManager.defaultDisplay.getSize(size)
+    return size.x
 }

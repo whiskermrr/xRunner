@@ -1,9 +1,7 @@
 package com.whisker.mrr.xrunner.presentation.summary
 
 import android.graphics.Bitmap
-import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +17,7 @@ import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
+import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
@@ -52,7 +51,6 @@ class SummaryRunFragment : BaseMapFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.e(TAG, "onCreateView")
         return layoutInflater.inflate(R.layout.fragment_summary_run, container, false)
     }
 
@@ -91,7 +89,7 @@ class SummaryRunFragment : BaseMapFragment() {
         val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(
                 LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints)
             )
-        val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
+        val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, mainActivity.getScreenWidth())
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
     }
 
@@ -104,12 +102,6 @@ class SummaryRunFragment : BaseMapFragment() {
         bSaveSnapshot.isEnabled = true
         bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_black)
         bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorAccent)
-    }
-
-    private fun getScreenWidth() : Int {
-        val size = Point()
-        mainActivity.windowManager.defaultDisplay.getSize(size)
-        return size.x
     }
 
     private fun onSnapshotSaved() {
