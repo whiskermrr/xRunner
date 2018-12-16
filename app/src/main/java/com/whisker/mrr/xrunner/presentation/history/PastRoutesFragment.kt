@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.BaseFragment
 import com.whisker.mrr.xrunner.presentation.adapters.RoutesAdapter
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_past_routes.*
 
 class PastRoutesFragment : BaseFragment() {
 
     private lateinit var viewModel: PastRoutesViewModel
-    private val routesAdapter: RoutesAdapter = RoutesAdapter()
+    private lateinit var routesAdapter: SectionedRecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_past_routes, container, false)
@@ -25,11 +26,15 @@ class PastRoutesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PastRoutesViewModel::class.java)
 
+        routesAdapter = SectionedRecyclerViewAdapter()
         rvRoutes.layoutManager = LinearLayoutManager(context)
         rvRoutes.adapter = routesAdapter
 
-        viewModel.getRouteList().observe(this, Observer {routes ->
-            routesAdapter.setRoutes(routes)
+        viewModel.getRouteList().observe(this, Observer {holders ->
+            for(holder in holders) {
+                routesAdapter.addSection(RoutesAdapter(holder))
+                routesAdapter.notifyDataSetChanged()
+            }
         })
     }
 }

@@ -3,6 +3,7 @@ package com.whisker.mrr.xrunner.presentation.summary
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.whisker.mrr.xrunner.domain.mapper.RouteMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import io.reactivex.Completable
@@ -19,7 +20,7 @@ class SummaryRunViewModel
 
     fun saveRoute(route: Route) {
         disposables.add(
-            routeRepository.saveRoute(route)
+            routeRepository.saveRoute(RouteMapper.routeToEntityTransform(route))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

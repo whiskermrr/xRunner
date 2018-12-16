@@ -5,9 +5,10 @@ import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
 import com.whisker.mrr.xrunner.data.datasource.SnapshotLocalSource
 import com.whisker.mrr.xrunner.data.datasource.SnapshotRemoteSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
+import com.whisker.mrr.xrunner.data.model.RouteEntity
+import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
-import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -34,14 +35,14 @@ class RouteDataRepository
         })
     }
 
-    override fun saveRoute(route: Route): Completable {
+    override fun saveRoute(route: RouteEntity): Completable {
         return userDataSource.getUserId()
             .flatMapCompletable { userId ->
                 routeDatabaseSource.saveRoute(route, userId)
             }
     }
 
-    override fun getRouteList(): Flowable<List<Route>> {
+    override fun getRouteList(): Flowable<List<RouteEntityHolder>> {
         return userDataSource.getUserId()
             .flatMapPublisher { userId ->
                 routeDatabaseSource.getRoutesByUserId(userId)

@@ -1,7 +1,9 @@
 package com.whisker.mrr.xrunner.data.datasource
 
 import com.google.firebase.database.*
-import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.data.model.RouteEntity
+import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
+import com.whisker.mrr.xrunner.utils.DateUtils
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.REFERENCE_ROUTES
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.REFERENCE_USERS
 import io.reactivex.BackpressureStrategy
@@ -11,8 +13,12 @@ import javax.inject.Inject
 
 class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) {
 
-    fun saveRoute(route: Route, userId : String) : Completable {
-        val databaseReference = firebaseDatabase.reference.child(REFERENCE_USERS).child(userId).child(REFERENCE_ROUTES)
+    fun saveRoute(route: RouteEntity, userId : String) : Completable {
+        val databaseReference = firebaseDatabase.reference
+            .child(REFERENCE_USERS).child(userId)
+            .child(REFERENCE_ROUTES)
+            .child(DateUtils.getFirstDayOfTheMonthInMillis(route.date).toString())
+
         route.routeId = databaseReference.push().key!!
         return Completable.create { emitter ->
             databaseReference.child(route.routeId).setValue(route).addOnCompleteListener { task ->
@@ -25,24 +31,30 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
         }
     }
 
-    fun getRoutesByUserId(userId: String) : Flowable<List<Route>> {
+    fun getRoutesByUserId(userId: String) : Flowable<List<RouteEntityHolder>> {
         val databaseReference = firebaseDatabase.reference
             .child(REFERENCE_USERS)
             .child(userId)
             .child(REFERENCE_ROUTES)
-            .orderByKey()
 
         return Flowable.create({ emitter ->
             databaseReference.addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val routeList = mutableListOf<Route>()
-                    dataSnapshot.children.forEach { child ->
-                        val route = child.getValue(Route::class.java)
-                        route?.let {
-                            routeList.add(route)
+                    val holders = mutableListOf<RouteEntityHolder>()
+                    dataSnapshot.children.forEach { childList ->
+                        val holder = RouteEntityHolder()
+                        holder.month = childList.key!!.toLong()
+                        childList.children.forEach { child ->
+                            val route = child.getValue(RouteEntity::class.java)
+                            route?.let {
+                                holder.totalDistance += it.routeStats.wgs84distance
+                                holder.totalTime += it.routeStats.routeTime
+                                holder.routes.add(it)
+                            }
                         }
+                        holders.add(holder)
                     }
-                    emitter.onNext(routeList)
+                    emitter.onNext(holders)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

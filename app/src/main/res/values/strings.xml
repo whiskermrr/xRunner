@@ -26,9 +26,14 @@
 	<string name="duration">Duration</string>
 	<string name="kilometers_per_hour">km/h</string>
 	<string name="heart_rate">Heart Rate</string>
-	<string name="sync">Sync...</string>
+	<string name="sync">Sync…</string>
 	<string name="running">Running</string>
 	<string name="run_history">Run History</string>
 	<string name="achievements">Achievements</string>
 	<string name="example_song_name">Deadmau5 - Message from nowhere</string>
+	<string name="cant_load_snapshot">No Internet connection.\nCan\'t load snapshot.</string>
+	<string name="name_label">Name:</string>
+	<string name="total_distance">distance:</string>
+	<string name="total_pace">pace:</string>
+	<string name="total_time">time:</string>
 </resources>

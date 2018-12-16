@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
-import com.whisker.mrr.xrunner.utils.FileUtils
+import com.whisker.mrr.xrunner.utils.getFile
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
@@ -80,7 +80,7 @@ class SnapshotSyncService : Service() {
             completableList.add(
                 Completable.create { emitter ->
                     val snapshotReference = firebaseStorage.reference.child("snapshots/$fileName")
-                    val fileUri = Uri.fromFile(FileUtils.getFile(applicationContext, fileName))
+                    val fileUri = Uri.fromFile(applicationContext.getFile(fileName))
                     snapshotReference.putFile(fileUri).addOnCompleteListener { task ->
                         if(task.isSuccessful) {
                             snapshotNames.remove(fileName)

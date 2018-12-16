@@ -1,13 +1,14 @@
 package com.whisker.mrr.xrunner.domain.repository
 
 import android.graphics.Bitmap
-import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.data.model.RouteEntity
+import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
 interface RouteRepository {
 
-    fun saveRoute(route: Route) : Completable
+    fun saveRoute(route: RouteEntity) : Completable
     fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable
-    fun getRouteList() : Flowable<List<Route>>
+    fun getRouteList() : Flowable<List<RouteEntityHolder>>
 }

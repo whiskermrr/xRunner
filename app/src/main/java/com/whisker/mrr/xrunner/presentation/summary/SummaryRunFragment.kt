@@ -1,7 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.summary
 
 import android.graphics.Bitmap
-import android.graphics.Point
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,22 +10,24 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
+import com.whisker.mrr.xrunner.domain.bus.RxBus
+import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
+import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 import org.jetbrains.anko.textColor
 
-class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
+class SummaryRunFragment : BaseMapFragment() {
 
     private lateinit var viewModel: SummaryRunViewModel
     private val disposables: CompositeDisposable = CompositeDisposable()
@@ -44,8 +45,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         if(arguments != null) {
             finalRoute = arguments?.getParcelable(xRunnerConstants.EXTRA_FINAL_ROUTE_KEY)!!
         }
-
-        polylineOptions.addAll(LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints))
+        polylineOptions.addAll(finalRoute.waypoints)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,13 +54,17 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = mainActivity.run {
-            ViewModelProviders.of(this, viewModelFactory).get(SummaryRunViewModel::class.java)
-        }
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SummaryRunViewModel::class.java)
 
-        liteMapView.onCreate(savedInstanceState)
-        liteMapView.onResume()
-        liteMapView.getMapAsync(this)
+        RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
+            if(event is NetworkStateEvent && event.isNetworkAvailable) {
+                tvCantLoadSnapshot.visibility = View.GONE
+                routeProgressBar.visibility = View.VISIBLE
+                liteMapView.onCreate(savedInstanceState)
+                liteMapView.onResume()
+                liteMapView.getMapAsync(this)
+            }
+        })
 
         initStatsView()
 
@@ -75,12 +79,14 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
     }
 
     override fun onMapCreated() {
-        val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(
-                LatLngMapper.coordsToLatLngTransform(finalRoute.waypoints)
-            )
-        val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, getScreenWidth())
+        mMap.setOnMapLoadedCallback {
+            enableSnapshotButton()
+            showMapSnapshot()
+            mMap.setOnMapLoadedCallback(null)
+        }
+        val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(finalRoute.waypoints)
+        val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, mainActivity.getScreenWidth())
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
-        showMapSnapshot()
     }
 
     private fun showMapSnapshot() {
@@ -88,10 +94,10 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
         liteMapView.visibility = View.VISIBLE
     }
 
-    private fun getScreenWidth() : Int {
-        val size = Point()
-        mainActivity.windowManager.defaultDisplay.getSize(size)
-        return size.x
+    private fun enableSnapshotButton() {
+        bSaveSnapshot.isEnabled = true
+        bSaveSnapshot.background = mainActivity.getDrawable(R.drawable.rounded_corners_button_black)
+        bSaveSnapshot.textColor = ContextCompat.getColor(mainActivity, R.color.colorAccent)
     }
 
     private fun onSnapshotSaved() {
@@ -103,6 +109,7 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
 
     private fun initStatsView() {
         val stats = finalRoute.routeStats
+        tvRouteTitle.text = finalRoute.name
         tvSummaryDistance.text = getString(R.string.distance_format_2, stats.kilometers, stats.meters)
         tvSummaryPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
         tvSummaryTime.text = if(stats.hours == 0) {
@@ -130,5 +137,10 @@ class SummaryRunFragment : BaseMapFragment(), OnMapReadyCallback {
                     onSnapshotSaved()
                 }
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        RxBus.unsubscribeSticky(this)
     }
 }

@@ -11,12 +11,35 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 		
+		<TextView
+			android:id="@+id/tvRouteNameLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:text="@string/name_label"
+			android:layout_margin="16dp"
+			android:textSize="18sp"
+		/>
+		
+		<TextView
+			android:id="@+id/tvRouteTitle"
+			android:textColor="@color/colorAccent"
+			android:textSize="18sp"
+			tools:text="Sun 31 Dec 2018"
+			app:layout_constraintStart_toEndOf="@id/tvRouteNameLabel"
+			app:layout_constraintTop_toTopOf="parent"
+			android:layout_margin="16dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+		
 		<com.google.android.gms.maps.MapView
 			android:id="@+id/liteMapView"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tvRouteTitle"
 			app:layout_constraintDimensionRatio="1:1"
 			map:liteMode="true"
 			android:visibility="invisible"
@@ -24,10 +47,10 @@
 		
 		<ProgressBar
 			android:id="@+id/routeProgressBar"
-			android:indeterminate="true"
-			android:indeterminateTint="@color/colorPrimary"
-			android:backgroundTint="@color/colorFlashGreen"
+			android:backgroundTint="@color/colorPrimary"
 			android:max="100"
+			android:visibility="gone"
+			tools:visibility="visible"
 			app:layout_constraintTop_toTopOf="@id/liteMapView"
 			app:layout_constraintBottom_toBottomOf="@id/liteMapView"
 			app:layout_constraintStart_toStartOf="@id/liteMapView"
@@ -35,15 +58,28 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 		
+		<TextView
+			android:id="@+id/tvCantLoadSnapshot"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/cant_load_snapshot"
+			android:gravity="center_horizontal"
+			app:layout_constraintTop_toTopOf="@id/liteMapView"
+			app:layout_constraintBottom_toBottomOf="@id/liteMapView"
+			app:layout_constraintStart_toStartOf="@id/liteMapView"
+			app:layout_constraintEnd_toEndOf="@id/liteMapView"
+		/>
+		
 		<Button
 			android:id="@+id/bSaveSnapshot"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:background="@drawable/rounded_corners_button_black"
-			android:textColor="@color/colorAccent"
+			android:background="@drawable/rounded_corners_button_disabled"
+			android:textColor="@color/colorCatalogLightGrayTitle"
 			android:text="@string/save_snapshot"
 			android:textStyle="bold"
 			android:textSize="18sp"
+			android:enabled="false"
 			app:layout_constraintTop_toBottomOf="@id/liteMapView"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"

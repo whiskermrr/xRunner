@@ -1,43 +1,53 @@
 package com.whisker.mrr.xrunner.presentation.adapters
 
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.domain.model.RouteHolder
 import com.whisker.mrr.xrunner.utils.loadSnapshot
-import org.jetbrains.anko.layoutInflater
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
+import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
 import java.util.*
 
-class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteViewHolder>() {
+class RoutesAdapter(private val routeHolder: RouteHolder) :
+    StatelessSection(SectionParameters.builder()
+        .itemResourceId(R.layout.route_list_item)
+        .headerResourceId(R.layout.route_list_header)
+        .build()) {
 
-    private var routes: List<Route> = listOf()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteViewHolder {
-        val view: View = parent.context.layoutInflater.inflate(R.layout.route_list_item, parent, false)
-        return RouteViewHolder(view)
+    override fun getContentItemsTotal(): Int {
+        return routeHolder.routes.size
     }
 
-    override fun getItemCount(): Int {
-        return routes.size
+    override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        (holder as RouteViewHolder).bind(routeHolder.routes[position])
     }
 
-    override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
-        holder.bind(routes[position])
+    override fun getItemViewHolder(view: View?): RecyclerView.ViewHolder {
+        return RouteViewHolder(view!!)
     }
 
-    fun setRoutes(routes: List<Route>) {
-        this.routes = routes
-        notifyDataSetChanged()
+    override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder?) {
+        (holder as RouteHeaderHolder).bind(
+            routeHolder.month,
+            routeHolder.totalDistance,
+            routeHolder.averagePace,
+            routeHolder.totalTime
+        )
+    }
+
+    override fun getHeaderViewHolder(view: View?): RecyclerView.ViewHolder {
+        return RouteHeaderHolder(view!!)
     }
 
     inner class RouteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var ivRouteSnapshot: ImageView = itemView.findViewById(R.id.ivRouteSnapshot)
-        private var tvRouteName: TextView = itemView.findViewById(R.id.tvRouteName)
-        private var tvRouteDescription: TextView = itemView.findViewById(R.id.tvRouteDescription)
+        private val ivRouteSnapshot: ImageView = itemView.findViewById(R.id.ivRouteSnapshot)
+        private val tvRouteName: TextView = itemView.findViewById(R.id.tvRouteName)
+        private val tvRouteDescription: TextView = itemView.findViewById(R.id.tvRouteDescription)
 
         fun bind(route: Route) {
             ivRouteSnapshot.loadSnapshot(route.date.toString())
@@ -52,6 +62,20 @@ class RoutesAdapter : RecyclerView.Adapter<RoutesAdapter.RouteViewHolder>() {
                         route.routeStats.minutes,
                         route.routeStats.seconds
                         )
+        }
+    }
+
+    inner class RouteHeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val tvMonthHeader: TextView = itemView.findViewById(R.id.tvMonthHeader)
+        private val tvMonthDistance: TextView = itemView.findViewById(R.id.tvMonthDistance)
+        private val tvMonthPace: TextView = itemView.findViewById(R.id.tvMonthPace)
+        private val tvMonthTime: TextView = itemView.findViewById(R.id.tvMonthTime)
+
+        fun bind(month: String, distance: String, pace: String, time: String) {
+            tvMonthHeader.text = month
+            tvMonthDistance.text = distance
+            tvMonthPace.text = pace
+            tvMonthTime.text = time
         }
     }
 }
