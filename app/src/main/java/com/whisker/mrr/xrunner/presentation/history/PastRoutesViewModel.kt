@@ -2,7 +2,8 @@ package com.whisker.mrr.xrunner.presentation.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.domain.mapper.RouteMapper
+import com.whisker.mrr.xrunner.domain.model.RouteHolder
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,7 +14,7 @@ class PastRoutesViewModel
 @Inject constructor(private val routeRepository: RouteRepository)
 : ViewModel() {
 
-    private val routeList = MutableLiveData<Map<Long, List<Route>>>()
+    private val routeList = MutableLiveData<List<RouteHolder>>()
     private val disposables = CompositeDisposable()
 
     init {
@@ -23,6 +24,9 @@ class PastRoutesViewModel
     private fun getPastRoutesList() {
         disposables.add(
             routeRepository.getRouteList()
+                .map {
+                    RouteMapper.listOfEntityHoldersToListOfRouteHolders(it)
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { routes ->

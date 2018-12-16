@@ -34,6 +34,6 @@
 	<string name="cant_load_snapshot">No Internet connection.\nCan\'t load snapshot.</string>
 	<string name="name_label">Name:</string>
 	<string name="total_distance">distance:</string>
-	<string name="total_peace">peace:</string>
+	<string name="total_pace">pace:</string>
 	<string name="total_time">time:</string>
 </resources>

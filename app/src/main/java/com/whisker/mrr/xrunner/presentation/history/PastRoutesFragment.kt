@@ -30,8 +30,11 @@ class PastRoutesFragment : BaseFragment() {
         rvRoutes.layoutManager = LinearLayoutManager(context)
         rvRoutes.adapter = routesAdapter
 
-        viewModel.getRouteList().observe(this, Observer {routes ->
-            routesAdapter.addSection(RoutesAdapter(routes.values.first()))
+        viewModel.getRouteList().observe(this, Observer {holders ->
+            for(holder in holders) {
+                routesAdapter.addSection(RoutesAdapter(holder))
+                routesAdapter.notifyDataSetChanged()
+            }
         })
     }
 }

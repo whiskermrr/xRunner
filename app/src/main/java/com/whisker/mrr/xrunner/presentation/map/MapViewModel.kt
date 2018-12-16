@@ -3,7 +3,6 @@ package com.whisker.mrr.xrunner.presentation.map
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.domain.model.Route
 import com.whisker.mrr.xrunner.domain.model.RouteStats
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
@@ -84,7 +83,7 @@ class MapViewModel
             calculateFinalStats()
             route.name = DateUtils.formatDate(route.date, DateUtils.EEE_MMM_d_yyyy)
             route.routeStats = routeStats.value!!
-            route.waypoints = LatLngMapper.latLngToCoordsTransform(routePoints.value!!)
+            route.waypoints = routePoints.value!!
             finalRoute.postValue(route)
         }
     }

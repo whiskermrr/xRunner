@@ -1,7 +1,7 @@
 package com.whisker.mrr.xrunner.domain.mapper
 
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.model.Coords
+import com.whisker.mrr.xrunner.data.model.Coords
 
 class LatLngMapper {
 

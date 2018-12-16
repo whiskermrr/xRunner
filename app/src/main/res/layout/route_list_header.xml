@@ -48,26 +48,26 @@
 	/>
 	
 	<TextView
-		android:id="@+id/tvMonthPeaceLabel"
+		android:id="@+id/tvMonthPaceLabel"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toStartOf="@+id/tvMonthPeace"
+		app:layout_constraintEnd_toStartOf="@+id/tvMonthPace"
 		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
 		android:textColor="@color/colorFlashGreen"
-		android:text="@string/total_peace"
+		android:text="@string/total_pace"
 		android:layout_marginTop="4dp"
 		android:layout_marginBottom="4dp"
 		android:textSize="16sp"
 	/>
 	
 	<TextView
-		android:id="@+id/tvMonthPeace"
+		android:id="@+id/tvMonthPace"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toEndOf="@+id/tvMonthPeaceLabel"
+		app:layout_constraintStart_toEndOf="@+id/tvMonthPaceLabel"
 		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
 		android:textColor="@color/colorWhite"
 		android:layout_marginStart="4dp"

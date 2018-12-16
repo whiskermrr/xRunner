@@ -7,6 +7,7 @@ class DateUtils {
 
     companion object {
         const val EEE_MMM_d_yyyy = "EEE, MMM d, yyyy, HH:mm"
+        const val MMM_yyyy = "MMM yyyy"
 
         fun formatDate(date: Long, format: String) : String {
             val dateObj = Date(date)

@@ -3,6 +3,10 @@ package com.whisker.mrr.xrunner.utils
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.domain.model.RouteStats
+import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_HOUR
+import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_MINUTE
+import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.xrunner.utils.xRunnerConstants.MINUTES_PER_HOUR
 import kotlin.math.pow
 
 class LocationUtils {
@@ -12,10 +16,6 @@ class LocationUtils {
         private const val EQUATOR_LENGTH_IN_METERS = 40075004.0
         private const val EQUATOR_LENGTH_IN_PIXELS = 256
         private const val MAX_ZOOM = 19
-        private const val MILLISECONDS_PER_HOUR = 3600000
-        private const val MILLISECONDS_PER_MINUTE = 60000
-        private const val MILLISECONDS_PER_SECOND = 1000
-        private const val MINUTES_PER_HOUR = 60
 
         private fun calculateWGS84Distance(firstCoords: LatLng, secondCoords: LatLng) : Float {
             val firstLocation = Location("A")
