@@ -111,7 +111,7 @@ class RouteMapper {
             routeHolder.totalTime = String.format(Locale.getDefault(), "%dh%dm", hours, minutes)
 
             val sumOfAverageSpeed = entityHolder.routes.map { it.routeStats.averageSpeed }.sum()
-            val pace = MINUTES_PER_HOUR / sumOfAverageSpeed / entityHolder.routes.size
+            val pace = MINUTES_PER_HOUR / (sumOfAverageSpeed / entityHolder.routes.size)
             val paceMin = pace.toInt()
             val paceSec = (pace % 1 * 60).toInt()
             routeHolder.averagePace = String.format(Locale.getDefault(), "%d'%d''", paceMin, paceSec)
