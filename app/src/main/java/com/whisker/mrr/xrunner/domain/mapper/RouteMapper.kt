@@ -102,8 +102,8 @@ class RouteMapper {
             routeHolder.month = DateUtils.formatDate(entityHolder.month, DateUtils.MMM_yyyy)
 
             val kilometers = (entityHolder.totalDistance / 1000).toInt()
-            val meters = (entityHolder.totalDistance - kilometers * 1000).toInt()
-            routeHolder.totalDistance = String.format(Locale.getDefault(), "%d.%03dkm", kilometers, meters)
+            val meters = (entityHolder.totalDistance - kilometers * 1000).toInt() / 10
+            routeHolder.totalDistance = String.format(Locale.getDefault(), "%d.%02dkm", kilometers, meters)
 
             val time = entityHolder.totalTime
             val hours = (time / MILLISECONDS_PER_HOUR).toInt()

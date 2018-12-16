@@ -22,41 +22,14 @@
 	/>
 	
 	<TextView
-		android:id="@+id/tvMonthDistanceLabel"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
-		app:layout_constraintStart_toStartOf="parent"
-		android:textColor="@color/colorFlashGreen"
-		android:text="@string/total_distance"
-		android:layout_marginStart="8dp"
-		android:layout_marginTop="4dp"
-		android:layout_marginBottom="4dp"
-		android:textSize="16sp"
-	/>
-	
-	<TextView
-		android:id="@+id/tvMonthDistance"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
-		app:layout_constraintStart_toEndOf="@id/tvMonthDistanceLabel"
-		android:textColor="@color/colorWhite"
-		android:layout_margin="4dp"
-		tools:text="23.56km"
-		android:textSize="16sp"
-	/>
-	
-	<TextView
 		android:id="@+id/tvMonthPaceLabel"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toStartOf="@+id/tvMonthPace"
-		app:layout_constraintHorizontal_chainStyle="packed"
 		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
+		app:layout_constraintStart_toStartOf="parent"
 		android:textColor="@color/colorFlashGreen"
 		android:text="@string/total_pace"
+		android:layout_marginStart="8dp"
 		android:layout_marginTop="4dp"
 		android:layout_marginBottom="4dp"
 		android:textSize="16sp"
@@ -66,15 +39,42 @@
 		android:id="@+id/tvMonthPace"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
+		app:layout_constraintStart_toEndOf="@id/tvMonthPaceLabel"
+		android:textColor="@color/colorWhite"
+		android:layout_margin="4dp"
+		tools:text="5'43''"
+		android:textSize="16sp"
+	/>
+	
+	<TextView
+		android:id="@+id/tvMonthDistanceLabel"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toStartOf="@+id/tvMonthDistance"
+		app:layout_constraintHorizontal_chainStyle="packed"
+		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
+		android:textColor="@color/colorFlashGreen"
+		android:text="@string/total_distance"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:textSize="16sp"
+	/>
+	
+	<TextView
+		android:id="@+id/tvMonthDistance"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toEndOf="@+id/tvMonthPaceLabel"
+		app:layout_constraintStart_toEndOf="@+id/tvMonthDistanceLabel"
 		app:layout_constraintTop_toBottomOf="@id/tvMonthHeader"
 		android:textColor="@color/colorWhite"
 		android:layout_marginStart="4dp"
 		android:layout_marginTop="4dp"
 		android:layout_marginBottom="4dp"
 		android:textSize="16sp"
-		tools:text="5'43''"
+		tools:text="23.56km"
 	/>
 	
 	<TextView
