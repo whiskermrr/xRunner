@@ -105,12 +105,13 @@ class RouteMapper {
             val meters = (entityHolder.totalDistance - kilometers * 1000).toInt()
             routeHolder.totalDistance = String.format(Locale.getDefault(), "%d.%03dkm", kilometers, meters)
 
-            val time = entityHolder.totalDistance
+            val time = entityHolder.totalTime
             val hours = (time / MILLISECONDS_PER_HOUR).toInt()
             val minutes = ((time % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
             routeHolder.totalTime = String.format(Locale.getDefault(), "%dh%dm", hours, minutes)
 
-            val pace = MINUTES_PER_HOUR / entityHolder.routes.map { it.routeStats.averageSpeed }.sum() / entityHolder.routes.size
+            val sumOfAverageSpeed = entityHolder.routes.map { it.routeStats.averageSpeed }.sum()
+            val pace = MINUTES_PER_HOUR / sumOfAverageSpeed / entityHolder.routes.size
             val paceMin = pace.toInt()
             val paceSec = (pace % 1 * 60).toInt()
             routeHolder.averagePace = String.format(Locale.getDefault(), "%d'%d''", paceMin, paceSec)
