@@ -1,11 +1,11 @@
-package com.whisker.mrr.xrunner.domain.mapper
+package com.whisker.mrr.xrunner.presentation.mapper
 
-import com.whisker.mrr.xrunner.data.model.RouteEntity
-import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
-import com.whisker.mrr.xrunner.data.model.RouteStatsEntity
-import com.whisker.mrr.xrunner.domain.model.Route
-import com.whisker.mrr.xrunner.domain.model.RouteHolder
-import com.whisker.mrr.xrunner.domain.model.RouteStats
+import com.whisker.mrr.xrunner.domain.model.RouteEntity
+import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
+import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
+import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteHolder
+import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.utils.DateUtils
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_HOUR
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_MINUTE

@@ -5,8 +5,8 @@ import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
 import com.whisker.mrr.xrunner.data.datasource.SnapshotLocalSource
 import com.whisker.mrr.xrunner.data.datasource.SnapshotRemoteSource
 import com.whisker.mrr.xrunner.data.datasource.UserDataSource
-import com.whisker.mrr.xrunner.data.model.RouteEntity
-import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
+import com.whisker.mrr.xrunner.domain.model.RouteEntity
+import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository

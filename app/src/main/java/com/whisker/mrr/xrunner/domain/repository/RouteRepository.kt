@@ -1,8 +1,8 @@
 package com.whisker.mrr.xrunner.domain.repository
 
 import android.graphics.Bitmap
-import com.whisker.mrr.xrunner.data.model.RouteEntity
-import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
+import com.whisker.mrr.xrunner.domain.model.RouteEntity
+import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
 import io.reactivex.Completable
 import io.reactivex.Flowable
 

@@ -3,8 +3,8 @@ package com.whisker.mrr.xrunner.presentation.summary
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.mapper.RouteMapper
-import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
+import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers

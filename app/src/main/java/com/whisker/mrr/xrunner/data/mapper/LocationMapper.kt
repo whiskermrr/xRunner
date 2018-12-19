@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.domain.mapper
+package com.whisker.mrr.xrunner.data.mapper
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng

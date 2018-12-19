@@ -2,7 +2,7 @@ package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.model.RouteStats
+import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_HOUR
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_MINUTE
 import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_SECOND

@@ -13,7 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
-import com.whisker.mrr.xrunner.domain.model.Route
+import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.getScreenWidth

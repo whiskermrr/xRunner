@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.model
+package com.whisker.mrr.xrunner.domain.model
 
 data class RouteEntityHolder(
     var month: Long = 0L,

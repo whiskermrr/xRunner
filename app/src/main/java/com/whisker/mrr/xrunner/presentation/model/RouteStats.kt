@@ -1,11 +1,14 @@
-package com.whisker.mrr.xrunner.data.model
+package com.whisker.mrr.xrunner.presentation.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class RouteStatsEntity(
-                 var routeTime: Long = 0L,
+class RouteStats(var kilometers: Int = 0,
+                 var meters: Int = 0,
+                 var hours: Int = 0,
+                 var minutes: Int = 0,
+                 var seconds: Int = 0,
                  var averageSpeed: Float = 0f,
                  var paceMin: Int = 0,
                  var paceSec: Int = 0,

@@ -2,8 +2,8 @@ package com.whisker.mrr.xrunner.presentation.history
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.mapper.RouteMapper
-import com.whisker.mrr.xrunner.domain.model.RouteHolder
+import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
+import com.whisker.mrr.xrunner.presentation.model.RouteHolder
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
