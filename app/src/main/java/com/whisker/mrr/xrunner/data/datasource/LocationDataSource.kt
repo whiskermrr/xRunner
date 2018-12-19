@@ -8,6 +8,7 @@ import android.location.LocationManager
 import android.os.Build
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
+import com.whisker.mrr.xrunner.domain.source.LocationSource
 import com.whisker.mrr.xrunner.infrastructure.LocationService
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -19,26 +20,26 @@ import javax.inject.Inject
 class LocationDataSource
 @Inject constructor(
     private val context: Context
-) {
+) : LocationSource {
 
     private lateinit var locationSubject: PublishSubject<Location>
 
-    fun startTracking() : Flowable<Location> {
+    override fun startTracking() : Flowable<Location> {
         startLocationService(LocationService.ACTION_START_TRACKING)
         locationSubject = PublishSubject.create()
         subscribeToLocationEvents()
         return locationSubject.toFlowable(BackpressureStrategy.LATEST)
     }
 
-    fun pauseTracking() {
+    override fun pauseTracking() {
         startLocationService(LocationService.ACTION_STOP_TRACKING)
     }
 
-    fun resumeTracking() {
+    override fun resumeTracking() {
         startLocationService(LocationService.ACTION_START_TRACKING)
     }
 
-    fun stopTracking() {
+    override fun stopTracking() {
         stopLocationService()
         RxBus.unsubscribe(this)
         locationSubject.onComplete()
@@ -68,7 +69,7 @@ class LocationDataSource
     }
 
     @SuppressLint("MissingPermission")
-    fun getBestLastKnownLocation() : Maybe<Location> {
+    override fun getBestLastKnownLocation() : Maybe<Location> {
         val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val providers = locationManager.getProviders(true)
         var bestLocation: Location? = null
