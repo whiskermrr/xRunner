@@ -2,14 +2,16 @@ package com.whisker.mrr.xrunner.presentation.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.repository.LoginRepository
+import com.whisker.mrr.xrunner.domain.interactor.CreateAccountInteractor
+import com.whisker.mrr.xrunner.domain.interactor.LoginInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class LoginViewModel
-@Inject constructor(private val loginDataRepository: LoginRepository) : ViewModel() {
+@Inject constructor(private val loginInteractor: LoginInteractor,
+                    private val createAccountInteractor: CreateAccountInteractor) : ViewModel() {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
     private val loginStatus = MutableLiveData<Boolean>()
@@ -17,7 +19,7 @@ class LoginViewModel
 
     fun firebaseLogin(email: String, password: String) {
         disposables.add(
-            loginDataRepository.login(email, password)
+            loginInteractor.loginUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {
@@ -30,7 +32,7 @@ class LoginViewModel
 
     fun firebaseCreateAccount(email: String, password: String) {
         disposables.add(
-            loginDataRepository.createAccount(email, password)
+            createAccountInteractor.createAccount(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {

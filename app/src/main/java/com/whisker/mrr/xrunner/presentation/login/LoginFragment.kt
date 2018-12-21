@@ -20,14 +20,17 @@ class LoginFragment : BaseFragment() {
             mainActivity.loggedIn()
         } else {
             Toast.makeText(context, "Failed to login", Toast.LENGTH_SHORT).show()
+            enableButtons()
         }
     }
 
     private val createAccountObserver = Observer<Boolean> {
         if(it) {
             Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
+            enableButtons()
         } else {
             Toast.makeText(context, "Failed to create account", Toast.LENGTH_SHORT).show()
+            enableButtons()
         }
     }
 
@@ -44,9 +47,21 @@ class LoginFragment : BaseFragment() {
 
         btLogin.setOnClickListener {
             viewModel.firebaseLogin(etEmail.text.toString(), etPassword.text.toString())
+            disableButtons()
         }
         btCreateAccount.setOnClickListener {
             viewModel.firebaseCreateAccount(etEmail.text.toString(), etPassword.text.toString())
+            disableButtons()
         }
+    }
+
+    private fun disableButtons() {
+        btLogin.isEnabled = false
+        btCreateAccount.isEnabled = false
+    }
+
+    private fun enableButtons() {
+        btLogin.isEnabled = true
+        btCreateAccount.isEnabled = true
     }
 }

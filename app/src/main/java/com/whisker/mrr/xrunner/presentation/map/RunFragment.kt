@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.domain.model.Route
-import com.whisker.mrr.xrunner.domain.model.RouteStats
+import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_run.*
 
 class RunFragment : BaseMapFragment() {
 
-    private lateinit var viewModel: MapViewModel
+    private lateinit var viewModel: RunViewModel
     private var isTracking: Boolean = false
     private var isMapShown: Boolean = false
 
@@ -68,7 +68,7 @@ class RunFragment : BaseMapFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RunViewModel::class.java)
 
         mapView.onCreate(savedInstanceState)
         mapView.onResume()

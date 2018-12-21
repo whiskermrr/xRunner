@@ -1,15 +1,15 @@
 package com.whisker.mrr.xrunner.data.repository
 
 import android.graphics.Bitmap
-import com.whisker.mrr.xrunner.data.datasource.RouteDatabaseSource
-import com.whisker.mrr.xrunner.data.datasource.SnapshotLocalSource
-import com.whisker.mrr.xrunner.data.datasource.SnapshotRemoteSource
-import com.whisker.mrr.xrunner.data.datasource.UserDataSource
-import com.whisker.mrr.xrunner.data.model.RouteEntity
-import com.whisker.mrr.xrunner.data.model.RouteEntityHolder
+import com.whisker.mrr.xrunner.domain.model.RouteEntity
+import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
+import com.whisker.mrr.xrunner.domain.source.RouteSource
+import com.whisker.mrr.xrunner.domain.source.SnapshotLocalSource
+import com.whisker.mrr.xrunner.domain.source.SnapshotRemoteSource
+import com.whisker.mrr.xrunner.domain.source.UserSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -18,10 +18,10 @@ import javax.inject.Inject
 
 class RouteDataRepository
 @Inject constructor(
-    private val userDataSource: UserDataSource,
-    private val routeDatabaseSource: RouteDatabaseSource,
-    private val snapshotRemoteSource: SnapshotRemoteSource,
-    private val snapshotLocalSource: SnapshotLocalSource
+    private val userDataSource: UserSource,
+    private val routeDatabaseSource: RouteSource,
+    private val snapshotRemoteDataSource: SnapshotRemoteSource,
+    private val snapshotLocalDataSource: SnapshotLocalSource
 )
 : RouteRepository {
 
@@ -59,19 +59,19 @@ class RouteDataRepository
 
     private fun saveSnapshotRemote(bitmap: Bitmap, fileName: String) : Completable {
         return Single.create<String> {emitter ->
-            emitter.onSuccess(snapshotLocalSource.saveSnapshotLocal(bitmap, fileName))
+            emitter.onSuccess(snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName))
             }
             .flatMapCompletable { filePath ->
-                snapshotRemoteSource.saveSnapshotRemote(filePath, fileName)
+                snapshotRemoteDataSource.saveSnapshotRemote(filePath, fileName)
                     .doOnComplete {
-                        snapshotLocalSource.markSnapshotAsSent(fileName)
+                        snapshotLocalDataSource.markSnapshotAsSent(fileName)
                     }
             }
     }
 
     private fun cacheSnapshot(bitmap: Bitmap, fileName: String) : Completable {
         return Completable.create {emitter ->
-            snapshotLocalSource.saveSnapshotLocal(bitmap, fileName)
+            snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName)
             emitter.onComplete()
         }
     }

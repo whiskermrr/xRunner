@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.domain.model
+package com.whisker.mrr.xrunner.presentation.model
 
 data class RouteHolder(
     var month: String = "",

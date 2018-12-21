@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.whisker.mrr.xrunner.presentation.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.login.LoginViewModel
-import com.whisker.mrr.xrunner.presentation.map.MapViewModel
+import com.whisker.mrr.xrunner.presentation.map.RunViewModel
 import com.whisker.mrr.xrunner.presentation.summary.SummaryRunViewModel
 import dagger.Binds
 import dagger.Module
@@ -23,8 +23,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MapViewModel::class)
-    internal abstract fun bindMapViewModel(MapViewModel: MapViewModel) : ViewModel
+    @ViewModelKey(RunViewModel::class)
+    internal abstract fun bindMapViewModel(RunViewModel: RunViewModel) : ViewModel
 
     @Binds
     @IntoMap

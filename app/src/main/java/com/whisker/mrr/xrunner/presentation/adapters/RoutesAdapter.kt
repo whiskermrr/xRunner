@@ -5,8 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.domain.model.Route
-import com.whisker.mrr.xrunner.domain.model.RouteHolder
+import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteHolder
 import com.whisker.mrr.xrunner.utils.loadSnapshot
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection

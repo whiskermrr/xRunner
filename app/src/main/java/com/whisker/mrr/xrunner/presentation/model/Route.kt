@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.domain.model
+package com.whisker.mrr.xrunner.presentation.model
 
 import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng

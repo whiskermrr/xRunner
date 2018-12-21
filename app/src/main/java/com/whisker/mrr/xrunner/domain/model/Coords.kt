@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.model
+package com.whisker.mrr.xrunner.domain.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

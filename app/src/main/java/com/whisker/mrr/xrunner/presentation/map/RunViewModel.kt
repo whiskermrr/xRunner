@@ -3,9 +3,9 @@ package com.whisker.mrr.xrunner.presentation.map
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.model.Route
-import com.whisker.mrr.xrunner.domain.model.RouteStats
-import com.whisker.mrr.xrunner.domain.repository.LocationRepository
+import com.whisker.mrr.xrunner.domain.interactor.*
+import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.utils.DateUtils
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.RunnerTimer
@@ -14,8 +14,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MapViewModel
-@Inject constructor(private val locationRepository: LocationRepository) : ViewModel() {
+class RunViewModel
+@Inject constructor(private val startTrackingInteractor: StartTrackingInteractor,
+                    private val pauseTrackingInteractor: PauseTrackingInteractor,
+                    private val resumeTrackingInteractor: ResumeTrackingInteractor,
+                    private val stopTrackingInteractor: StopTrackingInteractor,
+                    private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor) : ViewModel() {
 
     private val routePoints = MutableLiveData<List<LatLng>>()
     private val lastKnownLocation = MutableLiveData<LatLng>()
@@ -29,7 +33,7 @@ class MapViewModel
 
     fun onMapShown() {
         disposables.add(
-            locationRepository.getLastKnownLocation()
+            getLastKnownLocationInteractor.single()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -48,7 +52,7 @@ class MapViewModel
         routeStats.value = RouteStats()
 
         disposables.add(
-            locationRepository.startTracking()
+            startTrackingInteractor.flowable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -64,18 +68,18 @@ class MapViewModel
 
     fun pauseTracking() {
         runnerTimer.pause()
-        locationRepository.pauseTracking()
+        pauseTrackingInteractor.execute()
     }
 
     fun resumeTracking() {
         runnerTimer.resume()
-        locationRepository.resumeTracking()
+        resumeTrackingInteractor.execute()
     }
 
     fun stopTracking() {
         runnerTimer.stop()
         isTracking.postValue(false)
-        locationRepository.stopTracking()
+        stopTrackingInteractor.execute()
         if(routePoints.value != null && routeStats.value != null) {
             if(routeStats.value!!.wgs84distance == 0f) {
                 return
