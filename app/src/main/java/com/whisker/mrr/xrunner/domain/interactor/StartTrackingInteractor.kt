@@ -9,7 +9,7 @@ import io.reactivex.FlowableTransformer
 class StartTrackingInteractor(transformer: FlowableTransformer<LatLng, LatLng>, private val locationRepository: LocationRepository
 ) : FlowableUseCase<LatLng>(transformer) {
 
-    override fun createObservable(data: Map<String, Any>?): Flowable<LatLng> {
+    override fun createFlowable(data: Map<String, Any>?): Flowable<LatLng> {
         return locationRepository.startTracking()
     }
 }

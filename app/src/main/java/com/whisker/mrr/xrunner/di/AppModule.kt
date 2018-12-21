@@ -10,11 +10,16 @@ import com.whisker.mrr.xrunner.data.datasource.*
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
 import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
+import com.whisker.mrr.xrunner.domain.interactor.*
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import com.whisker.mrr.xrunner.domain.source.*
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.presentation.common.ComputationCompletableTransformer
+import com.whisker.mrr.xrunner.presentation.common.IOCompletableTransformer
+import com.whisker.mrr.xrunner.presentation.common.IOFlowableTransformer
+import com.whisker.mrr.xrunner.presentation.common.IOSingleTransformer
 import com.whisker.mrr.xrunner.utils.xRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -109,5 +114,65 @@ class AppModule {
         snapshotLocalDataSource: SnapshotLocalSource
     ) : RouteRepository {
         return RouteDataRepository(userDataSource, routeDatabaseSource, snapshotRemoteDataSource, snapshotLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateAccountInteractor(loginRepository: LoginRepository) : CreateAccountInteractor {
+        return CreateAccountInteractor(IOCompletableTransformer(), loginRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetLastKnownLocationInteractor(locationRepository: LocationRepository) : GetLastKnownLocationInteractor {
+        return GetLastKnownLocationInteractor(IOSingleTransformer(), locationRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetRouteListInteractor(routeRepository: RouteRepository) : GetRouteListInteractor {
+        return GetRouteListInteractor(IOFlowableTransformer(), routeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginInteractor(loginRepository: LoginRepository) : LoginInteractor {
+        return LoginInteractor(IOCompletableTransformer(), loginRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePauseTrackingInteractor(locationRepository: LocationRepository) : PauseTrackingInteractor {
+        return PauseTrackingInteractor(locationRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideResumeTrackingInteractor(locationRepository: LocationRepository) : ResumeTrackingInteractor {
+        return ResumeTrackingInteractor(locationRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveSnapshotInteractor(routeRepository: RouteRepository) : SaveSnapshotInteractor {
+        return SaveSnapshotInteractor(ComputationCompletableTransformer(), routeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStartTrackingInteractor(locationRepository: LocationRepository) : StartTrackingInteractor {
+        return StartTrackingInteractor(IOFlowableTransformer(), locationRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStopTrackingInteractor(locationRepository: LocationRepository) : StopTrackingInteractor {
+        return StopTrackingInteractor(locationRepository)
     }
 }

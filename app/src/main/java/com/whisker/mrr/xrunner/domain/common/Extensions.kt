@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.domain
+package com.whisker.mrr.xrunner.domain.common
 
 inline fun<T: Any, R: Any> Collection<T?>.whenAllNotNull(list: (List<T>) -> R) {
     if(this.all { it != null }) {

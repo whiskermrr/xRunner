@@ -3,7 +3,7 @@ package com.whisker.mrr.xrunner.domain.interactor
 import android.graphics.Bitmap
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import com.whisker.mrr.xrunner.domain.usecase.CompletableUseCase
-import com.whisker.mrr.xrunner.domain.whenBothNotNull
+import com.whisker.mrr.xrunner.domain.common.whenBothNotNull
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.lang.IllegalArgumentException
