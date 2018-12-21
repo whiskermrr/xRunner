@@ -1,13 +1,13 @@
 package com.whisker.mrr.xrunner.domain.usecase
 
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import io.reactivex.Flowable
+import io.reactivex.FlowableTransformer
 
-abstract class FlowableUseCase<T>(private val transformer: ObservableTransformer<T, T>) {
+abstract class FlowableUseCase<T>(private val transformer: FlowableTransformer<T, T>) {
 
-    abstract fun createObservable(data: Map<String, Any>? = null) : Observable<T>
+    abstract fun createObservable(data: Map<String, Any>? = null) : Flowable<T>
 
-    fun observable(data: Map<String, Any>? = null) : Observable<T> {
+    fun observable(data: Map<String, Any>? = null) : Flowable<T> {
         return createObservable(data).compose(transformer)
     }
 }
