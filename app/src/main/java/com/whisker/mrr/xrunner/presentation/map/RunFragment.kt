@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_run.*
 
 class RunFragment : BaseMapFragment() {
 
-    private lateinit var viewModel: MapViewModel
+    private lateinit var viewModel: RunViewModel
     private var isTracking: Boolean = false
     private var isMapShown: Boolean = false
 
@@ -68,7 +68,7 @@ class RunFragment : BaseMapFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RunViewModel::class.java)
 
         mapView.onCreate(savedInstanceState)
         mapView.onResume()

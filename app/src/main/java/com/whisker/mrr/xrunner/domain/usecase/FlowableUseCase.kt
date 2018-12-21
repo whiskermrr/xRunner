@@ -5,9 +5,9 @@ import io.reactivex.FlowableTransformer
 
 abstract class FlowableUseCase<T>(private val transformer: FlowableTransformer<T, T>) {
 
-    abstract fun createObservable(data: Map<String, Any>? = null) : Flowable<T>
+    abstract fun createFlowable(data: Map<String, Any>? = null) : Flowable<T>
 
-    fun observable(data: Map<String, Any>? = null) : Flowable<T> {
-        return createObservable(data).compose(transformer)
+    fun flowable(data: Map<String, Any>? = null) : Flowable<T> {
+        return createFlowable(data).compose(transformer)
     }
 }

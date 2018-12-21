@@ -11,7 +11,7 @@ class GetRouteListInteractor(
     private val routeRepository: RouteRepository
 ) : FlowableUseCase<List<RouteEntityHolder>>(transformer) {
 
-    override fun createObservable(data: Map<String, Any>?): Flowable<List<RouteEntityHolder>> {
+    override fun createFlowable(data: Map<String, Any>?): Flowable<List<RouteEntityHolder>> {
         return routeRepository.getRouteList()
     }
 }
