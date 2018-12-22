@@ -3,10 +3,10 @@ package com.whisker.mrr.xrunner.utils
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
-import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_HOUR
-import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_MINUTE
-import com.whisker.mrr.xrunner.utils.xRunnerConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.xrunner.utils.xRunnerConstants.MINUTES_PER_HOUR
+import com.whisker.mrr.xrunner.utils.XRunnerConstants.MILLISECONDS_PER_HOUR
+import com.whisker.mrr.xrunner.utils.XRunnerConstants.MILLISECONDS_PER_MINUTE
+import com.whisker.mrr.xrunner.utils.XRunnerConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.xrunner.utils.XRunnerConstants.MINUTES_PER_HOUR
 import kotlin.math.pow
 
 class LocationUtils {

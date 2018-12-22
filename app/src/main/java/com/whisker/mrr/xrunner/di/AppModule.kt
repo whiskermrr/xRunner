@@ -20,7 +20,7 @@ import com.whisker.mrr.xrunner.presentation.common.ComputationCompletableTransfo
 import com.whisker.mrr.xrunner.presentation.common.IOCompletableTransformer
 import com.whisker.mrr.xrunner.presentation.common.IOFlowableTransformer
 import com.whisker.mrr.xrunner.presentation.common.IOSingleTransformer
-import com.whisker.mrr.xrunner.utils.xRunnerConstants
+import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -35,7 +35,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideSharedPreferences(context: Context) : SharedPreferences {
-        return context.getSharedPreferences(xRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(XRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
     }
 
     @Provides

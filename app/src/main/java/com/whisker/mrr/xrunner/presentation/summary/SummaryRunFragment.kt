@@ -17,7 +17,7 @@ import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.getScreenWidth
-import com.whisker.mrr.xrunner.utils.xRunnerConstants
+import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -43,7 +43,7 @@ class SummaryRunFragment : BaseMapFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null) {
-            finalRoute = arguments?.getParcelable(xRunnerConstants.EXTRA_FINAL_ROUTE_KEY)!!
+            finalRoute = arguments?.getParcelable(XRunnerConstants.EXTRA_FINAL_ROUTE_KEY)!!
         }
         polylineOptions.addAll(finalRoute.waypoints)
     }

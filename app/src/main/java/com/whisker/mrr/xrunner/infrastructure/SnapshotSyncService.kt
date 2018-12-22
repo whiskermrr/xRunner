@@ -14,7 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.utils.getFile
-import com.whisker.mrr.xrunner.utils.xRunnerConstants
+import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -65,8 +65,8 @@ class SnapshotSyncService : Service() {
     }
 
     private fun syncSnapshots() {
-        sharedPreferences = applicationContext.getSharedPreferences(xRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        sharedPreferences = applicationContext.getSharedPreferences(XRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        val snapshotNames = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         if(snapshotNames!!.isEmpty()) {
             stopSelf()
             return
@@ -94,7 +94,7 @@ class SnapshotSyncService : Service() {
                 }.doOnComplete {
                     val editor = sharedPreferences.edit()
                     editor.clear()
-                    editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+                    editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
                     editor.apply()
                 }
             )

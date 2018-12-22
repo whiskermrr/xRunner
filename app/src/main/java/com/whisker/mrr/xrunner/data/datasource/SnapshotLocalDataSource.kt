@@ -6,7 +6,7 @@ import android.graphics.Bitmap
 import com.whisker.mrr.xrunner.domain.source.SnapshotLocalSource
 import com.whisker.mrr.xrunner.utils.saveFile
 import com.whisker.mrr.xrunner.utils.toByteArray
-import com.whisker.mrr.xrunner.utils.xRunnerConstants
+import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import javax.inject.Inject
 
 class SnapshotLocalDataSource
@@ -17,23 +17,23 @@ class SnapshotLocalDataSource
         val byteArray = bitmap.toByteArray(Bitmap.CompressFormat.JPEG)
         context.saveFile( byteArray, fileName)
 
-        val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        val snapshotNames = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         snapshotNames!!.add(fileName)
 
         val editor = sharedPreferences.edit()
         editor.clear()
-        editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+        editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
         editor.apply()
 
         return context.getFileStreamPath(fileName).absolutePath
     }
 
     override fun markSnapshotAsSent(fileName: String) {
-        val snapshotNames = sharedPreferences.getStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        val snapshotNames = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         snapshotNames?.remove(fileName)
         val editor = sharedPreferences.edit()
         editor.clear()
-        editor.putStringSet(xRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+        editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
         editor.apply()
     }
 }

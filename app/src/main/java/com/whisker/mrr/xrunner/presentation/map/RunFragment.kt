@@ -13,7 +13,7 @@ import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.summary.SummaryRunFragment
-import com.whisker.mrr.xrunner.utils.xRunnerConstants
+import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import kotlinx.android.synthetic.main.fragment_run.*
 
 class RunFragment : BaseMapFragment() {
@@ -56,7 +56,7 @@ class RunFragment : BaseMapFragment() {
 
     private val onRunFinishedObserver = Observer<Route> {
         val bundle = Bundle()
-        bundle.putParcelable(xRunnerConstants.EXTRA_FINAL_ROUTE_KEY, it)
+        bundle.putParcelable(XRunnerConstants.EXTRA_FINAL_ROUTE_KEY, it)
         val fragment = SummaryRunFragment()
         fragment.arguments = bundle
         mainActivity.switchContent(fragment)
