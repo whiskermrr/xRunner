@@ -31,6 +31,7 @@ class PastRoutesFragment : BaseFragment() {
         rvRoutes.adapter = routesAdapter
 
         viewModel.getRouteList().observe(this, Observer {holders ->
+            routesAdapter.removeAllSections()
             for(holder in holders) {
                 routesAdapter.addSection(RoutesAdapter(holder))
                 routesAdapter.notifyDataSetChanged()
