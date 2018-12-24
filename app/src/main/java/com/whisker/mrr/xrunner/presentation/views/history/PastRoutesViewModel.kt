@@ -1,17 +1,20 @@
-package com.whisker.mrr.xrunner.presentation.history
+package com.whisker.mrr.xrunner.presentation.views.history
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.xrunner.domain.interactor.GetRouteListInteractor
+import com.whisker.mrr.xrunner.domain.interactor.RemoveRouteInteractor
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.RouteHolder
+import com.whisker.mrr.xrunner.utils.TAG
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class PastRoutesViewModel
-@Inject constructor(private val getRouteListInteractor: GetRouteListInteractor)
+@Inject constructor(private val getRouteListInteractor: GetRouteListInteractor, private val removeRouteInteractor: RemoveRouteInteractor)
 : ViewModel() {
 
     private val routeList = MutableLiveData<List<RouteHolder>>()
@@ -31,6 +34,15 @@ class PastRoutesViewModel
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { routes ->
                     routeList.postValue(routes)
+                }
+        )
+    }
+
+    fun removeRoute(routeId: String, date: Long) {
+        disposables.add(
+            removeRouteInteractor.removeRoute(routeId, date)
+                .subscribe {
+                    Log.e(TAG(), "route removed")
                 }
         )
     }

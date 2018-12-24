@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.map
+package com.whisker.mrr.xrunner.presentation.views.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.presentation.BaseMapFragment
-import com.whisker.mrr.xrunner.presentation.summary.SummaryRunFragment
+import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import kotlinx.android.synthetic.main.fragment_run.*
 

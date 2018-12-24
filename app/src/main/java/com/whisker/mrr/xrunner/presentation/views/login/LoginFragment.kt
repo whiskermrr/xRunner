@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.login
+package com.whisker.mrr.xrunner.presentation.views.login
 
 import android.os.Bundle
 import android.view.LayoutInflater

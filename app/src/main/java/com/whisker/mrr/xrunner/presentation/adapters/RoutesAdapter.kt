@@ -18,6 +18,10 @@ class RoutesAdapter(private val routeHolder: RouteHolder) :
         .headerResourceId(R.layout.route_list_header)
         .build()) {
 
+    fun removeItem(position: Int) : Route {
+        return routeHolder.routes.removeAt(position)
+    }
+
     override fun getContentItemsTotal(): Int {
         return routeHolder.routes.size
     }

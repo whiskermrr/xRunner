@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.login
+package com.whisker.mrr.xrunner.presentation.views.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

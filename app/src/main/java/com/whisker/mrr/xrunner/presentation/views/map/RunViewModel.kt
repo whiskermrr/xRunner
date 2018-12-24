@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.map
+package com.whisker.mrr.xrunner.presentation.views.map
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
