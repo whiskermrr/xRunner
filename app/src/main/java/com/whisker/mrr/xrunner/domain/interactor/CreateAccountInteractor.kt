@@ -3,12 +3,18 @@ package com.whisker.mrr.xrunner.domain.interactor
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.usecase.CompletableUseCase
 import com.whisker.mrr.xrunner.domain.common.whenBothNotNull
+import com.whisker.mrr.xrunner.domain.repository.UserRepository
+import com.whisker.mrr.xrunner.domain.source.UserSource
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.lang.IllegalArgumentException
 
-class CreateAccountInteractor(transformer: CompletableTransformer, private val loginRepository: LoginRepository)
-: CompletableUseCase(transformer) {
+class CreateAccountInteractor(
+    transformer: CompletableTransformer,
+    private val loginRepository: LoginRepository,
+    private val userSource: UserSource,
+    private val userRepository: UserRepository
+) : CompletableUseCase(transformer) {
 
     companion object {
         private const val PARAM_EMAIL = "param_email"
@@ -28,6 +34,12 @@ class CreateAccountInteractor(transformer: CompletableTransformer, private val l
 
         whenBothNotNull(emailData, passwordData) { email, password ->
             return loginRepository.createAccount(email.toString(), password.toString())
+                .andThen {
+                    userSource.getUserId()
+                        .flatMapCompletable { userId ->
+                            userRepository.createUserStats(userId)
+                        }
+                }
         }
 
         return Completable.error(IllegalArgumentException("@email and @password must be provided."))
