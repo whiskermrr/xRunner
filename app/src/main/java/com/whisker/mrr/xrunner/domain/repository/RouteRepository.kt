@@ -11,4 +11,5 @@ interface RouteRepository {
     fun saveRoute(route: RouteEntity) : Completable
     fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable
     fun getRouteList() : Flowable<List<RouteEntityHolder>>
+    fun removeRoute(routeId: String, date: Long) : Completable
 }

@@ -38,11 +38,14 @@ class PastRoutesFragment : BaseFragment() {
                 val section = routesAdapter.getSectionForPosition(viewHolder.adapterPosition) as RoutesAdapter
                 val globalPosition = routesAdapter.getPositionInAdapter(section, 0)
                 val route = section.removeItem(viewHolder.adapterPosition - globalPosition)
+
                 routesAdapter.notifyItemRemovedFromSection(section, viewHolder.adapterPosition - globalPosition)
                 if(section.contentItemsTotal == 0) {
                     routesAdapter.removeSection(section)
                     routesAdapter.notifyDataSetChanged()
                 }
+
+                viewModel.removeRoute(route.routeId, route.date)
             }
         }
 

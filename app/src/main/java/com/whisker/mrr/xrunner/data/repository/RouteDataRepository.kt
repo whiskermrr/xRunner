@@ -75,4 +75,12 @@ class RouteDataRepository
             emitter.onComplete()
         }
     }
+
+    override fun removeRoute(routeId: String, date: Long) : Completable {
+        // TODO: remove snapshot
+        return userDataSource.getUserId()
+            .flatMapCompletable { userId ->
+                routeDatabaseSource.removeRouteById(userId, routeId, date)
+            }
+    }
 }

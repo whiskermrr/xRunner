@@ -9,4 +9,5 @@ interface RouteSource {
 
     fun saveRoute(route: RouteEntity, userId : String) : Completable
     fun getRoutesByUserId(userId: String) : Flowable<List<RouteEntityHolder>>
+    fun removeRouteById(userId: String, routeId: String, date: Long) : Completable
 }

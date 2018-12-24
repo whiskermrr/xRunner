@@ -175,4 +175,10 @@ class AppModule {
     fun provideStopTrackingInteractor(locationRepository: LocationRepository) : StopTrackingInteractor {
         return StopTrackingInteractor(locationRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideRemoveRouteInteractor(routeRepository: RouteRepository) : RemoveRouteInteractor {
+        return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository)
+    }
 }

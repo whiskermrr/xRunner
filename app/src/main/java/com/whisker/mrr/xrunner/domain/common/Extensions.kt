@@ -1,5 +1,7 @@
 package com.whisker.mrr.xrunner.domain.common
 
+inline fun <reified T> T.TAG(): String = T::class.java.simpleName
+
 inline fun<T: Any, R: Any> Collection<T?>.whenAllNotNull(list: (List<T>) -> R) {
     if(this.all { it != null }) {
         list(this.filterNotNull())

@@ -67,4 +67,25 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
             })
         }, BackpressureStrategy.BUFFER)
     }
+
+    override fun removeRouteById(userId: String, routeId: String, date: Long): Completable {
+        val databaseReference = firebaseDatabase.reference
+            .child(REFERENCE_USERS)
+            .child(userId)
+            .child(REFERENCE_ROUTES)
+            .child(DateUtils.getFirstDayOfTheMonthInMillis(date).toString())
+            .child(routeId)
+
+        return Completable.create { emitter ->
+            databaseReference.removeValue().addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    emitter.onComplete()
+                } else if(task.exception != null) {
+                    emitter.onError(task.exception!!)
+                }
+            }.addOnFailureListener {
+                emitter.onError(it)
+            }
+        }
+    }
 }
