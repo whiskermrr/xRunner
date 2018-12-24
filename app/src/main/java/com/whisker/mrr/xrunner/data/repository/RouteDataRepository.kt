@@ -9,7 +9,6 @@ import com.whisker.mrr.xrunner.domain.repository.RouteRepository
 import com.whisker.mrr.xrunner.domain.source.RouteSource
 import com.whisker.mrr.xrunner.domain.source.SnapshotLocalSource
 import com.whisker.mrr.xrunner.domain.source.SnapshotRemoteSource
-import com.whisker.mrr.xrunner.domain.source.UserSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 class RouteDataRepository
 @Inject constructor(
-    private val userDataSource: UserSource,
     private val routeDatabaseSource: RouteSource,
     private val snapshotRemoteDataSource: SnapshotRemoteSource,
     private val snapshotLocalDataSource: SnapshotLocalSource
@@ -35,18 +33,12 @@ class RouteDataRepository
         })
     }
 
-    override fun saveRoute(route: RouteEntity): Completable {
-        return userDataSource.getUserId()
-            .flatMapCompletable { userId ->
-                routeDatabaseSource.saveRoute(route, userId)
-            }
+    override fun saveRoute(userId: String, route: RouteEntity): Completable {
+        return routeDatabaseSource.saveRoute(route, userId)
     }
 
-    override fun getRouteList(): Flowable<List<RouteEntityHolder>> {
-        return userDataSource.getUserId()
-            .flatMapPublisher { userId ->
-                routeDatabaseSource.getRoutesByUserId(userId)
-            }
+    override fun getRouteList(userId: String): Flowable<List<RouteEntityHolder>> {
+        return routeDatabaseSource.getRoutesByUserId(userId)
     }
 
     override fun saveSnapshot(bitmap: Bitmap, fileName: String): Completable {
@@ -76,11 +68,8 @@ class RouteDataRepository
         }
     }
 
-    override fun removeRoute(routeId: String, date: Long) : Completable {
+    override fun removeRoute(userId: String, routeId: String, date: Long) : Completable {
         // TODO: remove snapshot
-        return userDataSource.getUserId()
-            .flatMapCompletable { userId ->
-                routeDatabaseSource.removeRouteById(userId, routeId, date)
-            }
+        return routeDatabaseSource.removeRouteById(userId, routeId, date)
     }
 }
