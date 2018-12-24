@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.summary
+package com.whisker.mrr.xrunner.presentation.views.summary
 
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData

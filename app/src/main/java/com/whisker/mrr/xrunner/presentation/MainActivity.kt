@@ -17,9 +17,9 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
-import com.whisker.mrr.xrunner.presentation.history.PastRoutesFragment
-import com.whisker.mrr.xrunner.presentation.login.LoginFragment
-import com.whisker.mrr.xrunner.presentation.map.RunFragment
+import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
+import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
+import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import com.whisker.mrr.xrunner.utils.XRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection

@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.history
+package com.whisker.mrr.xrunner.presentation.views.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
