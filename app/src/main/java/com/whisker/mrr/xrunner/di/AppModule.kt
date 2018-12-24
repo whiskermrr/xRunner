@@ -10,10 +10,12 @@ import com.whisker.mrr.xrunner.data.datasource.*
 import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
 import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
 import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
+import com.whisker.mrr.xrunner.data.repository.UserDataRepository
 import com.whisker.mrr.xrunner.domain.interactor.*
 import com.whisker.mrr.xrunner.domain.repository.LocationRepository
 import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
+import com.whisker.mrr.xrunner.domain.repository.UserRepository
 import com.whisker.mrr.xrunner.domain.source.*
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.presentation.common.ComputationCompletableTransformer
@@ -108,18 +110,23 @@ class AppModule {
     @Provides
     @Singleton
     fun provideRouteRepository(
-        userDataSource: UserSource,
         routeDatabaseSource: RouteSource,
         snapshotRemoteDataSource: SnapshotRemoteSource,
         snapshotLocalDataSource: SnapshotLocalSource
     ) : RouteRepository {
-        return RouteDataRepository(userDataSource, routeDatabaseSource, snapshotRemoteDataSource, snapshotLocalDataSource)
+        return RouteDataRepository(routeDatabaseSource, snapshotRemoteDataSource, snapshotLocalDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideCreateAccountInteractor(loginRepository: LoginRepository) : CreateAccountInteractor {
-        return CreateAccountInteractor(IOCompletableTransformer(), loginRepository)
+    fun provideUserRepository(database: FirebaseDatabase) : UserRepository {
+        return UserDataRepository(database.reference)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateAccountInteractor(loginRepository: LoginRepository, userRepository: UserRepository) : CreateAccountInteractor {
+        return CreateAccountInteractor(IOCompletableTransformer(), loginRepository, userRepository)
     }
 
     @Provides
@@ -130,8 +137,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetRouteListInteractor(routeRepository: RouteRepository) : GetRouteListInteractor {
-        return GetRouteListInteractor(IOFlowableTransformer(), routeRepository)
+    fun provideGetRouteListInteractor(routeRepository: RouteRepository, userSource: UserSource) : GetRouteListInteractor {
+        return GetRouteListInteractor(IOFlowableTransformer(), routeRepository, userSource)
     }
 
     @Provides
@@ -154,8 +161,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveRouteInteractor(routeRepository: RouteRepository) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository)
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository, userSource: UserSource, userRepository: UserRepository) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository, userSource, userRepository)
     }
 
     @Provides
@@ -178,7 +185,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoveRouteInteractor(routeRepository: RouteRepository) : RemoveRouteInteractor {
-        return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository)
+    fun provideRemoveRouteInteractor(routeRepository: RouteRepository, userSource: UserSource) : RemoveRouteInteractor {
+        return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository, userSource)
     }
 }

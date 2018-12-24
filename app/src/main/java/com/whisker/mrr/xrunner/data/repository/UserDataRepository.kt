@@ -1,22 +1,91 @@
 package com.whisker.mrr.xrunner.data.repository
 
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
 import com.whisker.mrr.xrunner.domain.model.UserStatsEntity
 import com.whisker.mrr.xrunner.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.Single
+import javax.inject.Inject
 
-class UserDataRepository : UserRepository {
+class UserDataRepository
+@Inject constructor(private val databaseReference: DatabaseReference)
+: UserRepository {
+
+    companion object {
+        const val REFERENCE_USERS = "Users"
+        const val REFERENCE_USER_STATS = "UserStats"
+        const val DB_AVERAGE_PACE = "averagePace"
+        const val DB_EXPERIENCE = "experience"
+        const val DB_TOTAL_DISTANCE = "totalDistance"
+        const val DB_TOTAL_TIME = "totalTime"
+    }
 
     override fun updateUserStats(userId: String, route: RouteStatsEntity): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val reference = databaseReference
+            .child(REFERENCE_USERS)
+            .child(userId)
+            .child(REFERENCE_USER_STATS)
+
+        return getUserStats(userId)
+            .flatMapCompletable { userStats ->
+                val map = HashMap<String, Any>()
+                map[DB_TOTAL_DISTANCE] = userStats.totalDistance + route.wgs84distance
+                map[DB_TOTAL_TIME] = userStats.totalTime + route.routeTime
+
+                Completable.create { emitter ->
+                    reference.updateChildren(map).addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            emitter.onComplete()
+                        } else if(task.exception != null) {
+                            emitter.onError(task.exception!!)
+                        }
+                    }.addOnFailureListener {
+                        emitter.onError(it)
+                    }
+                }
+            }
     }
 
     override fun getUserStats(userId: String): Single<UserStatsEntity> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val reference = databaseReference
+            .child(REFERENCE_USERS)
+            .child(userId)
+            .child(REFERENCE_USER_STATS)
+
+        return Single.create { emitter ->
+            reference.addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userStats = dataSnapshot.getValue(UserStatsEntity::class.java)
+                    emitter.onSuccess(userStats!!)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    emitter.onError(databaseError.toException())
+                }
+            })
+        }
     }
 
     override fun createUserStats(userId: String): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val reference = databaseReference
+            .child(REFERENCE_USERS)
+            .child(userId)
+            .child(REFERENCE_USER_STATS)
+
+        return Completable.create { emitter ->
+            reference.setValue(UserStatsEntity()).addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    emitter.onComplete()
+                } else if(task.exception != null) {
+                    emitter.onError(task.exception!!)
+                }
+            }.addOnFailureListener {
+                emitter.onError(it)
+            }
+        }
     }
 }

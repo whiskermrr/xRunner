@@ -4,7 +4,6 @@ import com.whisker.mrr.xrunner.domain.repository.LoginRepository
 import com.whisker.mrr.xrunner.domain.usecase.CompletableUseCase
 import com.whisker.mrr.xrunner.domain.common.whenBothNotNull
 import com.whisker.mrr.xrunner.domain.repository.UserRepository
-import com.whisker.mrr.xrunner.domain.source.UserSource
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.lang.IllegalArgumentException
@@ -12,7 +11,6 @@ import java.lang.IllegalArgumentException
 class CreateAccountInteractor(
     transformer: CompletableTransformer,
     private val loginRepository: LoginRepository,
-    private val userSource: UserSource,
     private val userRepository: UserRepository
 ) : CompletableUseCase(transformer) {
 
@@ -34,11 +32,8 @@ class CreateAccountInteractor(
 
         whenBothNotNull(emailData, passwordData) { email, password ->
             return loginRepository.createAccount(email.toString(), password.toString())
-                .andThen {
-                    userSource.getUserId()
-                        .flatMapCompletable { userId ->
-                            userRepository.createUserStats(userId)
-                        }
+                .flatMapCompletable { userId ->
+                    userRepository.createUserStats(userId)
                 }
         }
 
