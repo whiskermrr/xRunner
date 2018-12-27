@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner
+package com.whisker.mrr.xrunner.presentation.views
 
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity

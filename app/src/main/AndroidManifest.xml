@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity">
+        <activity android:name=".presentation.views.BaseActivity">
         </activity>
         
         <service android:name=".infrastructure.LocationService">
