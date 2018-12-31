@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation
+package com.whisker.mrr.xrunner.presentation.views
 
 import android.Manifest
 import android.content.IntentFilter
@@ -11,7 +11,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.whisker.mrr.xrunner.presentation.views.BaseActivity
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.domain.bus.RxBus
@@ -91,6 +90,10 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
                     navigateToPastHistory()
                     return@setOnNavigationItemSelectedListener true
                 }
+                R.id.action_account -> {
+                    navigateToUserProfile()
+                    return@setOnNavigationItemSelectedListener true
+                }
                 R.id.action_achievements -> {
                     return@setOnNavigationItemSelectedListener true
                 }
@@ -117,6 +120,10 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
             clearBackStack()
             switchContent(PastRoutesFragment())
         }
+    }
+
+    private fun navigateToUserProfile() {
+
     }
 
     fun showBottomNavigation() {

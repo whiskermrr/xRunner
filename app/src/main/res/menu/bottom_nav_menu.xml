@@ -15,6 +15,13 @@
 	/>
 	
 	<item
+		android:id="@+id/action_account"
+		android:enabled="true"
+		android:icon="@drawable/ic_account"
+		android:title="@string/profile"
+	/>
+	
+	<item
 		android:id="@+id/action_achievements"
 		android:enabled="true"
 		android:icon="@drawable/ic_award"

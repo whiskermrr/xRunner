@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation
+package com.whisker.mrr.xrunner.presentation.views
 
 import android.content.Context
 import android.os.Bundle

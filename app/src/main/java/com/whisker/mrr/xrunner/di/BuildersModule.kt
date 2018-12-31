@@ -1,6 +1,6 @@
 package com.whisker.mrr.xrunner.di
 
-import com.whisker.mrr.xrunner.presentation.MainActivity
+import com.whisker.mrr.xrunner.presentation.views.MainActivity
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment

@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation
+package com.whisker.mrr.xrunner.presentation.views
 
 import android.annotation.SuppressLint
 import android.graphics.Color
