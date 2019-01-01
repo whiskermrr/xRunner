@@ -188,4 +188,10 @@ class AppModule {
     fun provideRemoveRouteInteractor(routeRepository: RouteRepository, userSource: UserSource) : RemoveRouteInteractor {
         return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository, userSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetUserStatsInteractor(userRepository: UserRepository, userSource: UserSource) : GetUserStatsInteractor {
+        return GetUserStatsInteractor(IOSingleTransformer(), userRepository, userSource)
+    }
 }

@@ -10,6 +10,7 @@ import com.whisker.mrr.xrunner.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class UserDataRepository
 @Inject constructor(private val databaseReference: DatabaseReference)
@@ -24,7 +25,7 @@ class UserDataRepository
         const val DB_TOTAL_TIME = "totalTime"
     }
 
-    override fun updateUserStats(userId: String, route: RouteStatsEntity): Completable {
+    override fun updateUserStats(userId: String, stats: RouteStatsEntity): Completable {
         val reference = databaseReference
             .child(REFERENCE_USERS)
             .child(userId)
@@ -33,8 +34,9 @@ class UserDataRepository
         return getUserStats(userId)
             .flatMapCompletable { userStats ->
                 val map = HashMap<String, Any>()
-                map[DB_TOTAL_DISTANCE] = userStats.totalDistance + route.wgs84distance
-                map[DB_TOTAL_TIME] = userStats.totalTime + route.routeTime
+                map[DB_TOTAL_DISTANCE] = userStats.totalDistance + stats.wgs84distance
+                map[DB_TOTAL_TIME] = userStats.totalTime + stats.routeTime
+                map[DB_EXPERIENCE] = userStats.experience + calculateExp(stats)
 
                 Completable.create { emitter ->
                     reference.updateChildren(map).addOnCompleteListener { task ->
@@ -87,5 +89,9 @@ class UserDataRepository
                 emitter.onError(it)
             }
         }
+    }
+
+    private fun calculateExp(stats: RouteStatsEntity) : Int {
+        return ((stats.averageSpeed * stats.wgs84distance) / 10f).roundToInt()
     }
 }

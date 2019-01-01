@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
@@ -22,7 +23,7 @@ class UserProfileFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
 
         viewModel.userStats().observe(this, Observer {
-
+            Toast.makeText(context, it.expToNextLevel.toString(), Toast.LENGTH_LONG).show()
         })
     }
 }

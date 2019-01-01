@@ -6,7 +6,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface UserRepository {
-    fun updateUserStats(userId: String, route: RouteStatsEntity) : Completable
+    fun updateUserStats(userId: String, stats: RouteStatsEntity) : Completable
     fun getUserStats(userId: String) : Single<UserStatsEntity>
     fun createUserStats(userId: String) : Completable
 }
