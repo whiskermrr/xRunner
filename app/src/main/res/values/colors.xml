@@ -29,4 +29,6 @@
     <color name="colorBalticGreen">#008577</color>
     <color name="colorGreenAlgae">#00574B</color>
     <color name="colorFlashGreen">#1db954</color>
+    
+    <color name="colorTransparentFlashGreen">#7f1db954</color>
 </resources>

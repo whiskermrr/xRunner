@@ -141,6 +141,7 @@ class SummaryRunFragment : BaseMapFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        disposables.dispose()
         RxBus.unsubscribeSticky(this)
     }
 }

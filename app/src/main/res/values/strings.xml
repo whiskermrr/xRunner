@@ -37,4 +37,5 @@
 	<string name="total_pace">pace:</string>
 	<string name="total_time">time:</string>
 	<string name="profile">Profile</string>
+	<string name="label_level">LEVEL</string>
 </resources>
