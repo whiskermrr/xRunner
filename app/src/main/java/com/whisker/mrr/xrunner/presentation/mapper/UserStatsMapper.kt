@@ -32,6 +32,8 @@ class UserStatsMapper {
             }
 
             userStats.level = level
+            userStats.nextLevelExp = levelExp
+            userStats.experience = statsEntity.experience
 
 
             userStats.expToNextLevel = if(level != 0) {
