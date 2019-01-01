@@ -46,6 +46,7 @@
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@drawable/bottom_nav_item_state"
         app:itemTextColor="@drawable/bottom_nav_item_state"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"
         >
         
