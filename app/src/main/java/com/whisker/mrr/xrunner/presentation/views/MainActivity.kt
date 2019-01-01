@@ -19,6 +19,7 @@ import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
+import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import com.whisker.mrr.xrunner.utils.XRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
@@ -83,15 +84,15 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         navBottom.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.action_run -> {
-                    navigateToRunFragment()
+                    navigateToFragment(RunFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_past_routes -> {
-                    navigateToPastHistory()
+                    navigateToFragment(PastRoutesFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_account -> {
-                    navigateToUserProfile()
+                    navigateToFragment(UserProfileFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.action_achievements -> {
@@ -104,26 +105,13 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         navBottom.selectedItemId = R.id.action_run
     }
 
-    private fun navigateToRunFragment() {
-        if(isFragmentInBackStack(RunFragment::class.java.name)) {
-            popBackStackToFragment(RunFragment::class.java.name)
+    private fun navigateToFragment(fragment: Fragment) {
+        if(isFragmentInBackStack(fragment.javaClass.name)) {
+            popBackStackToFragment(fragment.javaClass.name)
         } else {
             clearBackStack()
-            switchContent(RunFragment())
+            switchContent(fragment)
         }
-    }
-
-    private fun navigateToPastHistory() {
-        if(isFragmentInBackStack(PastRoutesFragment::class.java.name)) {
-            popBackStackToFragment(PastRoutesFragment::class.java.name)
-        } else {
-            clearBackStack()
-            switchContent(PastRoutesFragment())
-        }
-    }
-
-    private fun navigateToUserProfile() {
-
     }
 
     fun showBottomNavigation() {
