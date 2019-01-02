@@ -14,7 +14,7 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.domain.bus.RxBus
 import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.presentation.model.Route
-import com.whisker.mrr.xrunner.presentation.BaseMapFragment
+import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
@@ -141,6 +141,7 @@ class SummaryRunFragment : BaseMapFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        disposables.dispose()
         RxBus.unsubscribeSticky(this)
     }
 }

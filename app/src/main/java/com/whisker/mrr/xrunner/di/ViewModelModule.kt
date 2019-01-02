@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.views.login.LoginViewModel
 import com.whisker.mrr.xrunner.presentation.views.map.RunViewModel
+import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileViewModel
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunViewModel
 import dagger.Binds
 import dagger.Module
@@ -35,4 +36,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PastRoutesViewModel::class)
     internal abstract fun bindPastRoutesViewModel(pastRoutesViewModel: PastRoutesViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserProfileViewModel::class)
+    internal abstract fun  bindUserProfileViewModel(userProfileViewModel: UserProfileViewModel) : ViewModel
 }

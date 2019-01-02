@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+	
+	<View
+		android:layout_width="match_parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="@id/expBar"
+		android:layout_height="0dp"
+		android:background="@drawable/gradient_user_exp"
+		app:layout_constraintDimensionRatio="1:0.8"
+	/>
+	
+	<View
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:background="@drawable/oval_shape"
+		app:layout_constraintTop_toTopOf="@id/expBar"
+		app:layout_constraintBottom_toBottomOf="@id/expBar"
+		app:layout_constraintStart_toStartOf="@id/expBar"
+		app:layout_constraintEnd_toEndOf="@id/expBar"
+		android:layout_margin="4dp"
+	/>
+	
+	<ProgressBar
+		android:id="@+id/expBar"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		style="?android:attr/progressBarStyleHorizontal"
+		app:layout_constraintWidth_percent=".66"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintDimensionRatio="1:1"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="16dp"
+		android:max="100"
+		android:progress="0"
+		android:progressDrawable="@drawable/circular_progress_bar" />
+	
+	<RelativeLayout
+		app:layout_constraintTop_toTopOf="@id/expBar"
+		app:layout_constraintBottom_toBottomOf="@id/expBar"
+		app:layout_constraintStart_toStartOf="@id/expBar"
+		app:layout_constraintEnd_toEndOf="@id/expBar"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
+		
+		<TextView
+			android:id="@+id/tvLevel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:text="0"
+			android:textColor="@color/colorWhite"
+			android:textSize="90sp"
+			android:textStyle="bold|italic"
+		/>
+		
+		<TextView
+			android:id="@+id/tvLabelLevel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:text="@string/label_level"
+			android:layout_below="@id/tvLevel"
+			android:textStyle="bold|italic"
+			android:textSize="21sp"
+			android:textColor="@color/colorSecondaryText"
+		/>
+	
+	</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@ package com.whisker.mrr.xrunner.di
 import android.app.IntentService
 import android.app.Service
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.xrunner.presentation.MainActivity
+import com.whisker.mrr.xrunner.presentation.views.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector

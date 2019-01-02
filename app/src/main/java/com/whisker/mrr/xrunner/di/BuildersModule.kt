@@ -1,9 +1,10 @@
 package com.whisker.mrr.xrunner.di
 
-import com.whisker.mrr.xrunner.presentation.MainActivity
+import com.whisker.mrr.xrunner.presentation.views.MainActivity
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
+import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -25,4 +26,7 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun bindPastRoutesFragment() : PastRoutesFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindUserProfileFragment() : UserProfileFragment
 }

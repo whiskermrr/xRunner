@@ -17,7 +17,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".presentation.MainActivity"
+        <activity android:name=".presentation.views.MainActivity"
                   android:configChanges="orientation"
                   android:screenOrientation="portrait">
             <intent-filter>
@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity">
+        <activity android:name=".presentation.views.BaseActivity">
         </activity>
         
         <service android:name=".infrastructure.LocationService">

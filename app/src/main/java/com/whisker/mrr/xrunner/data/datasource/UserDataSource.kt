@@ -30,12 +30,13 @@ class UserDataSource
         }
     }
 
-    override fun createAccount(email:String, password: String) : Completable {
-        return Completable.create { emitter ->
+    override fun createAccount(email:String, password: String) : Single<String> {
+        return Single.create { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if(task.isSuccessful) {
-                        emitter.onComplete()
+
+                        emitter.onSuccess(task.result!!.user.uid)
                     } else if(task.exception != null) {
                         emitter.onError(task.exception!!)
                     }
