@@ -22,25 +22,26 @@ class UserStatsMapper {
             userStats.totalMeters = (statsEntity.totalDistance - userStats.totalKilometers * XRunnerConstants.MILLISECONDS_PER_SECOND).toInt()
 
             var level = 0
-            var expToNextLevel = 0
+            var expOfNextLevel = 0
             var levelExp = EXP_RATIO
 
             while(statsEntity.experience > levelExp) {
                 level++
-                expToNextLevel = statsEntity.experience - levelExp
+                expOfNextLevel = statsEntity.experience - levelExp
                 levelExp += levelExp + (level + 1) * EXP_RATIO
             }
 
-            userStats.level = level
-            userStats.nextLevelExp = levelExp
-            userStats.experience = statsEntity.experience
-
+            levelExp -= (levelExp - (level + 1) * EXP_RATIO)
 
             userStats.expToNextLevel = if(level != 0) {
-                statsEntity.experience - expToNextLevel
+                levelExp - expOfNextLevel
             } else {
                 EXP_RATIO - statsEntity.experience
             }
+
+
+            userStats.level = level
+            userStats.percentExp = ((expOfNextLevel.toFloat() / levelExp) * 100).toInt()
 
             return Single.just(userStats)
         }

@@ -39,7 +39,7 @@
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="16dp"
 		android:max="100"
-		android:progress="86"
+		android:progress="0"
 		android:progressDrawable="@drawable/circular_progress_bar" />
 	
 	<RelativeLayout
@@ -54,7 +54,7 @@
 			android:id="@+id/tvLevel"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			tools:text="3"
+			tools:text="0"
 			android:textColor="@color/colorWhite"
 			android:textSize="90sp"
 			android:textStyle="bold|italic"

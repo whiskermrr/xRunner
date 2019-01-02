@@ -7,8 +7,7 @@ data class UserStats(
     var totalMeters: Int = 0,
     var totalHours: Int = 0,
     var totalMinutes: Int = 0,
-    var experience: Int = 0,
     var level: Int = 0,
     var expToNextLevel: Int = 0,
-    var nextLevelExp: Int = 0
+    var percentExp: Int = 0
 )
