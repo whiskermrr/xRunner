@@ -30,7 +30,7 @@ class UserStatsMapper {
             while(statsEntity.experience > levelExp) {
                 level++
                 expOfNextLevel = statsEntity.experience - levelExp
-                levelExp += levelExp + (level + 1) * EXP_RATIO
+                levelExp += (level + 1) * EXP_RATIO
             }
 
             levelExp -= (levelExp - (level + 1) * EXP_RATIO)
