@@ -36,10 +36,12 @@ class UserDataRepository
         return getUserStats(userId)
             .flatMapCompletable { userStats ->
                 val map = HashMap<String, Any>()
-                map[DB_TOTAL_DISTANCE] = userStats.totalDistance + stats.wgs84distance
-                map[DB_TOTAL_TIME] = userStats.totalTime + stats.routeTime
+                val totalDistance = userStats.totalDistance + stats.wgs84distance
+                val totalTime = userStats.totalTime + stats.routeTime
+                map[DB_TOTAL_DISTANCE] = totalDistance
+                map[DB_TOTAL_TIME] = totalTime
                 map[DB_EXPERIENCE] = userStats.experience + calculateExp(stats)
-                map[DB_AVERAGE_PACE] = calculateAveragePace(userStats.totalDistance, userStats.totalTime)
+                map[DB_AVERAGE_PACE] = calculateAveragePace(totalDistance, totalTime)
 
                 Completable.create { emitter ->
                     reference.updateChildren(map).addOnCompleteListener { task ->
