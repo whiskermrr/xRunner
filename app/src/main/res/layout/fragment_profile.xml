@@ -76,18 +76,175 @@
 	</RelativeLayout>
 	
 	<androidx.cardview.widget.CardView
+		android:id="@+id/cvTotalDistance"
 		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/cvTotalTime"
 		app:layout_constraintTop_toBottomOf="@id/vLevelGradient"
-		android:layout_width="wrap_content"
+		android:layout_width="0dp"
+		app:layout_constraintWidth_percent="0.30"
+		android:layout_marginTop="16dp"
 		android:layout_height="wrap_content"
-		app:cardBackgroundColor="@color/colorPrimary">
+		app:cardBackgroundColor="@color/colorAccent"
+		app:cardCornerRadius="3dp"
+		android:elevation="8dp">
 		
-		<ImageView
-			android:src="@drawable/ic_route"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-		/>
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_gravity="center_horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			
+			<TextView
+				android:id="@+id/tvLabelTotalDistance"
+				android:text="TOTAL\nDISTANCE"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:textColor="@color/colorWhite"
+				android:gravity="center_horizontal"
+				android:padding="8dp"
+			/>
+			
+			<ImageView
+				android:id="@+id/ivTotalDistance"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:src="@drawable/ic_distance"
+				android:tint="@color/colorFlashGreen"
+				app:layout_constraintTop_toBottomOf="@id/tvLabelTotalDistance"
+				android:layout_marginTop="8dp"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+			/>
+			
+			<TextView
+				tools:text="24.5 km"
+				android:gravity="center_horizontal"
+				android:id="@+id/tvTotalDistance"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toBottomOf="@id/ivTotalDistance"
+				android:textColor="@color/colorWhite"
+				android:textStyle="bold|italic"
+				android:padding="8dp"
+				android:textSize="21sp"
+			/>
+			
+		</androidx.constraintlayout.widget.ConstraintLayout>
 		
+	</androidx.cardview.widget.CardView>
+	
+	<androidx.cardview.widget.CardView
+		android:id="@+id/cvTotalTime"
+		app:layout_constraintWidth_percent="0.30"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/vLevelGradient"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		app:cardBackgroundColor="@color/colorAccent"
+		app:cardCornerRadius="3dp"
+		android:elevation="8dp">
+		
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_gravity="center_horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			
+			<TextView
+				android:id="@+id/tvLabelTotalTime"
+				android:text="TOTAL\nTIME"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:textColor="@color/colorWhite"
+				android:gravity="center_horizontal"
+				android:padding="8dp"
+			/>
+			
+			<ImageView
+				android:id="@+id/ivTotalTime"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:src="@drawable/ic_time"
+				app:layout_constraintTop_toBottomOf="@id/tvLabelTotalTime"
+				android:layout_marginTop="8dp"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+			/>
+			
+			<TextView
+				tools:text="32 hours"
+				android:gravity="center_horizontal"
+				android:id="@+id/tvTotalTime"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toBottomOf="@id/ivTotalTime"
+				android:textColor="@color/colorWhite"
+				android:textStyle="bold|italic"
+				android:padding="8dp"
+				android:textSize="21sp"
+			/>
+		
+		</androidx.constraintlayout.widget.ConstraintLayout>
+		
+	</androidx.cardview.widget.CardView>
+	
+	<androidx.cardview.widget.CardView
+		android:id="@+id/cvAveragePace"
+		app:layout_constraintWidth_percent="0.30"
+		app:layout_constraintStart_toEndOf="@id/cvTotalTime"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/vLevelGradient"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		app:cardBackgroundColor="@color/colorAccent"
+		app:cardCornerRadius="3dp"
+		android:elevation="8dp">
+		
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_gravity="center_horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			
+			<TextView
+				android:id="@+id/tvLabelAveragePace"
+				android:text="AVERAGE\nPACE"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:textColor="@color/colorWhite"
+				android:gravity="center_horizontal"
+				android:padding="8dp"
+			/>
+			
+			<ImageView
+				android:id="@+id/ivAveragePace"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:src="@drawable/ic_speedometer"
+				app:layout_constraintTop_toBottomOf="@id/tvLabelAveragePace"
+				android:layout_marginTop="8dp"
+				android:layout_width="64dp"
+				android:layout_height="64dp"
+			/>
+			
+			<TextView
+				tools:text="6'32''"
+				android:gravity="center_horizontal"
+				android:id="@+id/tvAveragePace"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toBottomOf="@id/ivAveragePace"
+				android:textColor="@color/colorWhite"
+				android:textStyle="bold|italic"
+				android:padding="8dp"
+				android:textSize="21sp"
+			/>
+		
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	
 	</androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,8 +47,8 @@
 		app:layout_constraintTop_toTopOf="parent"
 		android:contentDescription="@null"
 		android:layout_margin="15dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
+		android:layout_width="28dp"
+		android:layout_height="32dp"/>
 	
 	<TextView
 		android:id="@+id/tvDistance"
@@ -86,8 +86,8 @@
 		app:layout_constraintEnd_toEndOf="@+id/tvPace"
 		app:layout_constraintBottom_toTopOf="@id/tvPace"
 		android:layout_marginBottom="8dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
 		android:contentDescription="@null"
 	/>
 	
@@ -98,8 +98,8 @@
 		app:layout_constraintEnd_toEndOf="@+id/tvHeartbeat"
 		app:layout_constraintBottom_toTopOf="@id/tvHeartbeat"
 		android:layout_marginBottom="8dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
 		android:contentDescription="@null"
 	/>
 	
@@ -110,8 +110,8 @@
 		app:layout_constraintEnd_toEndOf="@+id/tvTime"
 		app:layout_constraintBottom_toTopOf="@id/tvTime"
 		android:layout_marginBottom="8dp"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
 		android:contentDescription="@null"
 	/>
 	
