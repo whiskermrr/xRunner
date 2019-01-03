@@ -32,6 +32,7 @@ class UserProfileFragment : BaseFragment() {
         viewModel.userStats().observe(this, Observer { stats ->
             showLevelNumber(stats.level)
             showLevelProgress(stats.percentExp)
+            showTotalDistance(stats.totalKilometers, stats.totalMeters)
         })
     }
 
@@ -50,5 +51,9 @@ class UserProfileFragment : BaseFragment() {
         progressAnimation.duration = LEVEL_ANIMATION_DURATION
         progressAnimation.interpolator = DecelerateInterpolator()
         progressAnimation.start()
+    }
+
+    private fun showTotalDistance(kilometers: Int, meters: Int) {
+
     }
 }

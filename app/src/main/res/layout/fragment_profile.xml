@@ -117,18 +117,39 @@
 			/>
 			
 			<TextView
-				tools:text="24.5 km"
-				android:gravity="center_horizontal"
 				android:id="@+id/tvTotalDistance"
-				android:layout_width="match_parent"
+				tools:text="24.5"
+				android:gravity="center_horizontal"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				app:layout_constraintTop_toBottomOf="@id/ivTotalDistance"
+				app:layout_constraintHorizontal_chainStyle="packed"
 				android:textColor="@color/colorWhite"
 				android:textStyle="bold|italic"
-				android:padding="8dp"
 				android:textSize="21sp"
+				android:paddingBottom="8dp"
+				android:paddingTop="8dp"
+				app:layout_constraintTop_toBottomOf="@id/ivTotalDistance"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintEnd_toStartOf="@+id/tvLabelKilometers"
+				android:layout_marginEnd="4dp"
 			/>
 			
+			<TextView
+				android:id="@+id/tvLabelKilometers"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="km"
+				android:textColor="@color/colorSecondaryText"
+				android:textStyle="bold|italic"
+				android:textSize="21sp"
+				android:paddingBottom="8dp"
+				android:paddingTop="8dp"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/ivTotalDistance"
+				app:layout_constraintStart_toEndOf="@+id/tvTotalDistance"
+				app:layout_constraintHorizontal_bias="0.5"/>
+		
 		</androidx.constraintlayout.widget.ConstraintLayout>
 		
 	</androidx.cardview.widget.CardView>
@@ -174,16 +195,69 @@
 			/>
 			
 			<TextView
-				tools:text="32 hours"
+				android:id="@+id/tvTotalTimeHours"
+				tools:text="32"
 				android:gravity="center_horizontal"
-				android:id="@+id/tvTotalTime"
-				android:layout_width="match_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				app:layout_constraintHorizontal_chainStyle="packed"
 				app:layout_constraintTop_toBottomOf="@id/ivTotalTime"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/tvLabelHours"
+				app:layout_constraintHorizontal_bias="0.5"
 				android:textColor="@color/colorWhite"
 				android:textStyle="bold|italic"
-				android:padding="8dp"
 				android:textSize="21sp"
+				android:paddingTop="8dp"
+				android:layout_marginEnd="4dp"
+			/>
+			
+			<TextView
+				android:id="@+id/tvLabelHours"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toBottomOf="@id/ivTotalTime"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@id/tvTotalTimeHours"
+				app:layout_constraintHorizontal_bias="0.5"
+				android:text="@string/label_hours"
+				android:textColor="@color/colorSecondaryText"
+				android:textStyle="bold|italic"
+				android:textSize="21sp"
+				android:paddingTop="8dp"
+			/>
+			
+			<TextView
+				android:id="@+id/tvTotalTimeMinutes"
+				tools:text="15"
+				android:gravity="center_horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintHorizontal_chainStyle="packed"
+				app:layout_constraintTop_toBottomOf="@id/tvTotalTimeHours"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@id/tvLabelMinutes"
+				app:layout_constraintHorizontal_bias="0.5"
+				android:textColor="@color/colorWhite"
+				android:textStyle="bold|italic"
+				android:textSize="21sp"
+				android:paddingBottom="8dp"
+				android:layout_marginEnd="4dp"
+			/>
+			
+			<TextView
+				android:id="@+id/tvLabelMinutes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toBottomOf="@id/tvTotalTimeHours"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@id/tvTotalTimeMinutes"
+				app:layout_constraintHorizontal_bias="0.5"
+				android:text="min"
+				android:textColor="@color/colorSecondaryText"
+				android:textStyle="bold|italic"
+				android:textSize="21sp"
+				android:paddingBottom="8dp"
 			/>
 		
 		</androidx.constraintlayout.widget.ConstraintLayout>
