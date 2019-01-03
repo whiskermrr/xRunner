@@ -4,6 +4,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.xrunner.domain.common.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
 import com.whisker.mrr.xrunner.domain.model.UserStatsEntity
 import com.whisker.mrr.xrunner.domain.repository.UserRepository
@@ -37,6 +39,7 @@ class UserDataRepository
                 map[DB_TOTAL_DISTANCE] = userStats.totalDistance + stats.wgs84distance
                 map[DB_TOTAL_TIME] = userStats.totalTime + stats.routeTime
                 map[DB_EXPERIENCE] = userStats.experience + calculateExp(stats)
+                map[DB_AVERAGE_PACE] = calculateAveragePace(userStats.totalDistance, userStats.totalTime)
 
                 Completable.create { emitter ->
                     reference.updateChildren(map).addOnCompleteListener { task ->
@@ -89,6 +92,11 @@ class UserDataRepository
                 emitter.onError(it)
             }
         }
+    }
+
+    private fun calculateAveragePace(totalDistanceInMeters: Float, time: Long) : Float {
+        val totalTimeInSeconds = (time / MILLISECONDS_PER_SECOND).toInt()
+        return MINUTES_PER_HOUR / ((totalDistanceInMeters / totalTimeInSeconds) * 3.6f)
     }
 
     private fun calculateExp(stats: RouteStatsEntity) : Int {

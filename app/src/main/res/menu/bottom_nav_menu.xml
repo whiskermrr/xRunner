@@ -10,7 +10,7 @@
 	<item
 		android:id="@+id/action_past_routes"
 		android:enabled="true"
-		android:icon="@drawable/ic_route"
+		android:icon="@drawable/ic_distance"
 		android:title="@string/run_history"
 	/>
 	
