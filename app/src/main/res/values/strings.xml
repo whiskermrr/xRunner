@@ -18,6 +18,7 @@
 	<string name="minutes_time_format">%02d:%02d</string>
 	<string name="hours_time_format">%02d:%02d:%02d</string>
 	<string name="pace_format">%d\'%02d\'\'</string>
+	<string name="pace_format_2">%s\'%s\'\'</string>
 	<string name="start">START</string>
 	<string name="init_time">00:00</string>
 	<string name="save_snapshot">Save Snapshot</string>

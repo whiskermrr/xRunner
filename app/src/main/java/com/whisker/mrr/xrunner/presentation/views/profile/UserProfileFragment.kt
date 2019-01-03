@@ -116,7 +116,34 @@ class UserProfileFragment : BaseFragment() {
     }
 
     private fun showAveragePace(paceMin: Int, paceSec: Int) {
-        tvAveragePace.text = String.format(Locale.getDefault(), getString(R.string.pace_format), paceMin, paceSec)
+        //tvAveragePace.text = String.format(Locale.getDefault(), getString(R.string.pace_format), paceMin, paceSec)
+        val minutesAnimator = ValueAnimator()
+        animations.add(minutesAnimator)
+        minutesAnimator.setObjectValues(0, paceMin)
+
+        val secondsAnimator = ValueAnimator()
+        animations.add(secondsAnimator)
+        secondsAnimator.setObjectValues(0, paceSec)
+
+        val animatorListener = ValueAnimator.AnimatorUpdateListener {
+            tvAveragePace.text =
+                    String.format(
+                        Locale.getDefault(),
+                        getString(R.string.pace_format_2),
+                        minutesAnimator.animatedValue.toString(),
+                        secondsAnimator.animatedValue.toString())
+        }
+
+        if(paceSec > paceMin) {
+            secondsAnimator.addUpdateListener(animatorListener)
+        } else {
+            minutesAnimator.addUpdateListener(animatorListener)
+        }
+
+        val animatorSet = AnimatorSet()
+        animatorSet.duration = LEVEL_ANIMATION_DURATION
+        animatorSet.playTogether(minutesAnimator, secondsAnimator)
+        animatorSet.start()
     }
 
     override fun onStop() {
