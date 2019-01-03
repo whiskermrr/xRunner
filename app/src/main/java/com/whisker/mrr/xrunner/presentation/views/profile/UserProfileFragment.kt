@@ -15,6 +15,10 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 
 class UserProfileFragment : BaseFragment() {
 
+    companion object {
+        const val LEVEL_ANIMATION_DURATION: Long = 700
+    }
+
     private lateinit var viewModel: UserProfileViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,7 +38,7 @@ class UserProfileFragment : BaseFragment() {
     private fun showLevelNumber(level: Int) {
         val animator = ValueAnimator()
         animator.setObjectValues(0, level)
-        animator.duration = 700
+        animator.duration = LEVEL_ANIMATION_DURATION
         animator.addUpdateListener { animation ->
             tvLevel.text = animation.animatedValue.toString()
         }
@@ -43,7 +47,7 @@ class UserProfileFragment : BaseFragment() {
 
     private fun showLevelProgress(percentExp: Int) {
         val progressAnimation = ObjectAnimator.ofInt(expBar, "progress", 0, percentExp)
-        progressAnimation.duration = 700
+        progressAnimation.duration = LEVEL_ANIMATION_DURATION
         progressAnimation.interpolator = DecelerateInterpolator()
         progressAnimation.start()
     }
