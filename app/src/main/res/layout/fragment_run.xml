@@ -81,7 +81,7 @@
 	
 	<ImageView
 		android:id="@+id/ivPace"
-		android:src="@drawable/ic_pace"
+		android:src="@drawable/ic_speedometer"
 		app:layout_constraintStart_toStartOf="@id/tvPace"
 		app:layout_constraintEnd_toEndOf="@+id/tvPace"
 		app:layout_constraintBottom_toTopOf="@id/tvPace"
@@ -105,7 +105,7 @@
 	
 	<ImageView
 		android:id="@+id/ivTime"
-		android:src="@drawable/ic_clock"
+		android:src="@drawable/ic_time"
 		app:layout_constraintStart_toStartOf="@id/tvTime"
 		app:layout_constraintEnd_toEndOf="@+id/tvTime"
 		app:layout_constraintBottom_toTopOf="@id/tvTime"
