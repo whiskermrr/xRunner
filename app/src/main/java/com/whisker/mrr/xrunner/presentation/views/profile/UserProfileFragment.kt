@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_run.*
 import java.util.*
 
 class UserProfileFragment : BaseFragment() {
