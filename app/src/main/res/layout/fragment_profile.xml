@@ -196,7 +196,7 @@
 			
 			<TextView
 				android:id="@+id/tvTotalTimeHours"
-				tools:text="32"
+				tools:text="0"
 				android:gravity="center_horizontal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -229,7 +229,7 @@
 			
 			<TextView
 				android:id="@+id/tvTotalTimeMinutes"
-				tools:text="15"
+				tools:text="0"
 				android:gravity="center_horizontal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -253,7 +253,7 @@
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toEndOf="@id/tvTotalTimeMinutes"
 				app:layout_constraintHorizontal_bias="0.5"
-				android:text="min"
+				android:text="@string/label_minutes"
 				android:textColor="@color/colorSecondaryText"
 				android:textStyle="bold|italic"
 				android:textSize="21sp"

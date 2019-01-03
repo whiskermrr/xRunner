@@ -13,6 +13,7 @@
 	<string name="empty_time">--:--</string>
 	<string name="distance_format">%d.%03d</string>
 	<string name="distance_format_2">%d.%02d</string>
+	<string name="distance_format_3">%s.%s</string>
 	<string name="average_speed_format">%.2f</string>
 	<string name="minutes_time_format">%02d:%02d</string>
 	<string name="hours_time_format">%02d:%02d:%02d</string>
@@ -39,4 +40,5 @@
 	<string name="profile">Profile</string>
 	<string name="label_level">LEVEL</string>
 	<string name="label_hours">hours</string>
+	<string name="label_minutes">minutes</string>
 </resources>
