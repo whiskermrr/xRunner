@@ -79,8 +79,8 @@ class UserProfileFragment : BaseFragment() {
                     String.format(
                         Locale.getDefault(),
                         getString(R.string.distance_format_3),
-                        kilometersAnimator.animatedValue,
-                        metersAnimator.animatedValue)
+                        kilometersAnimator.animatedValue?.toString() ?: "0",
+                        metersAnimator.animatedValue ?: "0")
         }
 
         if(kilometers > meters / 100) {
@@ -98,7 +98,7 @@ class UserProfileFragment : BaseFragment() {
         hoursAnimator.setObjectValues(0, hours)
 
         hoursAnimator.addUpdateListener {
-            tvTotalTimeHours.text = it.animatedValue.toString()
+            tvTotalTimeHours.text = it.animatedValue?.toString() ?: "0"
         }
 
         val minutesAnimator = ValueAnimator()
@@ -106,7 +106,7 @@ class UserProfileFragment : BaseFragment() {
         minutesAnimator.setObjectValues(0, minutes)
 
         minutesAnimator.addUpdateListener {
-            tvTotalTimeMinutes.text = it.animatedValue.toString()
+            tvTotalTimeMinutes.text = it.animatedValue?.toString() ?: "0"
         }
 
         val animatorSet = AnimatorSet()
@@ -129,8 +129,8 @@ class UserProfileFragment : BaseFragment() {
                     String.format(
                         Locale.getDefault(),
                         getString(R.string.pace_format_2),
-                        minutesAnimator.animatedValue.toString(),
-                        secondsAnimator.animatedValue.toString())
+                        minutesAnimator.animatedValue?.toString() ?: "0",
+                        secondsAnimator.animatedValue?.toString() ?: "0")
         }
 
         if(paceSec > paceMin) {
