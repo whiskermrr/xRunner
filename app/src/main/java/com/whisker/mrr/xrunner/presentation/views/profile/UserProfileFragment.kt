@@ -48,7 +48,7 @@ class UserProfileFragment : BaseFragment() {
         animator.setObjectValues(0, level)
         animator.duration = LEVEL_ANIMATION_DURATION
         animator.addUpdateListener { animation ->
-            tvLevel.text = animation.animatedValue.toString()
+            tvLevel.text = animation.animatedValue?.toString() ?: "0"
         }
         animator.start()
     }
@@ -79,8 +79,8 @@ class UserProfileFragment : BaseFragment() {
                     String.format(
                         Locale.getDefault(),
                         getString(R.string.distance_format_3),
-                        kilometersAnimator.animatedValue?.toString() ?: "0",
-                        metersAnimator.animatedValue ?: "0")
+                        (kilometersAnimator.animatedValue?.toString() ?: "0"),
+                        (metersAnimator.animatedValue ?: "0"))
         }
 
         if(kilometers > meters / 100) {
@@ -129,8 +129,8 @@ class UserProfileFragment : BaseFragment() {
                     String.format(
                         Locale.getDefault(),
                         getString(R.string.pace_format_2),
-                        minutesAnimator.animatedValue?.toString() ?: "0",
-                        secondsAnimator.animatedValue?.toString() ?: "0")
+                        (minutesAnimator.animatedValue?.toString() ?: "0"),
+                        (secondsAnimator.animatedValue?.toString() ?: "0"))
         }
 
         if(paceSec > paceMin) {
