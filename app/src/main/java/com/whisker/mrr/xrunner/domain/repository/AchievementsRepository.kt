@@ -8,7 +8,7 @@ import io.reactivex.Single
 interface AchievementsRepository {
 
     fun saveAchievement(userId: String, achievement: Achievement) : Completable
-    fun updateAchievements(userId: String, stats: RouteStatsEntity) : Completable
+    fun updateAchievements(userId: String, achievements: List<Achievement>) : Completable
     fun getAchievements(userId: String) : Single<List<Achievement>>
     fun getActiveAchievements(userId: String) : Single<List<Achievement>>
 }

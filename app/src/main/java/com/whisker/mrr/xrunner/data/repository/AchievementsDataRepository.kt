@@ -7,7 +7,6 @@ import com.google.firebase.database.ValueEventListener
 import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_ACHIEVEMENTS
 import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.xrunner.domain.model.Achievement
-import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
 import com.whisker.mrr.xrunner.domain.repository.AchievementsRepository
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -32,14 +31,9 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
         }
     }
 
-    override fun updateAchievements(userId: String, stats: RouteStatsEntity): Completable {
-        val reference = getReference(userId)
-        return getActiveAchievements(reference)
-            .flatMapCompletable {
-                Completable.create { emitter ->
-
-                }
-            }
+    override fun updateAchievements(userId: String, achievements: List<Achievement>): Completable {
+        // TODO: logic
+        return Completable.complete()
     }
 
     override fun getAchievements(userId: String): Single<List<Achievement>> {
@@ -63,19 +57,16 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
     }
 
     override fun getActiveAchievements(userId: String) : Single<List<Achievement>> {
-        return getActiveAchievements(getReference(userId))
-    }
-
-    private fun getActiveAchievements(reference: DatabaseReference) : Single<List<Achievement>> {
         return Single.create { emitter ->
-            reference.addListenerForSingleValueEvent(object: ValueEventListener {
+            getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val currentTime = Date().time
                     val activeAchievements = mutableListOf<Achievement>()
                     dataSnapshot.children.forEach { child ->
                         child.getValue(Achievement::class.java)?.let { achievement ->
                             achievement.deadline?.let {
-                                if(it > currentTime) activeAchievements.add(achievement)
+                                if(it > currentTime && !achievement.isFinished)
+                                    activeAchievements.add(achievement)
                             } ?: achievement.run {
                                 activeAchievements.add(this)
                             }

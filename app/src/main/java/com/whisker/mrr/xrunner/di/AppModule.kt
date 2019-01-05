@@ -194,4 +194,10 @@ class AppModule {
     fun provideGetUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : GetUserStatsInteractor {
         return GetUserStatsInteractor(IOSingleTransformer(), userRepository, authSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideUpdateUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : UpdateUserStatsInteractor {
+        return UpdateUserStatsInteractor(IOCompletableTransformer(), userRepository, authSource)
+    }
 }

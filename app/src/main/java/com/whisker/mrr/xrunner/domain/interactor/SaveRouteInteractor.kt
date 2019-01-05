@@ -30,12 +30,10 @@ class SaveRouteInteractor(
         val routeEntity = data?.get(PARAM_ROUTE)
 
         routeEntity?.let {
-            return authSource.getUserId().flatMapCompletable { userId ->
-                val saveCompletable = routeRepository.saveRoute(userId, routeEntity as RouteEntity)
-                val updateStatsCompletable = userRepository.updateUserStats(userId, routeEntity.routeStats)
-
-                Completable.concatArray(saveCompletable, updateStatsCompletable)
-            }
+            return authSource.getUserId()
+                .flatMapCompletable { userId ->
+                    routeRepository.saveRoute(userId, routeEntity as RouteEntity)
+                }
         } ?: return Completable.error(IllegalArgumentException("Argument @route must be provided."))
     }
 }

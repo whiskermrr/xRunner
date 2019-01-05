@@ -25,10 +25,6 @@ class UserDataRepository
 : UserRepository {
 
     override fun updateUserStats(userId: String, stats: RouteStatsEntity): Completable {
-        val reference = databaseReference
-            .child(REFERENCE_USERS)
-            .child(userId)
-            .child(REFERENCE_USER_STATS)
 
         return getUserStats(userId)
             .flatMapCompletable { userStats ->
@@ -41,7 +37,7 @@ class UserDataRepository
                 map[DB_AVERAGE_PACE] = calculateAveragePace(totalDistance, totalTime)
 
                 Completable.create { emitter ->
-                    reference.updateChildren(map).addOnCompleteListener { task ->
+                    getReference(userId).updateChildren(map).addOnCompleteListener { task ->
                         if(task.isSuccessful) {
                             emitter.onComplete()
                         } else {
@@ -57,13 +53,8 @@ class UserDataRepository
     }
 
     override fun getUserStats(userId: String): Single<UserStatsEntity> {
-        val reference = databaseReference
-            .child(REFERENCE_USERS)
-            .child(userId)
-            .child(REFERENCE_USER_STATS)
-
         return Single.create { emitter ->
-            reference.addListenerForSingleValueEvent(object: ValueEventListener {
+            getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     dataSnapshot.value?.let {
                         dataSnapshot.getValue(UserStatsEntity::class.java)?.let { userStats ->
@@ -80,13 +71,8 @@ class UserDataRepository
     }
 
     override fun createUserStats(userId: String): Completable {
-        val reference = databaseReference
-            .child(REFERENCE_USERS)
-            .child(userId)
-            .child(REFERENCE_USER_STATS)
-
         return Completable.create { emitter ->
-            reference.setValue(UserStatsEntity()).addOnCompleteListener { task ->
+            getReference(userId).setValue(UserStatsEntity()).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
                 } else {
@@ -107,5 +93,12 @@ class UserDataRepository
 
     private fun calculateExp(stats: RouteStatsEntity) : Int {
         return ((stats.averageSpeed * stats.wgs84distance) / 10f).roundToInt()
+    }
+
+    private fun getReference(userId: String) : DatabaseReference {
+        return databaseReference
+            .child(REFERENCE_USERS)
+            .child(userId)
+            .child(REFERENCE_USER_STATS)
     }
 }
