@@ -65,7 +65,7 @@
 			android:id="@+id/tvLabelLevel"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:gravity="center_horizontal"
+			android:layout_centerHorizontal="true"
 			android:text="@string/label_level"
 			android:layout_below="@id/tvLevel"
 			android:textStyle="bold|italic"
