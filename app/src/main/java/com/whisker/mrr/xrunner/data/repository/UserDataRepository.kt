@@ -44,8 +44,10 @@ class UserDataRepository
                     reference.updateChildren(map).addOnCompleteListener { task ->
                         if(task.isSuccessful) {
                             emitter.onComplete()
-                        } else if(task.exception != null) {
-                            emitter.onError(task.exception!!)
+                        } else {
+                            task.exception?.let {
+                                emitter.onError(it)
+                            }
                         }
                     }.addOnFailureListener {
                         emitter.onError(it)
@@ -63,8 +65,11 @@ class UserDataRepository
         return Single.create { emitter ->
             reference.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val userStats = dataSnapshot.getValue(UserStatsEntity::class.java)
-                    emitter.onSuccess(userStats!!)
+                    dataSnapshot.value?.let {
+                        dataSnapshot.getValue(UserStatsEntity::class.java)?.let { userStats ->
+                            emitter.onSuccess(userStats)
+                        }
+                    }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -84,8 +89,10 @@ class UserDataRepository
             reference.setValue(UserStatsEntity()).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
-                } else if(task.exception != null) {
-                    emitter.onError(task.exception!!)
+                } else {
+                    task.exception?.let {
+                        emitter.onError(it)
+                    }
                 }
             }.addOnFailureListener {
                 emitter.onError(it)

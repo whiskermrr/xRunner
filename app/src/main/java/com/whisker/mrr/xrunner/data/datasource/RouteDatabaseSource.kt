@@ -25,8 +25,10 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
             databaseReference.child(route.routeId).setValue(route).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
-                } else if(task.exception != null) {
-                    emitter.onError(task.exception!!)
+                } else {
+                    task.exception?.let {
+                        emitter.onError(it)
+                    }
                 }
             }
         }
@@ -77,8 +79,10 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
             databaseReference.removeValue().addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
-                } else if(task.exception != null) {
-                    emitter.onError(task.exception!!)
+                } else {
+                    task.exception?.let {
+                        emitter.onError(it)
+                    }
                 }
             }.addOnFailureListener {
                 emitter.onError(it)
