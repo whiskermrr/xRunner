@@ -1,6 +1,8 @@
 package com.whisker.mrr.xrunner.data.datasource
 
 import com.google.firebase.database.*
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_ROUTES
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.xrunner.domain.model.RouteEntity
 import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
 import com.whisker.mrr.xrunner.domain.source.RouteSource
@@ -11,11 +13,6 @@ import io.reactivex.Flowable
 import javax.inject.Inject
 
 class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : RouteSource {
-
-    companion object {
-        const val REFERENCE_USERS = "Users"
-        const val REFERENCE_ROUTES = "Routes"
-    }
 
     override fun saveRoute(route: RouteEntity, userId : String) : Completable {
         val databaseReference = firebaseDatabase.reference

@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.domain.model
 
 data class Achievement(
+    var id: String = "",
     var isFinished: Boolean = false,
     var deadline: Long? = null,
     var title: String = "Achievement",

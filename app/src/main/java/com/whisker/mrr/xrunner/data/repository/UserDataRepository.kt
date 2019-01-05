@@ -4,6 +4,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.DB_AVERAGE_PACE
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.DB_EXPERIENCE
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.DB_TOTAL_DISTANCE
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.DB_TOTAL_TIME
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_USERS
+import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_USER_STATS
 import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.xrunner.domain.common.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
@@ -17,15 +23,6 @@ import kotlin.math.roundToInt
 class UserDataRepository
 @Inject constructor(private val databaseReference: DatabaseReference)
 : UserRepository {
-
-    companion object {
-        const val REFERENCE_USERS = "Users"
-        const val REFERENCE_USER_STATS = "UserStats"
-        const val DB_AVERAGE_PACE = "averagePace"
-        const val DB_EXPERIENCE = "experience"
-        const val DB_TOTAL_DISTANCE = "totalDistance"
-        const val DB_TOTAL_TIME = "totalTime"
-    }
 
     override fun updateUserStats(userId: String, stats: RouteStatsEntity): Completable {
         val reference = databaseReference
