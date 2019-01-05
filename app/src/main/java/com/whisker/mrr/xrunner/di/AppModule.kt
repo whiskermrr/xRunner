@@ -161,8 +161,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource, userRepository: UserRepository) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository, authSource, userRepository)
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository, authSource)
     }
 
     @Provides

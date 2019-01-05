@@ -12,8 +12,7 @@ import java.lang.IllegalArgumentException
 class SaveRouteInteractor(
     transformer: CompletableTransformer,
     private val routeRepository: RouteRepository,
-    private val authSource: AuthSource,
-    private val userRepository: UserRepository
+    private val authSource: AuthSource
 ) : CompletableUseCase(transformer) {
 
     companion object {
