@@ -67,14 +67,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(userDataSource: UserSource) : LoginRepository {
-        return LoginDataRepository(userDataSource)
+    fun provideLoginRepository(authDataSource: AuthSource) : LoginRepository {
+        return LoginDataRepository(authDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideUserDataSource(firebaseAuth: FirebaseAuth) : UserSource {
-        return UserDataSource(firebaseAuth)
+    fun provideUserDataSource(firebaseAuth: FirebaseAuth) : AuthSource {
+        return AuthDataSource(firebaseAuth)
     }
 
     @Provides
@@ -137,8 +137,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetRouteListInteractor(routeRepository: RouteRepository, userSource: UserSource) : GetRouteListInteractor {
-        return GetRouteListInteractor(IOFlowableTransformer(), routeRepository, userSource)
+    fun provideGetRouteListInteractor(routeRepository: RouteRepository, authSource: AuthSource) : GetRouteListInteractor {
+        return GetRouteListInteractor(IOFlowableTransformer(), routeRepository, authSource)
     }
 
     @Provides
@@ -161,8 +161,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveRouteInteractor(routeRepository: RouteRepository, userSource: UserSource, userRepository: UserRepository) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository, userSource, userRepository)
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource, userRepository: UserRepository) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository, authSource, userRepository)
     }
 
     @Provides
@@ -185,13 +185,13 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoveRouteInteractor(routeRepository: RouteRepository, userSource: UserSource) : RemoveRouteInteractor {
-        return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository, userSource)
+    fun provideRemoveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : RemoveRouteInteractor {
+        return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository, authSource)
     }
 
     @Provides
     @Singleton
-    fun provideGetUserStatsInteractor(userRepository: UserRepository, userSource: UserSource) : GetUserStatsInteractor {
-        return GetUserStatsInteractor(IOSingleTransformer(), userRepository, userSource)
+    fun provideGetUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : GetUserStatsInteractor {
+        return GetUserStatsInteractor(IOSingleTransformer(), userRepository, authSource)
     }
 }
