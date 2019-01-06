@@ -6,7 +6,6 @@ data class Achievement(
     var deadline: Long? = null,
     var title: String = "Achievement",
     var distance: Float? = null,
-    var distanceProgress: Float = 0f,
     var speed: Float? = null,
     var time: Long? = null,
     var progress: Int = 0,

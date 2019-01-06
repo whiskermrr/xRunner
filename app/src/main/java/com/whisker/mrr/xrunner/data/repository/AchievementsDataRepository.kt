@@ -11,8 +11,14 @@ import com.whisker.mrr.xrunner.domain.repository.AchievementsRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.util.*
+import kotlin.collections.HashMap
 
 class AchievementsDataRepository(private val databaseReference: DatabaseReference) : AchievementsRepository {
+
+    companion object {
+        const val DB_REFERENCE_IS_FINISHED = "isFinished"
+        const val DB_REFERENCE_PROGRESS = "progress"
+    }
 
     override fun saveAchievement(userId: String, achievement: Achievement): Completable {
         val reference = getReference(userId)
@@ -32,8 +38,28 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
     }
 
     override fun updateAchievements(userId: String, achievements: List<Achievement>): Completable {
-        // TODO: logic
-        return Completable.complete()
+        val reference = getReference(userId)
+        val completableList = mutableListOf<Completable>()
+        for(achievement in achievements) {
+            completableList.add(
+                Completable.create { emitter ->
+                    val map = HashMap<String, Any>()
+                    map[DB_REFERENCE_IS_FINISHED] = achievement.progress
+                    map[DB_REFERENCE_IS_FINISHED] = achievement.isFinished
+                    reference.child(achievement.id).updateChildren(map).addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            task.exception?.let {
+                                emitter.onError(it)
+                            }
+                        }
+                    }
+                }
+            )
+        }
+
+        return Completable.concat(completableList)
     }
 
     override fun getAchievements(userId: String): Single<List<Achievement>> {
