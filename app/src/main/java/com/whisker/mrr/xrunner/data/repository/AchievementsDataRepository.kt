@@ -44,7 +44,7 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
             completableList.add(
                 Completable.create { emitter ->
                     val map = HashMap<String, Any>()
-                    map[DB_REFERENCE_IS_FINISHED] = achievement.progress
+                    map[DB_REFERENCE_PROGRESS] = achievement.progress
                     map[DB_REFERENCE_IS_FINISHED] = achievement.isFinished
                     reference.child(achievement.id).updateChildren(map).addOnCompleteListener { task ->
                         if(task.isSuccessful) {
