@@ -7,15 +7,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.xrunner.data.datasource.*
-import com.whisker.mrr.xrunner.data.repository.LocationDataRepository
-import com.whisker.mrr.xrunner.data.repository.LoginDataRepository
-import com.whisker.mrr.xrunner.data.repository.RouteDataRepository
-import com.whisker.mrr.xrunner.data.repository.UserDataRepository
+import com.whisker.mrr.xrunner.data.repository.*
 import com.whisker.mrr.xrunner.domain.interactor.*
-import com.whisker.mrr.xrunner.domain.repository.LocationRepository
-import com.whisker.mrr.xrunner.domain.repository.LoginRepository
-import com.whisker.mrr.xrunner.domain.repository.RouteRepository
-import com.whisker.mrr.xrunner.domain.repository.UserRepository
+import com.whisker.mrr.xrunner.domain.repository.*
 import com.whisker.mrr.xrunner.domain.source.*
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.presentation.common.ComputationCompletableTransformer
@@ -125,6 +119,12 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideAchievementsRepository(database: FirebaseDatabase) : AchievementsRepository {
+        return AchievementsDataRepository(database.reference)
+    }
+
+    @Provides
+    @Singleton
     fun provideCreateAccountInteractor(loginRepository: LoginRepository, userRepository: UserRepository) : CreateAccountInteractor {
         return CreateAccountInteractor(IOCompletableTransformer(), loginRepository, userRepository)
     }
@@ -199,5 +199,23 @@ class AppModule {
     @Singleton
     fun provideUpdateUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : UpdateUserStatsInteractor {
         return UpdateUserStatsInteractor(IOCompletableTransformer(), userRepository, authSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveAchievementInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : SaveAchievementInteractor {
+        return SaveAchievementInteractor(IOCompletableTransformer(), authSource, achievementsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateAchievementsInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : UpdateAchievementsInteractor {
+        return UpdateAchievementsInteractor(IOCompletableTransformer(), authSource, achievementsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAchievementsInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : GetAchievementsInteractor {
+        return GetAchievementsInteractor(IOSingleTransformer(), authSource, achievementsRepository)
     }
 }
