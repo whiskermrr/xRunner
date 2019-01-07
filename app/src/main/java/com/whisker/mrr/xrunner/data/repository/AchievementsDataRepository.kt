@@ -94,7 +94,8 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
                                 if(it > currentTime && !achievement.isFinished)
                                     activeAchievements.add(achievement)
                             } ?: achievement.run {
-                                activeAchievements.add(this)
+                                if(!this.isFinished)
+                                    activeAchievements.add(this)
                             }
                         }
                     }
