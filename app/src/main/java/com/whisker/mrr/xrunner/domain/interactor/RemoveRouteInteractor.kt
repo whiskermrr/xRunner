@@ -2,7 +2,7 @@ package com.whisker.mrr.xrunner.domain.interactor
 
 import com.whisker.mrr.xrunner.domain.common.whenBothNotNull
 import com.whisker.mrr.xrunner.domain.repository.RouteRepository
-import com.whisker.mrr.xrunner.domain.source.UserSource
+import com.whisker.mrr.xrunner.domain.source.AuthSource
 import com.whisker.mrr.xrunner.domain.usecase.CompletableUseCase
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
@@ -11,7 +11,7 @@ import java.lang.IllegalArgumentException
 class RemoveRouteInteractor(
     transformer: CompletableTransformer,
     private val routeRepository: RouteRepository,
-    private val userSource: UserSource
+    private val authSource: AuthSource
 ) : CompletableUseCase(transformer) {
 
     companion object {
@@ -31,7 +31,7 @@ class RemoveRouteInteractor(
         val routeDate = data?.get(PARAM_ROUTE_DATE)
 
         whenBothNotNull(routeId, routeDate) { id, date ->
-            return userSource.getUserId()
+            return authSource.getUserId()
                 .flatMapCompletable { userId ->
                     routeRepository.removeRoute(userId, id.toString(), date.toString().toLong())
                 }
