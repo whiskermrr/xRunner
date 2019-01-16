@@ -50,6 +50,7 @@ class AppModule {
     @Singleton
     fun provideFirebaseDatabase() : FirebaseDatabase {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        FirebaseDatabase.getInstance().reference.keepSynced(true)
         return FirebaseDatabase.getInstance()
     }
 
