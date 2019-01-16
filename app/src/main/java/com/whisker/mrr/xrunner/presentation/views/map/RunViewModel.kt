@@ -21,9 +21,8 @@ class RunViewModel
                     private val stopTrackingInteractor: StopTrackingInteractor,
                     private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor) : ViewModel() {
 
-    private val routePoints = MutableLiveData<List<LatLng>>()
     private val lastKnownLocation = MutableLiveData<LatLng>()
-    private val routeStats = MutableLiveData<RouteStats>()
+    private val routeLive = MutableLiveData<Route>()
     private val isTracking = MutableLiveData<Boolean>()
     private val finalRoute = MutableLiveData<Route>()
 
@@ -34,8 +33,6 @@ class RunViewModel
     fun onMapShown() {
         disposables.add(
             getLastKnownLocationInteractor.single()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     lastKnownLocation.postValue(it)
                 }, {
@@ -48,18 +45,16 @@ class RunViewModel
         route.date = System.currentTimeMillis()
         runnerTimer.startTimer()
         isTracking.postValue(true)
-        routePoints.value = listOf()
-        routeStats.value = RouteStats()
+        routeLive.postValue(route)
 
         disposables.add(
             startTrackingInteractor.flowable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    route.routeStats = calculateStats(it)
+                    route.waypoints.add(it)
+                }
                 .subscribe({
-                    val points = routePoints.value?.toMutableList() ?: arrayListOf()
-                    routeStats.postValue(calculateStats(points, it))
-                    points.add(it)
-                    routePoints.postValue(points)
+                    routeLive.postValue(route)
                 }, {
                     it.printStackTrace()
                 })
@@ -80,23 +75,18 @@ class RunViewModel
         runnerTimer.stop()
         isTracking.postValue(false)
         stopTrackingInteractor.execute()
-        if(routePoints.value != null && routeStats.value != null) {
-            if(routeStats.value!!.wgs84distance == 0f) {
-                return
-            }
+        if(route.routeStats.wgs84distance > 0) {
             calculateFinalStats()
             route.name = DateUtils.formatDate(route.date, DateUtils.EEE_MMM_d_yyyy)
-            route.routeStats = routeStats.value!!
-            route.waypoints = routePoints.value!!
             finalRoute.postValue(route)
         }
     }
 
-    private fun calculateStats(points: List<LatLng>, latLng: LatLng) : RouteStats {
+    private fun calculateStats(latLng: LatLng) : RouteStats {
         return LocationUtils.calculateRouteStats(
-                    routeStats = routeStats.value ?: RouteStats(),
-                    firstCoords = if(!points.isEmpty()) {
-                        points.last()
+                    routeStats = route.routeStats,
+                    firstCoords = if(!route.waypoints.isEmpty()) {
+                        route.waypoints.last()
                     } else {
                         latLng
                     },
@@ -106,18 +96,16 @@ class RunViewModel
     }
 
     private fun calculateFinalStats() {
-        val stats = routeStats.value!!
-        LocationUtils.calculateRouteAverageSpeedAndPeace(stats, runnerTimer.getElapsedTime())
-        LocationUtils.calculateRouteTime(stats, runnerTimer.getElapsedTime())
-        routeStats.postValue(stats)
+        LocationUtils.calculateRouteAverageSpeedAndPeace(route.routeStats, runnerTimer.getElapsedTime())
+        LocationUtils.calculateRouteTime(route.routeStats, runnerTimer.getElapsedTime())
+        routeLive.postValue(route)
     }
 
-    fun getRoutePoints() = routePoints
     fun getLastKnownLocation() = lastKnownLocation
-    fun getRouteStats() = routeStats
     fun getIsTracking() = isTracking
     fun getTime() = runnerTimer.getTime()
     fun getFinalRoute() = finalRoute
+    fun getRoute() = routeLive
 
     override fun onCleared() {
         super.onCleared()

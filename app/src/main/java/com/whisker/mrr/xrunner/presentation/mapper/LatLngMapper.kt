@@ -14,7 +14,7 @@ class LatLngMapper {
             return returnList
         }
 
-        fun coordsToLatLngTransform(points: List<Coords>) : List<LatLng> {
+        fun coordsToLatLngTransform(points: List<Coords>) : MutableList<LatLng> {
             val returnList = mutableListOf<LatLng>()
             for(point in points) {
                 returnList.add(LatLng(point.latitude, point.longitude))
