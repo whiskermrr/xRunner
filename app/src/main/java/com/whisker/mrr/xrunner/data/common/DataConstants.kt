@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.datasource.common
+package com.whisker.mrr.xrunner.data.common
 
 object DataConstants {
 

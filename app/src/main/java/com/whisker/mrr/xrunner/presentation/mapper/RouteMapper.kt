@@ -4,13 +4,14 @@ import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_HO
 import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
 import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.xrunner.domain.common.DomainConstants.MINUTES_PER_HOUR
+import com.whisker.mrr.xrunner.domain.common.DomainConstants.MMM_yyyy
+import com.whisker.mrr.xrunner.domain.common.formatDate
 import com.whisker.mrr.xrunner.domain.model.RouteEntity
 import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
 import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.model.RouteHolder
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
-import com.whisker.mrr.xrunner.utils.DateUtils
 import java.util.*
 
 class RouteMapper {
@@ -99,7 +100,7 @@ class RouteMapper {
         private fun entityHolderToRouteHolder(entityHolder: RouteEntityHolder) : RouteHolder {
             val routeHolder = RouteHolder()
             routeHolder.routes = listOfEntityToListOfRoutesTransform(entityHolder.routes)
-            routeHolder.month = DateUtils.formatDate(entityHolder.month, DateUtils.MMM_yyyy)
+            routeHolder.month = Date(entityHolder.month).formatDate(MMM_yyyy)
 
             val kilometers = (entityHolder.totalDistance / 1000).toInt()
             val meters = (entityHolder.totalDistance - kilometers * 1000).toInt() / 10

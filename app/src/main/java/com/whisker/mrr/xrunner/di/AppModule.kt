@@ -12,13 +12,14 @@ import com.whisker.mrr.xrunner.domain.interactor.*
 import com.whisker.mrr.xrunner.domain.repository.*
 import com.whisker.mrr.xrunner.domain.source.*
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
-import com.whisker.mrr.xrunner.presentation.common.ComputationCompletableTransformer
-import com.whisker.mrr.xrunner.presentation.common.IOCompletableTransformer
-import com.whisker.mrr.xrunner.presentation.common.IOFlowableTransformer
-import com.whisker.mrr.xrunner.presentation.common.IOSingleTransformer
+import com.whisker.mrr.xrunner.domain.common.scheduler.ComputationCompletableTransformer
+import com.whisker.mrr.xrunner.domain.common.scheduler.IOCompletableTransformer
+import com.whisker.mrr.xrunner.domain.common.scheduler.IOFlowableTransformer
+import com.whisker.mrr.xrunner.domain.common.scheduler.IOSingleTransformer
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
@@ -127,25 +128,25 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCreateAccountInteractor(loginRepository: LoginRepository, userRepository: UserRepository) : CreateAccountInteractor {
-        return CreateAccountInteractor(IOCompletableTransformer(), loginRepository, userRepository)
+        return CreateAccountInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), loginRepository, userRepository)
     }
 
     @Provides
     @Singleton
     fun provideGetLastKnownLocationInteractor(locationRepository: LocationRepository) : GetLastKnownLocationInteractor {
-        return GetLastKnownLocationInteractor(IOSingleTransformer(), locationRepository)
+        return GetLastKnownLocationInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), locationRepository)
     }
 
     @Provides
     @Singleton
     fun provideGetRouteListInteractor(routeRepository: RouteRepository, authSource: AuthSource) : GetRouteListInteractor {
-        return GetRouteListInteractor(IOFlowableTransformer(), routeRepository, authSource)
+        return GetRouteListInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
     }
 
     @Provides
     @Singleton
     fun provideLoginInteractor(loginRepository: LoginRepository) : LoginInteractor {
-        return LoginInteractor(IOCompletableTransformer(), loginRepository)
+        return LoginInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), loginRepository)
     }
 
     @Provides
@@ -163,19 +164,19 @@ class AppModule {
     @Provides
     @Singleton
     fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(), routeRepository, authSource)
+        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
     }
 
     @Provides
     @Singleton
     fun provideSaveSnapshotInteractor(routeRepository: RouteRepository) : SaveSnapshotInteractor {
-        return SaveSnapshotInteractor(ComputationCompletableTransformer(), routeRepository)
+        return SaveSnapshotInteractor(ComputationCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository)
     }
 
     @Provides
     @Singleton
     fun provideStartTrackingInteractor(locationRepository: LocationRepository) : StartTrackingInteractor {
-        return StartTrackingInteractor(IOFlowableTransformer(), locationRepository)
+        return StartTrackingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), locationRepository)
     }
 
     @Provides
@@ -187,36 +188,36 @@ class AppModule {
     @Provides
     @Singleton
     fun provideRemoveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : RemoveRouteInteractor {
-        return RemoveRouteInteractor(IOCompletableTransformer(), routeRepository, authSource)
+        return RemoveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
     }
 
     @Provides
     @Singleton
     fun provideGetUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : GetUserStatsInteractor {
-        return GetUserStatsInteractor(IOSingleTransformer(), userRepository, authSource)
+        return GetUserStatsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), userRepository, authSource)
     }
 
     @Provides
     @Singleton
     fun provideUpdateUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : UpdateUserStatsInteractor {
-        return UpdateUserStatsInteractor(IOCompletableTransformer(), userRepository, authSource)
+        return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), userRepository, authSource)
     }
 
     @Provides
     @Singleton
     fun provideSaveAchievementInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : SaveAchievementInteractor {
-        return SaveAchievementInteractor(IOCompletableTransformer(), authSource, achievementsRepository)
+        return SaveAchievementInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, achievementsRepository)
     }
 
     @Provides
     @Singleton
     fun provideUpdateAchievementsInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : UpdateAchievementsInteractor {
-        return UpdateAchievementsInteractor(IOCompletableTransformer(), authSource, achievementsRepository)
+        return UpdateAchievementsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, achievementsRepository)
     }
 
     @Provides
     @Singleton
     fun provideGetAchievementsInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : GetAchievementsInteractor {
-        return GetAchievementsInteractor(IOSingleTransformer(), authSource, achievementsRepository)
+        return GetAchievementsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, achievementsRepository)
     }
 }

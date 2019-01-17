@@ -3,15 +3,15 @@ package com.whisker.mrr.xrunner.presentation.views.map
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.whisker.mrr.xrunner.domain.common.DomainConstants.EEE_MMM_d_yyyy
+import com.whisker.mrr.xrunner.domain.common.formatDate
 import com.whisker.mrr.xrunner.domain.interactor.*
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
-import com.whisker.mrr.xrunner.utils.DateUtils
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.RunnerTimer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import java.util.*
 import javax.inject.Inject
 
 class RunViewModel
@@ -77,7 +77,7 @@ class RunViewModel
         stopTrackingInteractor.execute()
         if(route.routeStats.wgs84distance > 0) {
             calculateFinalStats()
-            route.name = DateUtils.formatDate(route.date, DateUtils.EEE_MMM_d_yyyy)
+            route.name = Date(route.date).formatDate(EEE_MMM_d_yyyy)
             finalRoute.postValue(route)
         }
     }

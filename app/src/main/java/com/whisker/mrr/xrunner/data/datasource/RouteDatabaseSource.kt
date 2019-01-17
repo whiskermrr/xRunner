@@ -1,15 +1,16 @@
 package com.whisker.mrr.xrunner.data.datasource
 
 import com.google.firebase.database.*
-import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_ROUTES
-import com.whisker.mrr.xrunner.data.datasource.common.DataConstants.REFERENCE_USERS
+import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_ROUTES
+import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_USERS
+import com.whisker.mrr.xrunner.domain.common.getFirstDayOfTheMonthInMillis
 import com.whisker.mrr.xrunner.domain.model.RouteEntity
 import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
 import com.whisker.mrr.xrunner.domain.source.RouteSource
-import com.whisker.mrr.xrunner.utils.DateUtils
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import java.util.*
 import javax.inject.Inject
 
 class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : RouteSource {
@@ -18,7 +19,7 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
         val databaseReference = firebaseDatabase.reference
             .child(REFERENCE_USERS).child(userId)
             .child(REFERENCE_ROUTES)
-            .child(DateUtils.getFirstDayOfTheMonthInMillis(route.date).toString())
+            .child(Date(route.date).getFirstDayOfTheMonthInMillis().toString())
 
         route.routeId = databaseReference.push().key!!
         return Completable.create { emitter ->
@@ -72,7 +73,7 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
             .child(REFERENCE_USERS)
             .child(userId)
             .child(REFERENCE_ROUTES)
-            .child(DateUtils.getFirstDayOfTheMonthInMillis(date).toString())
+            .child(Date(date).getFirstDayOfTheMonthInMillis().toString())
             .child(routeId)
 
         return Completable.create { emitter ->
