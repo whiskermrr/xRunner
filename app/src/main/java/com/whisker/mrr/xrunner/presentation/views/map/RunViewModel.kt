@@ -3,9 +3,10 @@ package com.whisker.mrr.xrunner.presentation.views.map
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.EEE_MMM_d_yyyy
-import com.whisker.mrr.xrunner.domain.common.formatDate
-import com.whisker.mrr.xrunner.domain.interactor.*
+import com.whisker.mrr.domain.common.DomainConstants.EEE_MMM_d_yyyy
+import com.whisker.mrr.domain.common.formatDate
+import com.whisker.mrr.domain.interactor.*
+import com.whisker.mrr.xrunner.presentation.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.utils.LocationUtils
@@ -33,6 +34,9 @@ class RunViewModel
     fun onMapShown() {
         disposables.add(
             getLastKnownLocationInteractor.single()
+                .map {
+                    LatLngMapper.coordsToLatLngTransform(it)
+                }
                 .subscribe({
                     lastKnownLocation.postValue(it)
                 }, {
@@ -49,6 +53,9 @@ class RunViewModel
 
         disposables.add(
             startTrackingInteractor.flowable()
+                .map {
+                    LatLngMapper.coordsToLatLngTransform(it)
+                }
                 .map {
                     route.routeStats = calculateStats(it)
                     route.waypoints.add(it)

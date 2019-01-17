@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
-import com.whisker.mrr.xrunner.domain.bus.RxBus
-import com.whisker.mrr.xrunner.domain.bus.event.SyncEvent
+import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.domain.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment

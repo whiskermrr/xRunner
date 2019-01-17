@@ -9,13 +9,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.domain.bus.RxBus
-import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
+import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.domain.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
-import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import com.whisker.mrr.xrunner.utils.calculateZoom

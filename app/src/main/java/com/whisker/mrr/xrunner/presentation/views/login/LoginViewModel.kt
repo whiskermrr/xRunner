@@ -2,8 +2,8 @@ package com.whisker.mrr.xrunner.presentation.views.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.interactor.CreateAccountInteractor
-import com.whisker.mrr.xrunner.domain.interactor.LoginInteractor
+import com.whisker.mrr.domain.interactor.CreateAccountInteractor
+import com.whisker.mrr.domain.interactor.LoginInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

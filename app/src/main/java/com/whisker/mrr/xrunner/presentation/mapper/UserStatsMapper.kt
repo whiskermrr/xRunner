@@ -1,10 +1,10 @@
 package com.whisker.mrr.xrunner.presentation.mapper
 
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.EXP_RATIO
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.xrunner.domain.model.UserStatsEntity
+import com.whisker.mrr.domain.common.DomainConstants.EXP_RATIO
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.domain.model.UserStatsEntity
 import com.whisker.mrr.xrunner.presentation.model.UserStats
 import io.reactivex.Single
 

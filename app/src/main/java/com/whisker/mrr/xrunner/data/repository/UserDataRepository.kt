@@ -10,11 +10,11 @@ import com.whisker.mrr.xrunner.data.common.DataConstants.DB_TOTAL_DISTANCE
 import com.whisker.mrr.xrunner.data.common.DataConstants.DB_TOTAL_TIME
 import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_USER_STATS
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MINUTES_PER_HOUR
-import com.whisker.mrr.xrunner.domain.model.RouteStatsEntity
-import com.whisker.mrr.xrunner.domain.model.UserStatsEntity
-import com.whisker.mrr.xrunner.domain.repository.UserRepository
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
+import com.whisker.mrr.domain.model.RouteStatsEntity
+import com.whisker.mrr.domain.model.UserStatsEntity
+import com.whisker.mrr.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject

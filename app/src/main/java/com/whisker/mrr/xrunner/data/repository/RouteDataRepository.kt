@@ -1,14 +1,13 @@
 package com.whisker.mrr.xrunner.data.repository
 
-import android.graphics.Bitmap
-import com.whisker.mrr.xrunner.domain.model.RouteEntity
-import com.whisker.mrr.xrunner.domain.model.RouteEntityHolder
-import com.whisker.mrr.xrunner.domain.bus.RxBus
-import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
-import com.whisker.mrr.xrunner.domain.repository.RouteRepository
-import com.whisker.mrr.xrunner.domain.source.RouteSource
-import com.whisker.mrr.xrunner.domain.source.SnapshotLocalSource
-import com.whisker.mrr.xrunner.domain.source.SnapshotRemoteSource
+import com.whisker.mrr.domain.model.RouteEntity
+import com.whisker.mrr.domain.model.RouteEntityHolder
+import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.domain.bus.event.NetworkStateEvent
+import com.whisker.mrr.domain.repository.RouteRepository
+import com.whisker.mrr.domain.source.RouteSource
+import com.whisker.mrr.domain.source.SnapshotLocalSource
+import com.whisker.mrr.domain.source.SnapshotRemoteSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -41,7 +40,7 @@ class RouteDataRepository
         return routeDatabaseSource.getRoutesByUserId(userId)
     }
 
-    override fun saveSnapshot(bitmap: Bitmap, fileName: String): Completable {
+    override fun saveSnapshot(bitmap: ByteArray, fileName: String): Completable {
         return if(isNetworkAvailable) {
             saveSnapshotRemote(bitmap, fileName)
         } else {
@@ -49,7 +48,7 @@ class RouteDataRepository
         }
     }
 
-    private fun saveSnapshotRemote(bitmap: Bitmap, fileName: String) : Completable {
+    private fun saveSnapshotRemote(bitmap: ByteArray, fileName: String) : Completable {
         return Single.create<String> {emitter ->
             emitter.onSuccess(snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName))
             }
@@ -61,7 +60,7 @@ class RouteDataRepository
             }
     }
 
-    private fun cacheSnapshot(bitmap: Bitmap, fileName: String) : Completable {
+    private fun cacheSnapshot(bitmap: ByteArray, fileName: String) : Completable {
         return Completable.create {emitter ->
             snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName)
             emitter.onComplete()

@@ -1,9 +1,8 @@
 package com.whisker.mrr.xrunner.data.repository
 
-import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.data.mapper.LocationMapper
-import com.whisker.mrr.xrunner.domain.repository.LocationRepository
-import com.whisker.mrr.xrunner.domain.source.LocationSource
+import com.whisker.mrr.domain.model.Coords
+import com.whisker.mrr.domain.repository.LocationRepository
+import com.whisker.mrr.domain.source.LocationSource
 import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
@@ -13,11 +12,8 @@ class LocationDataRepository
     private val locationDataSource: LocationSource
 ) : LocationRepository {
 
-    override fun startTracking() : Flowable<LatLng> {
+    override fun startTracking() : Flowable<Coords> {
         return locationDataSource.startTracking()
-            .flatMap {
-                LocationMapper.transformFlowable(it)
-            }
     }
 
     override fun pauseTracking() {
@@ -32,10 +28,10 @@ class LocationDataRepository
         locationDataSource.stopTracking()
     }
 
-    override fun getLastKnownLocation(): Single<LatLng> {
+    override fun getLastKnownLocation(): Single<Coords> {
         return locationDataSource.getBestLastKnownLocation()
             .flatMapSingle {
-                LocationMapper.transformSingle(it)
+                Single.just(it)
             }
     }
 

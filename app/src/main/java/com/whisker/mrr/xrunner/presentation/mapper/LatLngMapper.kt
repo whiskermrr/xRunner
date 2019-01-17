@@ -1,7 +1,7 @@
 package com.whisker.mrr.xrunner.presentation.mapper
 
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.model.Coords
+import com.whisker.mrr.domain.model.Coords
 
 class LatLngMapper {
 
@@ -20,6 +20,10 @@ class LatLngMapper {
                 returnList.add(LatLng(point.latitude, point.longitude))
             }
             return returnList
+        }
+
+        fun coordsToLatLngTransform(point: Coords) : LatLng {
+            return LatLng(point.latitude, point.longitude)
         }
     }
 }

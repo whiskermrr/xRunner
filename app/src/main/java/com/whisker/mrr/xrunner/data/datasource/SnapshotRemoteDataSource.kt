@@ -3,7 +3,7 @@ package com.whisker.mrr.xrunner.data.datasource
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_SNAPSHOT
-import com.whisker.mrr.xrunner.domain.source.SnapshotRemoteSource
+import com.whisker.mrr.domain.source.SnapshotRemoteSource
 import io.reactivex.Completable
 import java.io.File
 

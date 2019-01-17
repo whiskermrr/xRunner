@@ -6,9 +6,10 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import com.whisker.mrr.xrunner.domain.bus.RxBus
-import com.whisker.mrr.xrunner.domain.bus.event.LocationEvent
-import com.whisker.mrr.xrunner.domain.source.LocationSource
+import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.xrunner.infrastructure.LocationEvent
+import com.whisker.mrr.domain.model.Coords
+import com.whisker.mrr.domain.source.LocationSource
 import com.whisker.mrr.xrunner.infrastructure.LocationService
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -22,9 +23,9 @@ class LocationDataSource
     private val context: Context
 ) : LocationSource {
 
-    private lateinit var locationSubject: PublishSubject<Location>
+    private lateinit var locationSubject: PublishSubject<Coords>
 
-    override fun startTracking() : Flowable<Location> {
+    override fun startTracking() : Flowable<Coords> {
         startLocationService(LocationService.ACTION_START_TRACKING)
         locationSubject = PublishSubject.create()
         subscribeToLocationEvents()
@@ -63,13 +64,13 @@ class LocationDataSource
     private fun subscribeToLocationEvents() {
         RxBus.subscribe(LocationEvent::class.java.name, this, Consumer { event ->
             if(event is LocationEvent) {
-                locationSubject.onNext(event.location)
+                locationSubject.onNext(Coords(event.location.latitude, event.location.longitude))
             }
         })
     }
 
     @SuppressLint("MissingPermission")
-    override fun getBestLastKnownLocation() : Maybe<Location> {
+    override fun getBestLastKnownLocation() : Maybe<Coords> {
         val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val providers = locationManager.getProviders(true)
         var bestLocation: Location? = null
@@ -81,7 +82,7 @@ class LocationDataSource
             }
         }
         return if(bestLocation != null) {
-            Maybe.just(bestLocation)
+            Maybe.just(Coords(bestLocation.latitude, bestLocation.longitude))
         } else {
             Maybe.empty()
         }

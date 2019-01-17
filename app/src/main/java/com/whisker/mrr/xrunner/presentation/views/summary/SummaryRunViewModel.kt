@@ -3,12 +3,13 @@ package com.whisker.mrr.xrunner.presentation.views.summary
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.interactor.SaveRouteInteractor
-import com.whisker.mrr.xrunner.domain.interactor.SaveSnapshotInteractor
-import com.whisker.mrr.xrunner.domain.interactor.UpdateUserStatsInteractor
-import com.whisker.mrr.xrunner.domain.model.RouteEntity
+import com.whisker.mrr.domain.interactor.SaveRouteInteractor
+import com.whisker.mrr.domain.interactor.SaveSnapshotInteractor
+import com.whisker.mrr.domain.interactor.UpdateUserStatsInteractor
+import com.whisker.mrr.domain.model.RouteEntity
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.utils.toByteArray
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,7 +46,7 @@ class SummaryRunViewModel
     }
 
     fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable {
-        return saveSnapshotInteractor.saveSnapshot(bitmap, fileName)
+        return saveSnapshotInteractor.saveSnapshot(bitmap.toByteArray(Bitmap.CompressFormat.JPEG), fileName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

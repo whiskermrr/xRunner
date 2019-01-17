@@ -2,7 +2,7 @@ package com.whisker.mrr.xrunner.data.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.whisker.mrr.xrunner.domain.source.AuthSource
+import com.whisker.mrr.domain.source.AuthSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject

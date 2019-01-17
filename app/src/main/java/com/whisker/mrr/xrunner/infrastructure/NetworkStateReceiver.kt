@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Build
-import com.whisker.mrr.xrunner.domain.bus.RxBus
-import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
+import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.domain.bus.event.NetworkStateEvent
 
 class NetworkStateReceiver : BroadcastReceiver() {
 
