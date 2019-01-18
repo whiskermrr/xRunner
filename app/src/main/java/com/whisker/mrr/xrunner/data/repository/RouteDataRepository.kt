@@ -2,8 +2,8 @@ package com.whisker.mrr.xrunner.data.repository
 
 import com.whisker.mrr.domain.model.RouteEntity
 import com.whisker.mrr.domain.model.RouteEntityHolder
-import com.whisker.mrr.domain.bus.RxBus
-import com.whisker.mrr.domain.bus.event.NetworkStateEvent
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.domain.repository.RouteRepository
 import com.whisker.mrr.domain.source.RouteSource
 import com.whisker.mrr.domain.source.SnapshotLocalSource

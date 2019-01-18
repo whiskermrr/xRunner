@@ -13,7 +13,7 @@ import android.location.LocationManager
 import android.os.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.domain.common.bus.RxBus
 
 class LocationService : Service(), Handler.Callback, LocationListener {
     companion object {

@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.datasource
+package com.whisker.mrr.xrunner.infrastructure.source
 
 import android.content.Context
 import android.content.SharedPreferences

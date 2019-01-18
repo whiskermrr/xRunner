@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.domain.bus.RxBus
-import com.whisker.mrr.domain.bus.event.NetworkStateEvent
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.getScreenWidth

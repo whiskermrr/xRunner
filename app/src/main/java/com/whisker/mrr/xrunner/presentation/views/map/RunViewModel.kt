@@ -33,7 +33,7 @@ class RunViewModel
 
     fun onMapShown() {
         disposables.add(
-            getLastKnownLocationInteractor.single()
+            getLastKnownLocationInteractor.maybe()
                 .map {
                     LatLngMapper.coordsToLatLngTransform(it)
                 }

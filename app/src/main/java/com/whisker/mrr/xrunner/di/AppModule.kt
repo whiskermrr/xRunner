@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.whisker.mrr.domain.common.scheduler.*
 import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.xrunner.data.datasource.*
 import com.whisker.mrr.xrunner.data.repository.*
@@ -12,10 +13,8 @@ import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*
 import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
-import com.whisker.mrr.domain.common.scheduler.ComputationCompletableTransformer
-import com.whisker.mrr.domain.common.scheduler.IOCompletableTransformer
-import com.whisker.mrr.domain.common.scheduler.IOFlowableTransformer
-import com.whisker.mrr.domain.common.scheduler.IOSingleTransformer
+import com.whisker.mrr.xrunner.infrastructure.source.LocationDataSource
+import com.whisker.mrr.xrunner.infrastructure.source.SnapshotLocalDataSource
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -99,12 +98,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocationRepository(locationDataSource: LocationSource) : LocationRepository {
-        return LocationDataRepository(locationDataSource)
-    }
-
-    @Provides
-    @Singleton
     fun provideRouteRepository(
         routeDatabaseSource: RouteSource,
         snapshotRemoteDataSource: SnapshotRemoteSource,
@@ -133,8 +126,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetLastKnownLocationInteractor(locationRepository: LocationRepository) : GetLastKnownLocationInteractor {
-        return GetLastKnownLocationInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), locationRepository)
+    fun provideGetLastKnownLocationInteractor(locationSource: LocationSource) : GetLastKnownLocationInteractor {
+        return GetLastKnownLocationInteractor(IOMaybeTransformer(AndroidSchedulers.mainThread()), locationSource)
     }
 
     @Provides
@@ -151,14 +144,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providePauseTrackingInteractor(locationRepository: LocationRepository) : PauseTrackingInteractor {
-        return PauseTrackingInteractor(locationRepository)
+    fun providePauseTrackingInteractor(locationSource: LocationSource) : PauseTrackingInteractor {
+        return PauseTrackingInteractor(locationSource)
     }
 
     @Provides
     @Singleton
-    fun provideResumeTrackingInteractor(locationRepository: LocationRepository) : ResumeTrackingInteractor {
-        return ResumeTrackingInteractor(locationRepository)
+    fun provideResumeTrackingInteractor(locationSource: LocationSource) : ResumeTrackingInteractor {
+        return ResumeTrackingInteractor(locationSource)
     }
 
     @Provides
@@ -175,14 +168,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideStartTrackingInteractor(locationRepository: LocationRepository) : StartTrackingInteractor {
-        return StartTrackingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), locationRepository)
+    fun provideStartTrackingInteractor(locationSource: LocationSource) : StartTrackingInteractor {
+        return StartTrackingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), locationSource)
     }
 
     @Provides
     @Singleton
-    fun provideStopTrackingInteractor(locationRepository: LocationRepository) : StopTrackingInteractor {
-        return StopTrackingInteractor(locationRepository)
+    fun provideStopTrackingInteractor(locationSource: LocationSource) : StopTrackingInteractor {
+        return StopTrackingInteractor(locationSource)
     }
 
     @Provides

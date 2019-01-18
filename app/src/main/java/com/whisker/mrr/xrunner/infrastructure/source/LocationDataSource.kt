@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.datasource
+package com.whisker.mrr.xrunner.infrastructure.source
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
-import com.whisker.mrr.domain.bus.RxBus
+import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.xrunner.infrastructure.LocationEvent
 import com.whisker.mrr.domain.model.Coords
 import com.whisker.mrr.domain.source.LocationSource

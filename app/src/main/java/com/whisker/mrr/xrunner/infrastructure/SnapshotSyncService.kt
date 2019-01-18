@@ -11,8 +11,8 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.google.firebase.storage.FirebaseStorage
-import com.whisker.mrr.domain.bus.RxBus
-import com.whisker.mrr.domain.bus.event.SyncEvent
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.SyncEvent
 import com.whisker.mrr.xrunner.utils.getFile
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import io.reactivex.Completable

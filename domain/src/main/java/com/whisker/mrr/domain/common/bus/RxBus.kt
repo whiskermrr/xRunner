@@ -1,4 +1,4 @@
-package com.whisker.mrr.domain.bus
+package com.whisker.mrr.domain.common.bus
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
