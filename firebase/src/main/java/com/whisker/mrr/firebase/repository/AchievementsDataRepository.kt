@@ -1,11 +1,11 @@
-package com.whisker.mrr.xrunner.data.repository
+package com.whisker.mrr.firebase.repository
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_ACHIEVEMENTS
-import com.whisker.mrr.xrunner.data.common.DataConstants.REFERENCE_USERS
+import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_ACHIEVEMENTS
+import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Achievement
 import com.whisker.mrr.domain.repository.AchievementsRepository
 import io.reactivex.Completable

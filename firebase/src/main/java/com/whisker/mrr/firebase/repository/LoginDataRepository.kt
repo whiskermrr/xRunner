@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.repository
+package com.whisker.mrr.firebase.repository
 
 import com.whisker.mrr.domain.repository.LoginRepository
 import com.whisker.mrr.domain.source.AuthSource

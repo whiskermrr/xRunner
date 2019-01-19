@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.common
+package com.whisker.mrr.firebase.common
 
 object DataConstants {
 

@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.datasource
+package com.whisker.mrr.firebase.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException

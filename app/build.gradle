@@ -37,6 +37,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(':domain')
+    implementation project(':firebase')
 
     def presentationDependencies = rootProject.ext.presentationDependencies
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
@@ -62,11 +63,6 @@ dependencies {
     implementation presentationDependencies.playService
     kapt presentationDependencies.lifecycleKapt
     implementation presentationDependencies.reactivestreams
-
-    implementation presentationDependencies.firebaseAuth
-    implementation presentationDependencies.firebaseCore
-    implementation presentationDependencies.firebaseDatabase
-    implementation presentationDependencies.firebaseStorage
 
     implementation presentationDependencies.dagger
     implementation presentationDependencies.daggerAndroid

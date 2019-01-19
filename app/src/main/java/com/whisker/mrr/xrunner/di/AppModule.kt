@@ -7,8 +7,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.domain.common.scheduler.*
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.xrunner.data.datasource.*
-import com.whisker.mrr.xrunner.data.repository.*
+import com.whisker.mrr.firebase.datasource.*
+import com.whisker.mrr.firebase.repository.*
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*

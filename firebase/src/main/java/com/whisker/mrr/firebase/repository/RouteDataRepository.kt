@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.data.repository
+package com.whisker.mrr.firebase.repository
 
 import com.whisker.mrr.domain.model.RouteEntity
 import com.whisker.mrr.domain.model.RouteEntityHolder
