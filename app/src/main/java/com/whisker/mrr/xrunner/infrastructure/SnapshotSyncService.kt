@@ -5,16 +5,13 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.SyncEvent
-import com.whisker.mrr.xrunner.utils.getFile
-import com.whisker.mrr.xrunner.utils.XRunnerConstants
+import com.whisker.mrr.domain.source.SnapshotLocalSource
+import com.whisker.mrr.domain.source.SnapshotRemoteSource
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -28,7 +25,8 @@ class SnapshotSyncService : Service() {
     }
 
     private var disposables: CompositeDisposable = CompositeDisposable()
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var snapshotLocalSource: SnapshotLocalSource
+    private lateinit var snapshotRemoteSource: SnapshotRemoteSource
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
@@ -65,45 +63,20 @@ class SnapshotSyncService : Service() {
     }
 
     private fun syncSnapshots() {
-        sharedPreferences = applicationContext.getSharedPreferences(XRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        val snapshotNames = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
-        if(snapshotNames!!.isEmpty()) {
+        val snapshots = snapshotLocalSource.getNotSentSnapshotsPaths()
+        if(snapshots.isEmpty()) {
             stopSelf()
             return
         }
 
         RxBus.publish(SyncEvent(true))
-        val firebaseStorage = FirebaseStorage.getInstance()
-        val completableList = ArrayList<Completable>()
-
-        for(fileName in snapshotNames) {
-            completableList.add(
-                Completable.create { emitter ->
-                    val snapshotReference = firebaseStorage.reference.child("snapshots/$fileName")
-                    val fileUri = Uri.fromFile(applicationContext.getFile(fileName))
-                    snapshotReference.putFile(fileUri).addOnCompleteListener { task ->
-                        if(task.isSuccessful) {
-                            snapshotNames.remove(fileName)
-                            emitter.onComplete()
-                        } else {
-                            emitter.onError(task.exception ?: Throwable())
-                        }
-                    }.addOnFailureListener {
-                        emitter.onError(it)
-                    }
-                }.doOnComplete {
-                    val editor = sharedPreferences.edit()
-                    editor.clear()
-                    editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
-                    editor.apply()
-                }
-            )
-        }
+        val completableList = snapshotRemoteSource.saveListOfSnapshotsRemote(snapshots.toMutableList())
 
         disposables.add(
             Completable.concat(completableList)
                 .subscribeOn(Schedulers.io())
                 .subscribe( {
+                    snapshotLocalSource.replaceNotSentSnapshotsPaths(snapshots.map { it.second }.toSet())
                     stopSelf()
                 },
                 {

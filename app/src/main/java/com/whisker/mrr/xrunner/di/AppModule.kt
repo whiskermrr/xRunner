@@ -21,6 +21,7 @@ import dagger.Provides
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Singleton
 
+// TODO: move some stuff to separate modules
 @Module(includes = [ViewModelModule::class])
 class AppModule {
 

@@ -24,4 +24,29 @@ class SnapshotRemoteDataSource(private val firebaseStorage: FirebaseStorage) : S
             }
         }
     }
+
+    override fun saveListOfSnapshotsRemote(files: MutableList<Pair<String, String>>): List<Completable> {
+        val completableList = ArrayList<Completable>()
+
+        for(file in files) {
+            completableList.add(
+                Completable.create { emitter ->
+                    val snapshotReference = firebaseStorage.reference.child("snapshots/${file.first}")
+                    val fileStream = FileInputStream(File(file.second))
+                    snapshotReference.putStream(fileStream).addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            files.remove(file)
+                            emitter.onComplete()
+                        } else {
+                            emitter.onError(task.exception ?: Throwable())
+                        }
+                    }.addOnFailureListener {
+                        emitter.onError(it)
+                    }
+                }
+            )
+        }
+
+        return completableList
+    }
 }
