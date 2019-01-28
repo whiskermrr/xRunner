@@ -1,38 +1,38 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.model.Achievement
-import com.whisker.mrr.domain.repository.AchievementsRepository
+import com.whisker.mrr.domain.model.Challenge
+import com.whisker.mrr.domain.repository.ChallengeRepository
 import com.whisker.mrr.domain.source.AuthSource
 import com.whisker.mrr.domain.usecase.SingleUseCase
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
 
-class GetAchievementsInteractor(
-    transformer: SingleTransformer<List<Achievement>, List<Achievement>>,
+class GetChallengesInteractor(
+    transformer: SingleTransformer<List<Challenge>, List<Challenge>>,
     private val authSource: AuthSource,
-    private val achievementsRepository: AchievementsRepository
-) : SingleUseCase<List<Achievement>>(transformer) {
+    private val challengeRepository: ChallengeRepository
+) : SingleUseCase<List<Challenge>>(transformer) {
 
     companion object {
         const val PARAM_ACTIVE = "param_active"
     }
 
-    fun getAchievements(active: Boolean = false) : Single<List<Achievement>> {
+    fun GetChallenges(active: Boolean = false) : Single<List<Challenge>> {
         val data = HashMap<String, Any>()
         data[PARAM_ACTIVE] = active
         return single(data)
     }
 
-    override fun createSingle(data: Map<String, Any>?): Single<List<Achievement>> {
+    override fun createSingle(data: Map<String, Any>?): Single<List<Challenge>> {
         val active = data?.get(PARAM_ACTIVE)
 
         active?.let {
             return authSource.getUserId()
                 .flatMap { userId ->
                     if((active as Boolean)) {
-                        return@flatMap achievementsRepository.getActiveAchievements(userId)
+                        return@flatMap challengeRepository.getActiveChallenges(userId)
                     } else {
-                        return@flatMap achievementsRepository.getAchievements(userId)
+                        return@flatMap challengeRepository.getChallenges(userId)
                     }
                 }
         }

@@ -1,10 +1,10 @@
 package com.whisker.mrr.domain.model
 
-data class Achievement(
+data class Challenge(
     var id: String = "",
     var isFinished: Boolean = false,
     var deadline: Long? = null,
-    var title: String = "Achievement",
+    var title: String = "Challenge",
     var distance: Float? = null,
     var speed: Float? = null,
     var time: Long? = null,

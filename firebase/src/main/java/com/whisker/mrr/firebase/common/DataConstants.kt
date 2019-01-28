@@ -5,7 +5,7 @@ object DataConstants {
     const val REFERENCE_USERS = "Users"
     const val REFERENCE_ROUTES = "Routes"
     const val REFERENCE_USER_STATS = "UserStats"
-    const val REFERENCE_ACHIEVEMENTS = "Achievements"
+    const val REFERENCE_CHALLENGES = "Challenges"
     const val DB_AVERAGE_PACE = "averagePace"
     const val DB_EXPERIENCE = "experience"
     const val DB_TOTAL_DISTANCE = "totalDistance"

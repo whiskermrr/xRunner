@@ -70,6 +70,11 @@ dependencies {
     kapt presentationDependencies.daggerAndroidKapt
     kapt presentationDependencies.daggerProcessorKapt
 
+    implementation presentationDependencies.firebaseAuth
+    implementation presentationDependencies.firebaseCore
+    implementation presentationDependencies.firebaseDatabase
+    implementation presentationDependencies.firebaseStorage
+
     implementation presentationDependencies.picasso
 
     implementation presentationDependencies.sectionedRecycler

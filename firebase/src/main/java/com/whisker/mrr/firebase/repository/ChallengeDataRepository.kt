@@ -4,28 +4,28 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_ACHIEVEMENTS
+import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_CHALLENGES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
-import com.whisker.mrr.domain.model.Achievement
-import com.whisker.mrr.domain.repository.AchievementsRepository
+import com.whisker.mrr.domain.model.Challenge
+import com.whisker.mrr.domain.repository.ChallengeRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.util.*
 import kotlin.collections.HashMap
 
-class AchievementsDataRepository(private val databaseReference: DatabaseReference) : AchievementsRepository {
+class ChallengeDataRepository(private val databaseReference: DatabaseReference) : ChallengeRepository {
 
     companion object {
         const val DB_REFERENCE_IS_FINISHED = "isFinished"
         const val DB_REFERENCE_PROGRESS = "progress"
     }
 
-    override fun saveAchievement(userId: String, achievement: Achievement): Completable {
+    override fun saveChallenge(userId: String, challenge: Challenge): Completable {
         val reference = getReference(userId)
-        achievement.id = reference.push().key!!
+        challenge.id = reference.push().key!!
 
         return Completable.create { emitter ->
-            reference.child(achievement.id).setValue(achievement).addOnCompleteListener { task ->
+            reference.child(challenge.id).setValue(challenge).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
                 } else {
@@ -37,10 +37,10 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
         }
     }
 
-    override fun updateAchievements(userId: String, achievements: List<Achievement>): Completable {
+    override fun updateChallenges(userId: String, challenges: List<Challenge>): Completable {
         val reference = getReference(userId)
         val completableList = mutableListOf<Completable>()
-        for(achievement in achievements) {
+        for(achievement in challenges) {
             completableList.add(
                 Completable.create { emitter ->
                     val map = HashMap<String, Any>()
@@ -62,13 +62,13 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
         return Completable.concat(completableList)
     }
 
-    override fun getAchievements(userId: String): Single<List<Achievement>> {
+    override fun getChallenges(userId: String): Single<List<Challenge>> {
         return Single.create { emitter ->
             getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val achievements = mutableListOf<Achievement>()
+                    val achievements = mutableListOf<Challenge>()
                     dataSnapshot.children.forEach { child ->
-                        child.getValue(Achievement::class.java)?.let {
+                        child.getValue(Challenge::class.java)?.let {
                             achievements.add(it)
                         }
                     }
@@ -82,14 +82,14 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
         }
     }
 
-    override fun getActiveAchievements(userId: String) : Single<List<Achievement>> {
+    override fun getActiveChallenges(userId: String) : Single<List<Challenge>> {
         return Single.create { emitter ->
             getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val currentTime = Date().time
-                    val activeAchievements = mutableListOf<Achievement>()
+                    val activeAchievements = mutableListOf<Challenge>()
                     dataSnapshot.children.forEach { child ->
-                        child.getValue(Achievement::class.java)?.let { achievement ->
+                        child.getValue(Challenge::class.java)?.let { achievement ->
                             achievement.deadline?.let {
                                 if(it > currentTime && !achievement.isFinished)
                                     activeAchievements.add(achievement)
@@ -113,6 +113,6 @@ class AchievementsDataRepository(private val databaseReference: DatabaseReferenc
         return databaseReference
             .child(REFERENCE_USERS)
             .child(userId)
-            .child(REFERENCE_ACHIEVEMENTS)
+            .child(REFERENCE_CHALLENGES)
     }
 }
