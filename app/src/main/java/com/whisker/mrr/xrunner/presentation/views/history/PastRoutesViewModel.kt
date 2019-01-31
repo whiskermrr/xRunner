@@ -3,8 +3,8 @@ package com.whisker.mrr.xrunner.presentation.views.history
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.interactor.GetRouteListInteractor
-import com.whisker.mrr.xrunner.domain.interactor.RemoveRouteInteractor
+import com.whisker.mrr.domain.interactor.GetRouteListInteractor
+import com.whisker.mrr.domain.interactor.RemoveRouteInteractor
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.RouteHolder
 import com.whisker.mrr.xrunner.utils.TAG

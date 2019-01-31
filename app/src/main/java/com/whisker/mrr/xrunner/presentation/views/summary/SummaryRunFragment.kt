@@ -9,15 +9,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.domain.bus.RxBus
-import com.whisker.mrr.xrunner.domain.bus.event.NetworkStateEvent
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
-import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
+import com.whisker.mrr.xrunner.utils.calculateZoom
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -84,9 +83,7 @@ class SummaryRunFragment : BaseMapFragment() {
             showMapSnapshot()
             mMap.setOnMapLoadedCallback(null)
         }
-        val pairCenterDistance = LocationUtils.getDistanceBetweenMostDistinctPoints(finalRoute.waypoints)
-        val zoom = LocationUtils.getZoomBasedOnDistance(pairCenterDistance.second, mainActivity.getScreenWidth())
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pairCenterDistance.first, zoom))
+        mMap.calculateZoom(finalRoute.waypoints, mainActivity.getScreenWidth())
     }
 
     private fun showMapSnapshot() {

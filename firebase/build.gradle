@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    def firebaseDependencies = rootProject.ext.firebaseDependencies
+    def firebaseTestDependencies = rootProject.ext.firebaseTestDependencies
+
+    implementation firebaseDependencies.javaxAnnotation
+    implementation firebaseDependencies.javaxInject
+    implementation firebaseDependencies.rxKotlin
+    implementation firebaseDependencies.rxJava
+    implementation firebaseDependencies.kotlin
+
+    implementation firebaseDependencies.dagger
+    implementation firebaseDependencies.daggerSupport
+    kapt firebaseDependencies.daggerAndroidKapt
+    kapt firebaseDependencies.daggerProcessorKapt
+
+    implementation firebaseDependencies.firebaseAuth
+    implementation firebaseDependencies.firebaseCore
+    implementation firebaseDependencies.firebaseDatabase
+    implementation firebaseDependencies.firebaseStorage
+
+
+    testImplementation firebaseTestDependencies.junit
+    testImplementation firebaseTestDependencies.mockito
+    testImplementation firebaseTestDependencies.assertj
+}

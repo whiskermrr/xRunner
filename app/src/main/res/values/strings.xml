@@ -31,7 +31,7 @@
 	<string name="sync">Sync…</string>
 	<string name="running">Running</string>
 	<string name="run_history">Run History</string>
-	<string name="achievements">Achievements</string>
+	<string name="challenges">Challenges</string>
 	<string name="example_song_name">Deadmau5 - Message from nowhere</string>
 	<string name="cant_load_snapshot">No Internet connection.\nCan\'t load snapshot.</string>
 	<string name="name_label">Name:</string>

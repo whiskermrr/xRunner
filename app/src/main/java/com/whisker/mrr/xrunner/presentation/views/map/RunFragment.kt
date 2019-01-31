@@ -10,7 +10,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.Route
-import com.whisker.mrr.xrunner.presentation.model.RouteStats
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
@@ -27,16 +26,14 @@ class RunFragment : BaseMapFragment() {
         viewModel.getLastKnownLocation().removeObservers(this)
     }
 
-    private val routeStatsObserver = Observer<RouteStats> { stats ->
-        tvDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
-        tvPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
-    }
+    private val routeObserver = Observer<Route> { route ->
+        tvDistance.text = getString(R.string.distance_format, route.routeStats.kilometers, route.routeStats.meters)
+        tvPace.text = getString(R.string.pace_format, route.routeStats.paceMin, route.routeStats.paceSec)
 
-    private val routeObserver = Observer<List<LatLng>> { points ->
         if(isMapShown) {
-            myRun.points = points
-            if(points.isNotEmpty()) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(points.last(), 18f))
+            myRun.points = route.waypoints
+            if(myRun.points.isNotEmpty()) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myRun.points.last(), 18f))
             }
         }
     }
@@ -74,7 +71,7 @@ class RunFragment : BaseMapFragment() {
         mapView.onResume()
         mapView.getMapAsync(this)
 
-        viewModel.getRouteStats().observe(this, routeStatsObserver)
+        viewModel.getRoute().observe(this, routeObserver)
         viewModel.getIsTracking().observe(this, isTrackingObserver)
         viewModel.getTime().observe(this, runTimeObserver)
         viewModel.getFinalRoute().observe(this, onRunFinishedObserver)
@@ -99,14 +96,12 @@ class RunFragment : BaseMapFragment() {
 
     private fun showMap() {
         isMapShown = true
-        viewModel.getRoutePoints().observe(this, routeObserver)
         mapView.visibility = View.VISIBLE
         bDismiss.visibility = View.VISIBLE
     }
 
     private fun hideMap() {
         isMapShown = false
-        viewModel.getRoutePoints().removeObservers(this)
         mapView.visibility = View.GONE
         bDismiss.visibility = View.GONE
     }

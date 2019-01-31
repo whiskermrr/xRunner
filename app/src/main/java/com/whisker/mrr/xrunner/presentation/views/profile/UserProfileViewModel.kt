@@ -2,7 +2,7 @@ package com.whisker.mrr.xrunner.presentation.views.profile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.xrunner.domain.interactor.GetUserStatsInteractor
+import com.whisker.mrr.domain.interactor.GetUserStatsInteractor
 import com.whisker.mrr.xrunner.presentation.mapper.UserStatsMapper
 import com.whisker.mrr.xrunner.presentation.model.UserStats
 import io.reactivex.disposables.CompositeDisposable

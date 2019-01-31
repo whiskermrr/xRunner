@@ -2,20 +2,15 @@ package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.xrunner.domain.common.DomainConstants.MINUTES_PER_HOUR
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
+import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
-import kotlin.math.pow
 
 class LocationUtils {
 
     companion object {
-
-        private const val EQUATOR_LENGTH_IN_METERS = 40075004.0
-        private const val EQUATOR_LENGTH_IN_PIXELS = 256
-        private const val MAX_ZOOM = 19
 
         private fun calculateWGS84Distance(firstCoords: LatLng, secondCoords: LatLng) : Float {
             val firstLocation = Location("A")
@@ -61,65 +56,6 @@ class LocationUtils {
             calculateRouteAverageSpeedAndPeace(routeStats, time)
 
             return routeStats
-        }
-
-        private fun calculateMiddleLatLng(firstLocation: Location, secondLocation: Location) : LatLng {
-
-            val averageLat = (firstLocation.latitude + secondLocation.latitude) / 2
-            val averageLng =(firstLocation.longitude + secondLocation.longitude) / 2
-
-            return LatLng(averageLat, averageLng)
-        }
-
-        fun getDistanceBetweenMostDistinctPoints(points: List<LatLng>) : Pair<LatLng, Float> {
-            var minLat = points[0].latitude
-            var maxLat = points[0].latitude
-            var minLng = points[0].longitude
-            var maxLng = points[0].longitude
-
-            for(point in points) {
-                if(point.latitude > maxLat) {
-                    maxLat = point.latitude
-                } else if(point.latitude < minLat) {
-                    minLat = point.latitude
-                }
-
-                if(point.longitude > maxLng) {
-                    maxLng = point.longitude
-                } else if(point.longitude < minLng) {
-                    minLng = point.longitude
-                }
-            }
-
-            val minLocation = Location("A")
-            val maxLocation = Location("B")
-
-            minLocation.latitude = minLat
-            minLocation.longitude = minLng
-
-            maxLocation.latitude = maxLat
-            maxLocation.longitude = maxLng
-
-            val centerOfRoute = calculateMiddleLatLng(minLocation, maxLocation)
-
-            return Pair(centerOfRoute, minLocation.distanceTo(maxLocation))
-        }
-
-        fun getZoomBasedOnDistance(distance: Float, screenWidth: Int) : Float {
-            var metersPerPixel = EQUATOR_LENGTH_IN_METERS / (EQUATOR_LENGTH_IN_PIXELS * 2.0.pow(MAX_ZOOM))
-            var currentZoom = MAX_ZOOM
-            var visibleDistance: Double = metersPerPixel * screenWidth
-
-            while(visibleDistance < distance) {
-                metersPerPixel *= 2
-                visibleDistance = metersPerPixel * screenWidth
-                currentZoom--
-            }
-
-            val ratio = (distance - visibleDistance / 2) / (visibleDistance / 2)
-            val zoomRatio = currentZoom - 1.1 - ratio
-
-            return zoomRatio.toFloat()
         }
     }
 }
