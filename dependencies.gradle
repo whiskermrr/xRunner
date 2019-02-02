@@ -106,4 +106,28 @@ ext {
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}"
     ]
+
+    infrastructureDependencies = [
+            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
+            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}",
+
+            //Rx
+            rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:2.2.2",
+
+            // Dagger
+            dagger:             "com.google.dagger:dagger:2.16",
+            daggerSupport:      "com.google.dagger:dagger-android-support:2.16",
+            daggerAndroidKapt:  "com.google.dagger:dagger-compiler:2.16",
+            daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
+
+            playService:        'com.google.android.gms:play-services-location:16.0.0',
+    ]
+
+    infrastructureTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}"
+    ]
 }

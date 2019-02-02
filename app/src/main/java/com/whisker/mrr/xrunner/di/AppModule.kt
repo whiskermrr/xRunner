@@ -12,9 +12,9 @@ import com.whisker.mrr.firebase.repository.*
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*
-import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
-import com.whisker.mrr.xrunner.infrastructure.source.LocationDataSource
-import com.whisker.mrr.xrunner.infrastructure.source.SnapshotLocalDataSource
+import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.infrastructure.source.LocationDataSource
+import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides

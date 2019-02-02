@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.infrastructure
+package com.whisker.mrr.infrastructure
 
 import android.content.BroadcastReceiver
 import android.content.Context

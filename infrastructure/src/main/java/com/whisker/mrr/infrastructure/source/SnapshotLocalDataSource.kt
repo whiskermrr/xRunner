@@ -1,9 +1,8 @@
-package com.whisker.mrr.xrunner.infrastructure.source
+package com.whisker.mrr.infrastructure.source
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.whisker.mrr.domain.source.SnapshotLocalSource
-import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import java.io.FileOutputStream
 import javax.inject.Inject
 
@@ -11,30 +10,34 @@ class SnapshotLocalDataSource
 @Inject constructor(private val context: Context, private val sharedPreferences: SharedPreferences) :
     SnapshotLocalSource {
 
+    companion object {
+        const val EXTRA_SNAPSHOT_NAMES_SET = "extra_snapshot_names_set"
+    }
+
     override fun saveSnapshotLocal(bitmap: ByteArray, fileName: String) : String {
         saveFile(bitmap, fileName)
 
-        val snapshotNames = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        val snapshotNames = sharedPreferences.getStringSet(EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         snapshotNames!!.add(fileName)
         val editor = sharedPreferences.edit()
         editor.clear()
-        editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+        editor.putStringSet(EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
         editor.apply()
 
         return context.getFileStreamPath(fileName).absolutePath
     }
 
     override fun markSnapshotAsSent(fileName: String) {
-        val snapshotNames = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        val snapshotNames = sharedPreferences.getStringSet(EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         snapshotNames?.remove(fileName)
         val editor = sharedPreferences.edit()
         editor.clear()
-        editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
+        editor.putStringSet(EXTRA_SNAPSHOT_NAMES_SET, snapshotNames)
         editor.apply()
     }
 
     override fun getNotSentSnapshotsPaths(): List<Pair<String, String>> {
-        val snapshotsPaths = sharedPreferences.getStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
+        val snapshotsPaths = sharedPreferences.getStringSet(EXTRA_SNAPSHOT_NAMES_SET, mutableSetOf())
         val files = mutableListOf<Pair<String, String>>()
         snapshotsPaths?.let {
             for(path in snapshotsPaths) {
@@ -48,7 +51,7 @@ class SnapshotLocalDataSource
     override fun replaceNotSentSnapshotsPaths(newPaths: Set<String>) {
         val editor = sharedPreferences.edit()
         editor.clear()
-        editor.putStringSet(XRunnerConstants.EXTRA_SNAPSHOT_NAMES_SET, newPaths)
+        editor.putStringSet(EXTRA_SNAPSHOT_NAMES_SET, newPaths)
         editor.apply()
     }
 

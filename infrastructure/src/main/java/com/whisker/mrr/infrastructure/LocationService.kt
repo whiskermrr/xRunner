@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.infrastructure
+package com.whisker.mrr.infrastructure
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -45,7 +45,9 @@ class LocationService : Service(), Handler.Callback, LocationListener {
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 .createNotificationChannel(channel)
 
-            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            val notification = NotificationCompat.Builder(this,
+                CHANNEL_ID
+            )
                 .setContentTitle("")
                 .setContentText("")
                 .build()
