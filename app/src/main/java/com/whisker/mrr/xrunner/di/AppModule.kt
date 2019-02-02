@@ -115,8 +115,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideAchievementsRepository(database: FirebaseDatabase) : AchievementsRepository {
-        return AchievementsDataRepository(database.reference)
+    fun provideAchievementsRepository(database: FirebaseDatabase) : ChallengeRepository {
+        return ChallengeDataRepository(database.reference)
     }
 
     @Provides
@@ -199,19 +199,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveAchievementInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : SaveAchievementInteractor {
-        return SaveAchievementInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, achievementsRepository)
+    fun provideSaveAchievementInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : SaveChallengeInteractor {
+        return SaveChallengeInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateAchievementsInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : UpdateAchievementsInteractor {
-        return UpdateAchievementsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, achievementsRepository)
+    fun provideUpdateAchievementsInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : UpdateChallengesInteractor {
+        return UpdateChallengesInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideGetAchievementsInteractor(authSource: AuthSource, achievementsRepository: AchievementsRepository) : GetAchievementsInteractor {
-        return GetAchievementsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, achievementsRepository)
+    fun provideGetAchievementsInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
+        return GetChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 }

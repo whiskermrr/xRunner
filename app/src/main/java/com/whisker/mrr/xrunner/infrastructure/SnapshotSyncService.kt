@@ -12,9 +12,11 @@ import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.SyncEvent
 import com.whisker.mrr.domain.source.SnapshotLocalSource
 import com.whisker.mrr.domain.source.SnapshotRemoteSource
+import dagger.android.AndroidInjection
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class SnapshotSyncService : Service() {
 
@@ -25,14 +27,15 @@ class SnapshotSyncService : Service() {
     }
 
     private var disposables: CompositeDisposable = CompositeDisposable()
-    private lateinit var snapshotLocalSource: SnapshotLocalSource
-    private lateinit var snapshotRemoteSource: SnapshotRemoteSource
+    @Inject lateinit var snapshotLocalSource: SnapshotLocalSource
+    @Inject lateinit var snapshotRemoteSource: SnapshotRemoteSource
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
     override fun onCreate() {
+        AndroidInjection.inject(this)
         super.onCreate()
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(

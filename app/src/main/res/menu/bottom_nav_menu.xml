@@ -25,6 +25,6 @@
 		android:id="@+id/action_achievements"
 		android:enabled="true"
 		android:icon="@drawable/ic_award"
-		android:title="@string/achievements"
+		android:title="@string/challenges"
 	/>
 </menu>
