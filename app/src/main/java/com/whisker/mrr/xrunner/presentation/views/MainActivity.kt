@@ -16,6 +16,7 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.SyncEvent
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
@@ -38,7 +39,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
     @Inject
     lateinit var networkStateReceiver: NetworkStateReceiver
 
-    private val menuItems = listOf(R.id.action_run, R.id.action_achievements, R.id.action_past_routes)
+    private val menuItems = listOf(R.id.action_run, R.id.action_challenges, R.id.action_past_routes, R.id.action_account)
     var isBottomNavEnabled = true
 
     private val syncConsumer = Consumer<Any> {
@@ -95,7 +96,8 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
                     navigateToFragment(UserProfileFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.action_achievements -> {
+                R.id.action_challenges -> {
+                    navigateToFragment(ChallengeFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> return@setOnNavigationItemSelectedListener false

@@ -22,7 +22,7 @@
 	/>
 	
 	<item
-		android:id="@+id/action_achievements"
+		android:id="@+id/action_challenges"
 		android:enabled="true"
 		android:icon="@drawable/ic_award"
 		android:title="@string/challenges"
