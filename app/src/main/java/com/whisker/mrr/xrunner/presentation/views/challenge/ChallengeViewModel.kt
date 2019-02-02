@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.GetChallengesInteractor
 import com.whisker.mrr.domain.model.Challenge
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class ChallengeViewModel(private val getChallengesInteractor: GetChallengesInteractor)
+class ChallengeViewModel
+@Inject constructor(private val getChallengesInteractor: GetChallengesInteractor)
 : ViewModel() {
 
     private val challengeList = MutableLiveData<List<Challenge>>()
@@ -25,6 +27,11 @@ class ChallengeViewModel(private val getChallengesInteractor: GetChallengesInter
                     error.printStackTrace()
                 })
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposables.dispose()
     }
 
     fun getChallengeList() = challengeList

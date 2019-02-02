@@ -3,9 +3,12 @@ package com.whisker.mrr.domain.common
 object DomainConstants {
 
     const val EXP_RATIO = 1000
+    const val DEFAULT_SPEED = 6f
+    const val EASY_EXP = 10_000
+    const val NORMAL_EXP = 30_000
 
-    const val MILLISECONDS_PER_HOUR = 3600000
-    const val MILLISECONDS_PER_MINUTE = 60000
+    const val MILLISECONDS_PER_HOUR = 3_600_000
+    const val MILLISECONDS_PER_MINUTE = 60_000
     const val MILLISECONDS_PER_SECOND = 1000
     const val MINUTES_PER_HOUR = 60
 
