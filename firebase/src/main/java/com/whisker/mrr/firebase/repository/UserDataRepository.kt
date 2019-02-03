@@ -10,46 +10,36 @@ import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_DISTANCE
 import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_TIME
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USER_STATS
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
-import com.whisker.mrr.domain.model.RouteStatsEntity
 import com.whisker.mrr.domain.model.UserStatsEntity
 import com.whisker.mrr.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class UserDataRepository
 @Inject constructor(private val databaseReference: DatabaseReference)
 : UserRepository {
 
-    override fun updateUserStats(userId: String, stats: RouteStatsEntity): Completable {
+    override fun updateUserStats(userId: String, userStats: UserStatsEntity): Completable {
+        return Completable.create { emitter ->
+            val map = HashMap<String, Any>()
+            map[DB_TOTAL_DISTANCE] = userStats.totalDistance
+            map[DB_TOTAL_TIME] = userStats.totalTime
+            map[DB_EXPERIENCE] = userStats.experience
+            map[DB_AVERAGE_PACE] = userStats.averagePace
 
-        return getUserStats(userId)
-            .flatMapCompletable { userStats ->
-                val map = HashMap<String, Any>()
-                val totalDistance = userStats.totalDistance + stats.wgs84distance
-                val totalTime = userStats.totalTime + stats.routeTime
-                map[DB_TOTAL_DISTANCE] = totalDistance
-                map[DB_TOTAL_TIME] = totalTime
-                map[DB_EXPERIENCE] = userStats.experience + calculateExp(stats)
-                map[DB_AVERAGE_PACE] = calculateAveragePace(totalDistance, totalTime)
-
-                Completable.create { emitter ->
-                    getReference(userId).updateChildren(map).addOnCompleteListener { task ->
-                        if(task.isSuccessful) {
-                            emitter.onComplete()
-                        } else {
-                            task.exception?.let {
-                                emitter.onError(it)
-                            }
-                        }
-                    }.addOnFailureListener {
+            getReference(userId).updateChildren(map).addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    task.exception?.let {
                         emitter.onError(it)
                     }
                 }
+            }.addOnFailureListener {
+                emitter.onError(it)
             }
+        }
     }
 
     override fun getUserStats(userId: String): Single<UserStatsEntity> {
@@ -84,15 +74,6 @@ class UserDataRepository
                 emitter.onError(it)
             }
         }
-    }
-
-    private fun calculateAveragePace(totalDistanceInMeters: Float, time: Long) : Float {
-        val totalTimeInSeconds = (time / MILLISECONDS_PER_SECOND).toInt()
-        return MINUTES_PER_HOUR / ((totalDistanceInMeters / totalTimeInSeconds) * 3.6f)
-    }
-
-    private fun calculateExp(stats: RouteStatsEntity) : Int {
-        return ((stats.averageSpeed * stats.wgs84distance) / 10f).roundToInt()
     }
 
     private fun getReference(userId: String) : DatabaseReference {

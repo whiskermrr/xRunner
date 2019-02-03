@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.SaveRouteInteractor
 import com.whisker.mrr.domain.interactor.SaveSnapshotInteractor
-import com.whisker.mrr.domain.interactor.UpdateUserStatsInteractor
 import com.whisker.mrr.domain.model.RouteEntity
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.Route
@@ -20,8 +19,7 @@ import javax.inject.Inject
 class SummaryRunViewModel
 @Inject constructor(
     private val saveRouteInteractor: SaveRouteInteractor,
-    private val saveSnapshotInteractor: SaveSnapshotInteractor,
-    private val updateUserStatsInteractor: UpdateUserStatsInteractor
+    private val saveSnapshotInteractor: SaveSnapshotInteractor
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
@@ -32,10 +30,7 @@ class SummaryRunViewModel
             Single.create<RouteEntity> { emitter ->
                 emitter.onSuccess(RouteMapper.routeToEntityTransform(route))
             }.flatMapCompletable {routeEntity ->
-                Completable.concatArray(
-                    saveRouteInteractor.saveRoute(routeEntity),
-                    updateUserStatsInteractor.updateUserStats(routeEntity.routeStats)
-                )
+                saveRouteInteractor.saveRoute(routeEntity)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
