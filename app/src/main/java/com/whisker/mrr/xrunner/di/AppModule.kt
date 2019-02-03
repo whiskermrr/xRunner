@@ -206,6 +206,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGetAchievementsInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
-        return GetChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+        return GetChallengesInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 }

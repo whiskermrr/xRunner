@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.location.Location
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -125,3 +127,11 @@ private val GoogleMap.EQUATOR_LENGTH_IN_PIXELS: Int
 
 private val GoogleMap.EQUATOR_LENGTH_IN_METERS: Double
     get() = 40075004.0
+
+fun TextView.setTextAndVisibility(newText: String?) {
+    if(newText != null) {
+        this.text = newText
+    } else {
+        this.visibility = View.GONE
+    }
+}

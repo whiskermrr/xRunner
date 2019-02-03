@@ -20,7 +20,7 @@ class ChallengeViewModel
 
     private fun getChallenges() {
         disposables.add(
-            getChallengesInteractor.GetChallenges()
+            getChallengesInteractor.getChallenges()
                 .subscribe({ challenges ->
                     challengeList.postValue(challenges)
                 }, { error ->

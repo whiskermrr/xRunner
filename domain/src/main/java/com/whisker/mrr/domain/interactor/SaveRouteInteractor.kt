@@ -1,6 +1,5 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.common.DomainConstants
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.domain.model.RouteEntity

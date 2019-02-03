@@ -1,6 +1,5 @@
 package com.whisker.mrr.domain.repository
 
-import com.whisker.mrr.domain.model.RouteStatsEntity
 import com.whisker.mrr.domain.model.UserStatsEntity
 import io.reactivex.Completable
 import io.reactivex.Single
