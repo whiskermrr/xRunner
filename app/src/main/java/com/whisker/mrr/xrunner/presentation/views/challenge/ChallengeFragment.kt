@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.whisker.mrr.xrunner.R
+import com.whisker.mrr.xrunner.presentation.adapters.ChallengeItemDecoration
 import com.whisker.mrr.xrunner.presentation.adapters.ChallengesAdapter
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_challenges.*
@@ -29,6 +30,7 @@ class ChallengeFragment : BaseFragment() {
         rvChallenges.layoutManager = gridLayoutManager
         challengeAdapter = ChallengesAdapter()
         rvChallenges.adapter = challengeAdapter
+        rvChallenges.addItemDecoration(ChallengeItemDecoration(resources.getDimensionPixelOffset(R.dimen.challenge_grid_spacing)))
 
         viewModel.getChallengeList().observe(this, Observer {
             challengeAdapter.setItems(it)
