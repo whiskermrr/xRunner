@@ -115,7 +115,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideAchievementsRepository(database: FirebaseDatabase) : ChallengeRepository {
+    fun provideChallengeRepository(database: FirebaseDatabase) : ChallengeRepository {
         return ChallengeDataRepository(database.reference)
     }
 
@@ -193,19 +193,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveAchievementInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : SaveChallengeInteractor {
+    fun provideSaveChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : SaveChallengeInteractor {
         return SaveChallengeInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateAchievementsInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : UpdateChallengesInteractor {
+    fun provideUpdateChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : UpdateChallengesInteractor {
         return UpdateChallengesInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideGetAchievementsInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
+    fun provideGetChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
         return GetChallengesInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 }

@@ -41,13 +41,13 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
     override fun updateChallenges(userId: String, challenges: List<Challenge>): Completable {
         val reference = getReference(userId)
         val completableList = mutableListOf<Completable>()
-        for(achievement in challenges) {
+        for(challenge in challenges) {
             completableList.add(
                 Completable.create { emitter ->
                     val map = HashMap<String, Any>()
-                    map[DB_REFERENCE_PROGRESS] = achievement.progress
-                    map[DB_REFERENCE_IS_FINISHED] = achievement.isFinished
-                    reference.child(achievement.id).updateChildren(map).addOnCompleteListener { task ->
+                    map[DB_REFERENCE_PROGRESS] = challenge.progress
+                    map[DB_REFERENCE_IS_FINISHED] = challenge.isFinished
+                    reference.child(challenge.id).updateChildren(map).addOnCompleteListener { task ->
                         if(task.isSuccessful) {
                             emitter.onComplete()
                         } else {
@@ -88,19 +88,19 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
             getReference(userId).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val currentTime = Date().time
-                    val activeAchievements = mutableListOf<Challenge>()
+                    val activeChallenges = mutableListOf<Challenge>()
                     dataSnapshot.children.forEach { child ->
-                        child.getValue(Challenge::class.java)?.let { achievement ->
-                            achievement.deadline?.let {
-                                if(it > currentTime && !achievement.isFinished)
-                                    activeAchievements.add(achievement)
-                            } ?: achievement.run {
+                        child.getValue(Challenge::class.java)?.let { challenge ->
+                            challenge.deadline?.let {
+                                if(it > currentTime && !challenge.isFinished)
+                                    activeChallenges.add(challenge)
+                            } ?: challenge.run {
                                 if(!this.isFinished)
-                                    activeAchievements.add(this)
+                                    activeChallenges.add(this)
                             }
                         }
                     }
-                    emitter.onNext(activeAchievements)
+                    emitter.onNext(activeChallenges)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
