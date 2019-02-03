@@ -10,7 +10,8 @@
 	
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:background="@color/colorAccent">
 		
 		<ImageView
 			android:id="@+id/ivChallengeIcon"
@@ -32,9 +33,10 @@
 			android:layout_height="wrap_content"
 			tools:text="100k in one month"
 			android:textSize="21sp"
-			android:textColor="@android:color/black"
+			android:textColor="@android:color/white"
 			android:textStyle="bold"
 			android:maxLines="2"
+			android:layout_marginTop="8dp"
 			android:gravity="center_horizontal"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +54,8 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			android:layout_margin="8dp"
 			tools:progress="70"
+			android:max="100"
+			android:progressDrawable="@drawable/horizontal_progress_bar"
 		/>
 		
 		<TextView
@@ -66,6 +70,7 @@
 			android:paddingBottom="8dp"
 			android:textStyle="bold"
 			android:textSize="18sp"
+			android:textColor="@android:color/white"
 			tools:text="10 km"
 		/>
 		
@@ -81,6 +86,7 @@
 			android:paddingBottom="8dp"
 			android:textStyle="bold"
 			android:textSize="18sp"
+			android:textColor="@android:color/white"
 			tools:text="10 km/s"
 		/>
 		
@@ -96,6 +102,7 @@
 			android:paddingBottom="8dp"
 			android:textStyle="bold"
 			android:textSize="18sp"
+			android:textColor="@android:color/white"
 			tools:text="1h 00m"
 		/>
 		
