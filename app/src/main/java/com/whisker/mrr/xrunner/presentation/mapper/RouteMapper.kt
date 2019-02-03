@@ -12,6 +12,9 @@ import com.whisker.mrr.domain.model.RouteStatsEntity
 import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.model.RouteHolder
 import com.whisker.mrr.xrunner.presentation.model.RouteStats
+import com.whisker.mrr.xrunner.utils.KILOMETERS
+import com.whisker.mrr.xrunner.utils.METERS
+import com.whisker.mrr.xrunner.utils.toDistance
 import java.util.*
 
 class RouteMapper {
@@ -102,13 +105,15 @@ class RouteMapper {
             routeHolder.routes = listOfEntityToListOfRoutesTransform(entityHolder.routes)
             routeHolder.month = Date(entityHolder.month).formatDate(MMM_yyyy)
 
-            val kilometers = (entityHolder.totalDistance / 1000).toInt()
-            val meters = (entityHolder.totalDistance - kilometers * 1000).toInt() / 10
-            routeHolder.totalDistance = String.format(Locale.getDefault(), "%d.%02dkm", kilometers, meters)
+            val distanceMap = entityHolder.totalDistance.toDistance()
+            routeHolder.totalDistance =
+                    String.format(Locale.getDefault(), "%d.%02dkm", distanceMap[Float.KILOMETERS], distanceMap[Float.METERS])
 
-            val time = entityHolder.totalTime
-            val hours = (time / MILLISECONDS_PER_HOUR).toInt()
-            val minutes = ((time % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(entityHolder.totalTime)
+            calendar.get(Calendar.MINUTE)
+            val hours = calendar.get(Calendar.HOUR)
+            val minutes = calendar.get(Calendar.MINUTE)
             routeHolder.totalTime = String.format(Locale.getDefault(), "%dh%dm", hours, minutes)
 
             val sumOfAverageSpeed = entityHolder.routes.map { it.routeStats.averageSpeed }.sum()

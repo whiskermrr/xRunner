@@ -3,7 +3,8 @@ package com.whisker.mrr.xrunner.presentation.views.challenge
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.GetChallengesInteractor
-import com.whisker.mrr.domain.model.Challenge
+import com.whisker.mrr.xrunner.presentation.mapper.ChallengeMapper
+import com.whisker.mrr.xrunner.presentation.model.ChallengeModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -11,7 +12,7 @@ class ChallengeViewModel
 @Inject constructor(private val getChallengesInteractor: GetChallengesInteractor)
 : ViewModel() {
 
-    private val challengeList = MutableLiveData<List<Challenge>>()
+    private val challengeList = MutableLiveData<List<ChallengeModel>>()
     private val disposables = CompositeDisposable()
 
     init {
@@ -21,6 +22,9 @@ class ChallengeViewModel
     private fun getChallenges() {
         disposables.add(
             getChallengesInteractor.getChallenges()
+                .map {
+                    ChallengeMapper.transformList(it)
+                }
                 .subscribe({ challenges ->
                     challengeList.postValue(challenges)
                 }, { error ->
