@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	app:cardCornerRadius="3dp"
+	android:elevation="5dp"
+	android:layout_height="wrap_content">
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/colorAccent">
+		
+		<ImageView
+			android:id="@+id/ivChallengeIcon"
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:src="@drawable/ic_silver_challenge"
+			android:background="@color/colorPrimary"
+			app:layout_constraintDimensionRatio="1"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			android:scaleType="centerInside"
+			android:padding="8dp"
+		/>
+		
+		<TextView
+			android:id="@+id/tvChallengeTitle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			tools:text="100k in one month"
+			android:textSize="21sp"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			android:maxLines="2"
+			android:layout_marginTop="8dp"
+			android:gravity="center_horizontal"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/ivChallengeIcon"
+			android:ellipsize="end"
+		/>
+		
+		<ProgressBar
+			android:id="@+id/progressChallenge"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+			app:layout_constraintTop_toBottomOf="@id/tvChallengeTitle"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_margin="8dp"
+			tools:progress="70"
+			android:max="100"
+			android:progressDrawable="@drawable/horizontal_progress_bar"
+		/>
+		
+		<TextView
+			android:id="@+id/tvChallengeDistance"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintTop_toBottomOf="@id/progressChallenge"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toStartOf="@id/tvChallengeSpeed"
+			android:gravity="center_horizontal"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			android:textStyle="bold"
+			android:textSize="18sp"
+			android:textColor="@android:color/white"
+			tools:text="10 km"
+		/>
+		
+		<TextView
+			android:id="@+id/tvChallengeSpeed"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/tvChallengeDistance"
+			app:layout_constraintEnd_toStartOf="@id/tvChallengeTime"
+			app:layout_constraintTop_toBottomOf="@id/progressChallenge"
+			android:gravity="center_horizontal"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			android:textStyle="bold"
+			android:textSize="18sp"
+			android:textColor="@android:color/white"
+			tools:text="10 km/s"
+		/>
+		
+		<TextView
+			android:id="@+id/tvChallengeTime"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/tvChallengeSpeed"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/progressChallenge"
+			android:gravity="center_horizontal"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			android:textStyle="bold"
+			android:textSize="18sp"
+			android:textColor="@android:color/white"
+			tools:text="1h 00m"
+		/>
+		
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
+
+</androidx.cardview.widget.CardView>

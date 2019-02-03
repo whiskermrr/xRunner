@@ -8,8 +8,9 @@ import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_CHALLENGES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.repository.ChallengeRepository
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Flowable
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -62,29 +63,29 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
         return Completable.concat(completableList)
     }
 
-    override fun getChallenges(userId: String): Single<List<Challenge>> {
-        return Single.create { emitter ->
-            getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
+    override fun getChallenges(userId: String): Flowable<List<Challenge>> {
+        return Flowable.create( { emitter ->
+            getReference(userId).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val achievements = mutableListOf<Challenge>()
+                    val challenges = mutableListOf<Challenge>()
                     dataSnapshot.children.forEach { child ->
                         child.getValue(Challenge::class.java)?.let {
-                            achievements.add(it)
+                            challenges.add(it)
                         }
                     }
-                    emitter.onSuccess(achievements)
+                    emitter.onNext(challenges)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     emitter.onError(databaseError.toException())
                 }
             })
-        }
+        }, BackpressureStrategy.LATEST)
     }
 
-    override fun getActiveChallenges(userId: String) : Single<List<Challenge>> {
-        return Single.create { emitter ->
-            getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
+    override fun getActiveChallenges(userId: String) : Flowable<List<Challenge>> {
+        return Flowable.create( { emitter ->
+            getReference(userId).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val currentTime = Date().time
                     val activeAchievements = mutableListOf<Challenge>()
@@ -99,14 +100,14 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
                             }
                         }
                     }
-                    emitter.onSuccess(activeAchievements)
+                    emitter.onNext(activeAchievements)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     emitter.onError(databaseError.toException())
                 }
             })
-        }
+        }, BackpressureStrategy.LATEST)
     }
 
     private fun getReference(userId: String) : DatabaseReference {

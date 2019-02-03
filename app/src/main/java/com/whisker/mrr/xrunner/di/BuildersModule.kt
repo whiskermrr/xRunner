@@ -1,7 +1,8 @@
 package com.whisker.mrr.xrunner.di
 
-import com.whisker.mrr.xrunner.infrastructure.SnapshotSyncService
+import com.whisker.mrr.infrastructure.SnapshotSyncService
 import com.whisker.mrr.xrunner.presentation.views.MainActivity
+import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
@@ -30,6 +31,9 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun bindUserProfileFragment() : UserProfileFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindChallengeFragment() : ChallengeFragment
 
     @ContributesAndroidInjector
     internal abstract fun bindSnapshotSyncService() : SnapshotSyncService

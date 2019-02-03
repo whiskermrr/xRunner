@@ -1,5 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
+import com.whisker.mrr.domain.common.ChallengeUtils
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.repository.ChallengeRepository
 import com.whisker.mrr.domain.source.AuthSource
@@ -18,7 +19,7 @@ class SaveChallengeInteractor(
         const val PARAM_ACHIEVEMENT = "param_achievement"
     }
 
-    fun SaveChallenge(challenge: Challenge) : Completable {
+    fun saveChallenge(challenge: Challenge) : Completable {
         val data = HashMap<String, Any>()
         data[PARAM_ACHIEVEMENT] = challenge
         return completable(data)
@@ -28,10 +29,14 @@ class SaveChallengeInteractor(
         val achievement = data?.get(PARAM_ACHIEVEMENT)
 
         achievement?.let {
-            return authSource.getUserId()
-                .flatMapCompletable {  userId ->
-                    challengeRepository.saveChallenge(userId, achievement as Challenge)
+            return ChallengeUtils.calculateChallengeDifficultyAndExp(achievement as Challenge)
+                .flatMapCompletable { challenge ->
+                    authSource.getUserId()
+                        .flatMapCompletable {  userId ->
+                            challengeRepository.saveChallenge(userId, challenge)
+                        }
                 }
+
         } ?: return Completable.error(IllegalArgumentException("Argument @achievement must be provided."))
     }
 }

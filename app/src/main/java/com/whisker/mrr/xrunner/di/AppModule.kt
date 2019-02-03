@@ -12,9 +12,9 @@ import com.whisker.mrr.firebase.repository.*
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*
-import com.whisker.mrr.xrunner.infrastructure.NetworkStateReceiver
-import com.whisker.mrr.xrunner.infrastructure.source.LocationDataSource
-import com.whisker.mrr.xrunner.infrastructure.source.SnapshotLocalDataSource
+import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.infrastructure.source.LocationDataSource
+import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -157,8 +157,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository, userRepository: UserRepository, authSource: AuthSource) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, userRepository, authSource)
     }
 
     @Provides
@@ -193,12 +193,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUpdateUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : UpdateUserStatsInteractor {
-        return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), userRepository, authSource)
-    }
-
-    @Provides
-    @Singleton
     fun provideSaveAchievementInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : SaveChallengeInteractor {
         return SaveChallengeInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
@@ -212,6 +206,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGetAchievementsInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
-        return GetChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+        return GetChallengesInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
 }
