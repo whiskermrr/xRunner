@@ -1,10 +1,13 @@
 package com.whisker.mrr.xrunner.presentation.views.summary
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.whisker.mrr.domain.interactor.GetActiveChallengesInteractor
 import com.whisker.mrr.domain.interactor.SaveRouteInteractor
 import com.whisker.mrr.domain.interactor.SaveSnapshotInteractor
+import com.whisker.mrr.domain.interactor.UpdateChallengesInteractor
 import com.whisker.mrr.domain.model.RouteEntity
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.Route
@@ -19,7 +22,9 @@ import javax.inject.Inject
 class SummaryRunViewModel
 @Inject constructor(
     private val saveRouteInteractor: SaveRouteInteractor,
-    private val saveSnapshotInteractor: SaveSnapshotInteractor
+    private val saveSnapshotInteractor: SaveSnapshotInteractor,
+    private val getActiveChallengesInteractor: GetActiveChallengesInteractor,
+    private val updateChallengesInteractor: UpdateChallengesInteractor
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
@@ -31,12 +36,26 @@ class SummaryRunViewModel
                 emitter.onSuccess(RouteMapper.routeToEntityTransform(route))
             }.flatMapCompletable {routeEntity ->
                 saveRouteInteractor.saveRoute(routeEntity)
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            }.subscribe {
                 isRouteSaved.postValue(true)
+                updateChallenges()
             }
+        )
+    }
+
+    private fun updateChallenges() {
+        disposables.add(
+            getActiveChallengesInteractor.getChallenges()
+                .map { challenges ->
+                    challenges.forEach { it.progress += 10 }
+                    return@map challenges
+                }.doOnSuccess {
+                    Log.e("MRR", "updated " + it.size.toString())
+                }.flatMapCompletable { updatedChallenges ->
+                    updateChallengesInteractor.updateChallenges(updatedChallenges)
+                }.subscribe {
+                    Log.e("MRR", "updated subscribe")
+                }
         )
     }
 

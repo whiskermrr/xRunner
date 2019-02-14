@@ -208,4 +208,10 @@ class AppModule {
     fun provideGetChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
         return GetChallengesInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetActiveChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetActiveChallengesInteractor {
+        return GetActiveChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+    }
 }

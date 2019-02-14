@@ -11,6 +11,7 @@ import com.whisker.mrr.domain.repository.ChallengeRepository
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -87,19 +88,7 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
         return Flowable.create( { emitter ->
             getReference(userId).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val currentTime = Date().time
-                    val activeChallenges = mutableListOf<Challenge>()
-                    dataSnapshot.children.forEach { child ->
-                        child.getValue(Challenge::class.java)?.let { challenge ->
-                            challenge.deadline?.let {
-                                if(it > currentTime && !challenge.isFinished)
-                                    activeChallenges.add(challenge)
-                            } ?: challenge.run {
-                                if(!this.isFinished)
-                                    activeChallenges.add(this)
-                            }
-                        }
-                    }
+                    val activeChallenges = dataSnapshotToActiveChallenges(dataSnapshot)
                     emitter.onNext(activeChallenges)
                 }
 
@@ -108,6 +97,38 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
                 }
             })
         }, BackpressureStrategy.LATEST)
+    }
+
+    override fun getActiveChallengesSingle(userId: String): Single<List<Challenge>> {
+        return Single.create { emitter ->
+            getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val activeChallenges = dataSnapshotToActiveChallenges(dataSnapshot)
+                    emitter.onSuccess(activeChallenges)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    emitter.onError(databaseError.toException())
+                }
+            })
+        }
+    }
+
+    private fun dataSnapshotToActiveChallenges(dataSnapshot: DataSnapshot) : List<Challenge> {
+        val currentTime = Date().time
+        val activeChallenges = mutableListOf<Challenge>()
+        dataSnapshot.children.forEach { child ->
+            child.getValue(Challenge::class.java)?.let { challenge ->
+                challenge.deadline?.let {
+                    if(it > currentTime && !challenge.isFinished)
+                        activeChallenges.add(challenge)
+                } ?: challenge.run {
+                    if(!this.isFinished)
+                        activeChallenges.add(this)
+                }
+            }
+        }
+        return activeChallenges
     }
 
     private fun getReference(userId: String) : DatabaseReference {
