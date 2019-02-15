@@ -31,21 +31,24 @@ class ChallengeMapper {
             model.experience = challenge.experience
 
             challenge.distance?.let {
-                val distanceMap = it.toDistance()
                 model.distance = String.format(
                     Locale.getDefault(),
-                    "%d.%02dkm",
-                    distanceMap[Float.KILOMETERS],
-                    distanceMap[Float.METERS])
+                    "%dkm",
+                    (it / 1000).toInt())
             }
 
             challenge.time?.let {
                 val calendar = Calendar.getInstance()
                 calendar.time = Date(it)
                 calendar.get(Calendar.MINUTE)
-                val hours = calendar.get(Calendar.HOUR)
+                val hours = calendar.get(Calendar.HOUR) - 1
                 val minutes = calendar.get(Calendar.MINUTE)
-                model.time = String.format(Locale.getDefault(), "%dh%2dm", hours, minutes)
+                if(hours > 0) {
+                    model.time = String.format(Locale.getDefault(), "%dh%2dm", hours, minutes)
+                } else {
+                    model.time = String.format(Locale.getDefault(), "%2dm", minutes)
+                }
+
             }
 
             challenge.speed?.let {

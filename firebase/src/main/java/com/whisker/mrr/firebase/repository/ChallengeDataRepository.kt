@@ -20,6 +20,8 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
     companion object {
         const val DB_REFERENCE_IS_FINISHED = "isFinished"
         const val DB_REFERENCE_PROGRESS = "progress"
+        const val DB_REFERENCE_FINISHED_DISTANCE = "finishedDistance"
+        const val DB_REFERENCE_FINISHED_TIME = "finishedTime"
     }
 
     override fun saveChallenge(userId: String, challenge: Challenge): Completable {
@@ -48,6 +50,8 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
                     val map = HashMap<String, Any>()
                     map[DB_REFERENCE_PROGRESS] = challenge.progress
                     map[DB_REFERENCE_IS_FINISHED] = challenge.isFinished
+                    map[DB_REFERENCE_FINISHED_DISTANCE] = challenge.finishedDistance
+                    map[DB_REFERENCE_FINISHED_TIME] = challenge.finishedTime
                     reference.child(challenge.id).updateChildren(map).addOnCompleteListener { task ->
                         if(task.isSuccessful) {
                             emitter.onComplete()

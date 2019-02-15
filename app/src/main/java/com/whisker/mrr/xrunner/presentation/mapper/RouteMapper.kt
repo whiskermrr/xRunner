@@ -1,7 +1,5 @@
 package com.whisker.mrr.xrunner.presentation.mapper
 
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.domain.common.DomainConstants.MMM_yyyy

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.whisker.mrr.domain.common.ChallengeUtils
 import com.whisker.mrr.domain.interactor.GetActiveChallengesInteractor
 import com.whisker.mrr.domain.interactor.SaveRouteInteractor
 import com.whisker.mrr.domain.interactor.SaveSnapshotInteractor
@@ -37,24 +38,21 @@ class SummaryRunViewModel
             }.flatMapCompletable {routeEntity ->
                 saveRouteInteractor.saveRoute(routeEntity)
             }.subscribe {
-                isRouteSaved.postValue(true)
-                updateChallenges()
+                updateChallenges(route)
             }
         )
     }
 
-    private fun updateChallenges() {
+    private fun updateChallenges(route: Route) {
         disposables.add(
             getActiveChallengesInteractor.getChallenges()
                 .map { challenges ->
-                    challenges.forEach { it.progress += 10 }
-                    return@map challenges
-                }.doOnSuccess {
-                    Log.e("MRR", "updated " + it.size.toString())
+                    val routeEntity = RouteMapper.routeToEntityTransform(route)
+                    return@map ChallengeUtils.updateChallengesProgress(routeEntity.routeStats, challenges)
                 }.flatMapCompletable { updatedChallenges ->
                     updateChallengesInteractor.updateChallenges(updatedChallenges)
                 }.subscribe {
-                    Log.e("MRR", "updated subscribe")
+                    isRouteSaved.postValue(true)
                 }
         )
     }

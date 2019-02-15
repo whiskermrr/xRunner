@@ -26,8 +26,8 @@
 		
 		<ImageView
 			android:id="@+id/ivChallengeIcon"
-			android:layout_width="120dp"
-			android:layout_height="120dp"
+			android:layout_width="80dp"
+			android:layout_height="80dp"
 			android:src="@drawable/ic_silver_challenge"
 			android:background="@color/colorPrimary"
 			app:layout_constraintDimensionRatio="1"
@@ -43,7 +43,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			tools:text="100k in one month"
-			android:textSize="21sp"
+			android:textSize="16sp"
 			android:textColor="@android:color/white"
 			android:textStyle="bold"
 			android:maxLines="2"
@@ -60,7 +60,7 @@
 		<ProgressBar
 			android:id="@+id/progressChallenge"
 			android:layout_width="0dp"
-			android:layout_height="wrap_content"
+			android:layout_height="8dp"
 			style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
 			app:layout_constraintTop_toBottomOf="@id/tvChallengeTitle"
 			app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
 			android:paddingTop="8dp"
 			android:paddingBottom="8dp"
 			android:textStyle="bold"
-			android:textSize="18sp"
+			android:textSize="14sp"
 			android:textColor="@android:color/white"
 			tools:text="10 km"
 		/>
@@ -98,7 +98,7 @@
 			android:paddingTop="8dp"
 			android:paddingBottom="8dp"
 			android:textStyle="bold"
-			android:textSize="18sp"
+			android:textSize="14sp"
 			android:textColor="@android:color/white"
 			tools:text="10 km/s"
 		/>
@@ -114,7 +114,7 @@
 			android:paddingTop="8dp"
 			android:paddingBottom="8dp"
 			android:textStyle="bold"
-			android:textSize="18sp"
+			android:textSize="14sp"
 			android:textColor="@android:color/white"
 			tools:text="1h 00m"
 		/>
