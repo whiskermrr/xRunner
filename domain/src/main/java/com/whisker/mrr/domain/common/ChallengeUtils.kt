@@ -12,7 +12,7 @@ object ChallengeUtils {
 
     fun calculateChallengeDifficultyAndExp(challenge: Challenge) : Single<Challenge> {
         var exp: Long = ((challenge.time ?: 0) / 1000) + (challenge.distance?.toLong() ?: 0L)
-        val speed: Float = (challenge.speed ?: DEFAULT_SPEED / 10)
+        val speed: Float = ((challenge.speed ?: DEFAULT_SPEED) / 10)
         exp = (exp * speed).toLong()
 
         when {
