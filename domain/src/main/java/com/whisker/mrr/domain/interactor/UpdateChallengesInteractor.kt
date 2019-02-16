@@ -24,15 +24,16 @@ class UpdateChallengesInteractor(
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
-        val challenges = data?.get(PARAM_CHALLENGES_LIST)
+        val param = data?.get(PARAM_CHALLENGES_LIST)
 
-        challenges?.let {
-            return if(challenges is List<*>)
+        param?.let {challenges ->
+            return if(challenges is List<*>) {
                 authSource.getUserId()
-                .flatMapCompletable {  userId ->
-                    challengeRepository.updateChallenges(userId, challenges.filterIsInstance<Challenge>())
-                } else {
-                return Completable.error(ClassCastException("Cannot cost parameter @challenges to List<Challenges>"))
+                    .flatMapCompletable {  userId ->
+                        challengeRepository.updateChallenges(userId, challenges.filterIsInstance<Challenge>())
+                    }
+            } else {
+                Completable.error(ClassCastException("Cannot cost parameter @challenges to List<Challenges>"))
             }
         } ?: return Completable.error(IllegalArgumentException("Parameter @challenges must be provided."))
     }

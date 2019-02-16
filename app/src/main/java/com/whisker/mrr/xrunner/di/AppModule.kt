@@ -157,8 +157,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveRouteInteractor(routeRepository: RouteRepository, userRepository: UserRepository, authSource: AuthSource) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, userRepository, authSource)
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
     }
 
     @Provides
@@ -213,5 +213,11 @@ class AppModule {
     @Singleton
     fun provideGetActiveChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetActiveChallengesInteractor {
         return GetActiveChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateUserStatsInteractor(authSource: AuthSource, userRepository: UserRepository) : UpdateUserStatsInteractor {
+        return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, userRepository)
     }
 }
