@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.pow
 
 fun Any.TAG() = javaClass.simpleName
@@ -113,25 +115,46 @@ fun GoogleMap.getZoomBasedOnDistance(distance: Float, screenWidth: Int) : Float 
         currentZoom--
     }
 
-    val ratio = (distance - visibleDistance / 2) / (visibleDistance / 2)
-    val zoomRatio = currentZoom - 1.1 - ratio
-
-    return zoomRatio.toFloat()
+    return currentZoom.toFloat()
 }
 
 private val GoogleMap.MAX_ZOOM: Int
-    get() = 19
+    get() = 17
 
 private val GoogleMap.EQUATOR_LENGTH_IN_PIXELS: Int
     get() = 256
 
 private val GoogleMap.EQUATOR_LENGTH_IN_METERS: Double
-    get() = 40075004.0
+    get() = 40_075_004.0
 
 fun TextView.setTextAndVisibility(newText: String?) {
     if(newText != null) {
         this.text = newText
+        this.visibility = View.VISIBLE
     } else {
         this.visibility = View.GONE
     }
 }
+
+fun TextView.setTextAndVisibility(format: String, newText: String?) {
+    if(newText != null) {
+        this.text = String.format(Locale.getDefault(), format, newText)
+    } else {
+        this.visibility = View.GONE
+    }
+}
+
+fun Float.toDistance() : HashMap<String, Int> {
+    val distance: HashMap<String, Int> = hashMapOf()
+    val kilometers: Int = (this / 1000).toInt()
+    val meters: Int = (this % 1000).toInt() / 10
+    distance[Float.KILOMETERS] = kilometers
+    distance[Float.METERS] = meters
+    return distance
+}
+
+val Float.Companion.KILOMETERS: String
+    get() = "FLOAT_DISTANCE_KILOMETERS"
+
+val Float.Companion.METERS: String
+    get() = "FLOAT_DISTANCE_METERS"

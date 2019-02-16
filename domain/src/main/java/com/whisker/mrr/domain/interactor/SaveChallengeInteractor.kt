@@ -16,20 +16,20 @@ class SaveChallengeInteractor(
 ) : CompletableUseCase(transformer) {
 
     companion object {
-        const val PARAM_ACHIEVEMENT = "param_achievement"
+        const val PARAM_CHALLENGE = "param_challenge"
     }
 
     fun saveChallenge(challenge: Challenge) : Completable {
         val data = HashMap<String, Any>()
-        data[PARAM_ACHIEVEMENT] = challenge
+        data[PARAM_CHALLENGE] = challenge
         return completable(data)
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
-        val achievement = data?.get(PARAM_ACHIEVEMENT)
+        val challenge = data?.get(PARAM_CHALLENGE)
 
-        achievement?.let {
-            return ChallengeUtils.calculateChallengeDifficultyAndExp(achievement as Challenge)
+        challenge?.let {
+            return ChallengeUtils.calculateChallengeDifficultyAndExp(challenge as Challenge)
                 .flatMapCompletable { challenge ->
                     authSource.getUserId()
                         .flatMapCompletable {  userId ->
@@ -37,6 +37,6 @@ class SaveChallengeInteractor(
                         }
                 }
 
-        } ?: return Completable.error(IllegalArgumentException("Argument @achievement must be provided."))
+        } ?: return Completable.error(IllegalArgumentException("Argument @challenge must be provided."))
     }
 }
