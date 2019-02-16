@@ -115,14 +115,11 @@ fun GoogleMap.getZoomBasedOnDistance(distance: Float, screenWidth: Int) : Float 
         currentZoom--
     }
 
-    val ratio = (distance - visibleDistance / 2) / (visibleDistance / 2)
-    val zoomRatio = currentZoom - 1.1 - ratio
-
-    return zoomRatio.toFloat()
+    return currentZoom.toFloat()
 }
 
 private val GoogleMap.MAX_ZOOM: Int
-    get() = 19
+    get() = 17
 
 private val GoogleMap.EQUATOR_LENGTH_IN_PIXELS: Int
     get() = 256
