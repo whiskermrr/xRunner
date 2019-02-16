@@ -133,6 +133,7 @@ private val GoogleMap.EQUATOR_LENGTH_IN_METERS: Double
 fun TextView.setTextAndVisibility(newText: String?) {
     if(newText != null) {
         this.text = newText
+        this.visibility = View.VISIBLE
     } else {
         this.visibility = View.GONE
     }
