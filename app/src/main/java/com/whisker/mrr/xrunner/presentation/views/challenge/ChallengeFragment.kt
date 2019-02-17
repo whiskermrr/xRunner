@@ -33,7 +33,8 @@ class ChallengeFragment : BaseFragment() {
         rvChallenges.addItemDecoration(ChallengeItemDecoration(resources.getDimensionPixelOffset(R.dimen.challenge_grid_spacing)))
 
         viewModel.getChallengeList().observe(this, Observer {
-            challengeAdapter.setItems(it)
+            //challengeAdapter.setItems(it)
+            mainActivity.addContent(AddChallengeDialogFragment())
         })
     }
 }

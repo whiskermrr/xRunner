@@ -42,4 +42,11 @@
 	<string name="label_hours">hours</string>
 	<string name="label_minutes">minutes</string>
 	<string name="challenges">Challenges</string>
+	<string name="add_challenge_label">Add Challenge</string>
+	<string name="hint_title">title</string>
+	<string name="hint_time">time</string>
+	<string name="hint_distance">distance</string>
+	<string name="hint_speed">avg. speed</string>
+	<string name="hint_deadline">deadline</string>
+	<string name="submit_label">Submit</string>
 </resources>

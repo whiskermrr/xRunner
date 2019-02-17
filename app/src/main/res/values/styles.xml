@@ -6,6 +6,48 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+		<item name="windowActionBar">true</item>
+		<item name="windowNoTitle">true</item>
     </style>
+    
+    <style name="ErrorText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorDeleteRed</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    
+    <style name="HintText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorFlashGreen</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
+        <!-- reference our hint & error styles -->
+        <item name="hintTextAppearance">@style/HintText</item>
+        <item name="errorTextAppearance">@style/ErrorText</item>
+        <item name="android:textColor">@color/colorFlashGreen</item>
+        <item name="android:textColorHint">@color/colorSecondaryText</item>
+        <item name="colorControlNormal">@color/colorFlashGreen</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@color/colorFlashGreen</item>
+    </style>
+	
+	<style name="OverFlow" parent="AppTheme">
+		<item name="android:textColorPrimary">@color/colorPrimary</item>
+		<item name="android:textColorPrimaryInverse">@color/colorPrimary</item>
+		<item name="actionMenuTextColor">@color/colorPrimary</item>
+		<item name="android:textColorSecondary">@color/colorPrimary</item>
+	</style>
+	
+	<style name="ToolbarTheme">
+		<item name="android:textColorPrimary">@color/colorFlashGreen</item>
+		<item name="android:textColorSecondary">@color/colorFlashGreen</item>
+		<item name="actionOverflowButtonStyle">@style/actionOverflowButtonStyle</item>
+		<item name="actionMenuTextColor">@color/colorFlashGreen</item>
+		<item name="android:background">@color/colorPrimary</item>
+	</style>
+	
+	<style name="actionOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+		<item name="android:tint">@color/colorFlashGreen</item>
+	</style>
 
 </resources>
