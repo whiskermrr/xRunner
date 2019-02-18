@@ -49,4 +49,6 @@
 	<string name="hint_speed">avg. speed</string>
 	<string name="hint_deadline">deadline</string>
 	<string name="submit_label">Submit</string>
+	<string name="error_challenge_title">title is required.</string>
+	<string name="challenge_deadline_format">MM/dd/yyy</string>
 </resources>

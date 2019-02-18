@@ -40,14 +40,8 @@ class ChallengeMapper {
             challenge.time?.let {
                 val calendar = Calendar.getInstance()
                 calendar.time = Date(it)
-                calendar.get(Calendar.MINUTE)
                 val hours = calendar.get(Calendar.HOUR) - 1
-                val minutes = calendar.get(Calendar.MINUTE)
-                if(hours > 0) {
-                    model.time = String.format(Locale.getDefault(), "%dh%2dm", hours, minutes)
-                } else {
-                    model.time = String.format(Locale.getDefault(), "%2dm", minutes)
-                }
+                model.time = String.format(Locale.getDefault(), "%dh", hours)
 
             }
 

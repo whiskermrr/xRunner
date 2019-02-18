@@ -78,7 +78,7 @@ class ChallengeDataRepository(private val databaseReference: DatabaseReference) 
                             challenges.add(it)
                         }
                     }
-                    emitter.onNext(challenges)
+                    emitter.onNext(challenges.reversed())
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

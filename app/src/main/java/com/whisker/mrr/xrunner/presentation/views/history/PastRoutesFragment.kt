@@ -53,6 +53,7 @@ class PastRoutesFragment : BaseFragment() {
         itemTouchHelper.attachToRecyclerView(rvRoutes)
 
         viewModel.getRouteList().observe(this, Observer {holders ->
+            progressBar.visibility = View.GONE
             routesAdapter.removeAllSections()
             for(holder in holders) {
                 routesAdapter.addSection(RoutesAdapter(holder))

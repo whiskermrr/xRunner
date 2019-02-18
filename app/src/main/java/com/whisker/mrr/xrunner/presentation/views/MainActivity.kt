@@ -7,9 +7,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.di.Injectable
@@ -146,8 +148,8 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         switchContent(mainContainer.id, fragment)
     }
 
-    fun addContent(fragment: Fragment) {
-        addContent(mainContainer.id, fragment)
+    fun addContent(fragment: Fragment, @IdRes transaction: Int = FragmentTransaction.TRANSIT_FRAGMENT_FADE, isAddToBackStack: Boolean = true) {
+        addContent(mainContainer.id, fragment, transaction, isAddToBackStack)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

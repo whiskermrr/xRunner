@@ -33,3 +33,14 @@ fun Date.formatDate(format: String) : String {
     val sdf = SimpleDateFormat(format, Locale.getDefault())
     return sdf.format(this)
 }
+
+fun String.toLongDate(format: String) : Long? {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    return try {
+        val date = sdf.parse(this)
+        date.time
+    } catch (e: IllegalArgumentException) {
+        e.printStackTrace()
+        null
+    }
+}

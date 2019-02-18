@@ -3,14 +3,13 @@ package com.whisker.mrr.xrunner.presentation.views.challenge
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.GetChallengesInteractor
-import com.whisker.mrr.domain.interactor.SaveChallengeInteractor
 import com.whisker.mrr.xrunner.presentation.mapper.ChallengeMapper
 import com.whisker.mrr.xrunner.presentation.model.ChallengeModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class ChallengeViewModel
-@Inject constructor(private val getChallengesInteractor: GetChallengesInteractor, saveChallengeInteractor: SaveChallengeInteractor)
+@Inject constructor(private val getChallengesInteractor: GetChallengesInteractor)
 : ViewModel() {
 
     private val challengeList = MutableLiveData<List<ChallengeModel>>()

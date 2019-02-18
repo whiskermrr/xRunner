@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,8 +34,16 @@ class ChallengeFragment : BaseFragment() {
         rvChallenges.addItemDecoration(ChallengeItemDecoration(resources.getDimensionPixelOffset(R.dimen.challenge_grid_spacing)))
 
         viewModel.getChallengeList().observe(this, Observer {
-            //challengeAdapter.setItems(it)
-            mainActivity.addContent(AddChallengeDialogFragment())
+            progressBar.visibility = View.GONE
+            challengeAdapter.setItems(it)
         })
+
+        fabAddChallenge.setOnClickListener {
+            showAddChallengeDialog()
+        }
+    }
+
+    private fun showAddChallengeDialog() {
+        mainActivity.addContent(AddChallengeDialogFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN, true)
     }
 }
