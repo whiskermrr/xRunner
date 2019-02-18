@@ -53,12 +53,12 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
                             route?.let {
                                 holder.totalDistance += it.routeStats.wgs84distance
                                 holder.totalTime += it.routeStats.routeTime
-                                holder.routes.add(it)
+                                holder.routes.add(0, it)
                             }
                         }
                         holders.add(holder)
                     }
-                    emitter.onNext(holders)
+                    emitter.onNext(holders.reversed())
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

@@ -1,5 +1,6 @@
 package com.whisker.mrr.domain.common
 
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,4 +33,14 @@ fun Date.getFirstDayOfTheMonthInMillis() : Long {
 fun Date.formatDate(format: String) : String {
     val sdf = SimpleDateFormat(format, Locale.getDefault())
     return sdf.format(this)
+}
+
+fun String.toLongDate(format: String) : Long? {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    return try {
+        val date = sdf.parse(this)
+        date.time
+    } catch (e: Exception) {
+        null
+    }
 }

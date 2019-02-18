@@ -2,6 +2,7 @@ package com.whisker.mrr.xrunner.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.whisker.mrr.xrunner.presentation.views.challenge.AddChallengeViewModel
 import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeViewModel
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.views.login.LoginViewModel
@@ -47,4 +48,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChallengeViewModel::class)
     internal abstract fun bindChallengeViewModel(challengeViewModel: ChallengeViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddChallengeViewModel::class)
+    internal abstract fun bindAddChallengeViewModel(addChallengeViewModel: AddChallengeViewModel) : ViewModel
 }

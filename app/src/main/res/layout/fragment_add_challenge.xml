@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/colorPrimary"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	
+	<ImageView
+		android:id="@+id/ivAddChallengeCancel"
+		android:layout_width="24dp"
+		android:layout_height="24dp"
+		android:src="@drawable/ic_cross"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:layout_marginTop="16dp"
+		android:layout_marginEnd="16dp"
+	/>
+	
+	<TextView
+		android:id="@+id/tvAddChallengeLabel"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:text="@string/add_challenge_label"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:textSize="24sp"
+		android:gravity="center_horizontal"
+		app:layout_constraintTop_toTopOf="parent"
+		android:layout_marginTop="32dp"
+		android:textColor="@color/colorFlashGreen"
+		android:textStyle="bold"
+	/>
+	
+	<com.google.android.material.textfield.TextInputLayout
+		android:id="@+id/layoutTextTitle"
+		android:theme="@style/TextInputLayoutAppearance"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/tvAddChallengeLabel"
+		android:layout_marginTop="8dp"
+		android:layout_marginStart="16dp"
+		android:layout_marginEnd="16dp">
+		
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/etChallengeTitle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/hint_title"
+			android:textColor="@color/colorFlashGreen"
+		/>
+		
+	</com.google.android.material.textfield.TextInputLayout>
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/layoutDistance"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/layoutTextTitle"
+		app:layout_constraintEnd_toStartOf="@id/layoutTime"
+		android:layout_marginTop="16dp"
+		android:layout_marginStart="16dp">
+		
+		<ImageView
+			android:id="@+id/ivChallengeDistance"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:contentDescription="@null"
+			android:src="@drawable/ic_distance"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintBottom_toBottomOf="@id/layoutTextDistance"
+			app:layout_constraintTop_toTopOf="@id/layoutTextDistance"
+		/>
+		
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/layoutTextDistance"
+			android:theme="@style/TextInputLayoutAppearance"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/ivChallengeDistance"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginStart="8dp"
+		>
+			
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etChallengeDistance"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/hint_distance"
+				android:inputType="numberDecimal"
+				android:textColor="@color/colorFlashGreen"
+			/>
+		
+		
+		</com.google.android.material.textfield.TextInputLayout>
+		
+		
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/layoutTime"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toEndOf="@id/layoutDistance"
+		app:layout_constraintTop_toBottomOf="@id/layoutTextTitle"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:layout_marginTop="16dp"
+		android:layout_marginStart="16dp"
+		android:layout_marginEnd="16dp">
+		
+		<ImageView
+			android:id="@+id/ivChallengeTime"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:contentDescription="@null"
+			android:src="@drawable/ic_challenge_time"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@id/layoutTextTime"
+			app:layout_constraintBottom_toBottomOf="@id/layoutTextTime"
+		/>
+		
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/layoutTextTime"
+			android:theme="@style/TextInputLayoutAppearance"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/ivChallengeTime"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginStart="8dp"
+		>
+			
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etChallengeTime"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/hint_time"
+				android:inputType="numberDecimal"
+				android:textColor="@color/colorFlashGreen"
+			/>
+		
+		
+		</com.google.android.material.textfield.TextInputLayout>
+		
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/layoutSpeed"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/layoutDistance"
+		android:layout_marginTop="16dp"
+		android:layout_marginStart="16dp">
+		
+		<ImageView
+			android:id="@+id/ivChallengeSpeed"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:contentDescription="@null"
+			android:src="@drawable/ic_challenge_speed"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@id/layoutTextSpeed"
+			app:layout_constraintBottom_toBottomOf="@id/layoutTextSpeed"
+		/>
+		
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/layoutTextSpeed"
+			android:theme="@style/TextInputLayoutAppearance"
+			android:layout_width="150dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/ivChallengeSpeed"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginStart="8dp"
+		>
+			
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etChallengeSpeed"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/hint_speed"
+				android:inputType="numberDecimal"
+				android:textColor="@color/colorFlashGreen"
+			/>
+		
+		</com.google.android.material.textfield.TextInputLayout>
+	
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/layoutDeadline"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/layoutSpeed"
+		android:layout_marginTop="16dp"
+		android:layout_marginStart="16dp">
+		
+		<ImageView
+			android:id="@+id/ivChallengeDeadline"
+			android:layout_width="24dp"
+			android:layout_height="24dp"
+			android:src="@drawable/ic_deadline"
+			android:contentDescription="@null"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="@id/layoutTextDeadline"
+			app:layout_constraintBottom_toBottomOf="@id/layoutTextDeadline"
+			
+		/>
+		
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/layoutTextDeadline"
+			android:theme="@style/TextInputLayoutAppearance"
+			android:layout_width="150dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toEndOf="@id/ivChallengeDeadline"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginStart="8dp"
+		>
+			
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/etChallengeDeadline"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/hint_deadline"
+				android:focusable="false"
+				android:textColor="@color/colorFlashGreen"
+			/>
+		
+		</com.google.android.material.textfield.TextInputLayout>
+		
+	</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	
+	<Button
+		android:id="@+id/bSubmitChallenge"
+		android:layout_width="150dp"
+		android:layout_height="wrap_content"
+		android:text="@string/submit_label"
+		android:layout_marginTop="32dp"
+		android:textColor="@color/colorWhite"
+		app:layout_constraintTop_toBottomOf="@id/layoutDeadline"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:background="@drawable/circular_button_green"
+	/>
+	
+
+</androidx.constraintlayout.widget.ConstraintLayout>
