@@ -1,5 +1,6 @@
 package com.whisker.mrr.domain.common
 
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,8 +40,7 @@ fun String.toLongDate(format: String) : Long? {
     return try {
         val date = sdf.parse(this)
         date.time
-    } catch (e: IllegalArgumentException) {
-        e.printStackTrace()
+    } catch (e: Exception) {
         null
     }
 }

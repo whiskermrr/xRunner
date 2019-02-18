@@ -78,6 +78,7 @@
 			app:layout_constraintTop_toBottomOf="@id/progressChallenge"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toStartOf="@id/tvChallengeSpeed"
+			app:layout_constraintHorizontal_chainStyle="packed"
 			android:gravity="center_horizontal"
 			android:paddingTop="8dp"
 			android:paddingBottom="8dp"
