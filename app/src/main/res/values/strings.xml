@@ -53,7 +53,7 @@
 	<string name="challenge_deadline_format">MM/dd/yyy</string>
 	<string name="title_challenges">Challenges</string>
 	<string name="title_history">History</string>
-	<string name="title_run">Run</string>
+	<string name="title_run">xRunner</string>
 	<string name="title_profile">Profile</string>
 	<string name="title_summary">Summary</string>
 </resources>
