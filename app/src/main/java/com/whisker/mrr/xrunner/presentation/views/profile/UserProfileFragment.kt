@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.*
 
@@ -31,6 +32,7 @@ class UserProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.toolbar.title = getString(R.string.title_profile)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserProfileViewModel::class.java)
 
         viewModel.userStats().observe(this, Observer { stats ->

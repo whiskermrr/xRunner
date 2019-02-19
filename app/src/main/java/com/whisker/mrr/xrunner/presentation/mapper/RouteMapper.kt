@@ -110,7 +110,7 @@ class RouteMapper {
             val calendar = Calendar.getInstance()
             calendar.time = Date(entityHolder.totalTime)
             calendar.get(Calendar.MINUTE)
-            val hours = calendar.get(Calendar.HOUR)
+            val hours = calendar.get(Calendar.HOUR) - 1
             val minutes = calendar.get(Calendar.MINUTE)
             routeHolder.totalTime = String.format(Locale.getDefault(), "%dh%dm", hours, minutes)
 

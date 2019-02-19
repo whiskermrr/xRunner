@@ -23,6 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_summary_run.*
 import org.jetbrains.anko.textColor
 
@@ -53,6 +54,7 @@ class SummaryRunFragment : BaseMapFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.toolbar.title = getString(R.string.title_summary)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SummaryRunViewModel::class.java)
 
         RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
