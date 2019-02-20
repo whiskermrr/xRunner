@@ -14,6 +14,7 @@ import com.whisker.mrr.xrunner.presentation.views.BaseFragment
 import com.whisker.mrr.xrunner.presentation.adapters.RoutesAdapter
 import com.whisker.mrr.xrunner.presentation.common.SwipeToDeleteCallback
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_past_routes.*
 
 class PastRoutesFragment : BaseFragment() {
@@ -27,6 +28,7 @@ class PastRoutesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.toolbar.title = getString(R.string.title_history)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PastRoutesViewModel::class.java)
 
         routesAdapter = SectionedRecyclerViewAdapter()

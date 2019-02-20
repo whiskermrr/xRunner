@@ -13,6 +13,7 @@ import com.whisker.mrr.xrunner.presentation.model.Route
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_run.*
 
 class RunFragment : BaseMapFragment() {
@@ -65,6 +66,7 @@ class RunFragment : BaseMapFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.toolbar.title = getString(R.string.title_run)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RunViewModel::class.java)
 
         mapView.onCreate(savedInstanceState)

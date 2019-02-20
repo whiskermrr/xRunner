@@ -13,6 +13,7 @@ import com.whisker.mrr.xrunner.presentation.adapters.ChallengeItemDecoration
 import com.whisker.mrr.xrunner.presentation.adapters.ChallengeSection
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_challenges.*
 
 class ChallengeFragment : BaseFragment() {
@@ -26,6 +27,7 @@ class ChallengeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.toolbar.title = getString(R.string.title_challenges)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChallengeViewModel::class.java)
 
 
