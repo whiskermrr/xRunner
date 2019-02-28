@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
@@ -27,7 +27,7 @@ class RunFragment : BaseMapFragment() {
         viewModel.getLastKnownLocation().removeObservers(this)
     }
 
-    private val routeObserver = Observer<Route> { route ->
+    private val routeObserver = Observer<RouteModel> { route ->
         tvDistance.text = getString(R.string.distance_format, route.routeStats.kilometers, route.routeStats.meters)
         tvPace.text = getString(R.string.pace_format, route.routeStats.paceMin, route.routeStats.paceSec)
 
@@ -52,7 +52,7 @@ class RunFragment : BaseMapFragment() {
         tvTime.text = it
     }
 
-    private val onRunFinishedObserver = Observer<Route> {
+    private val onRunFinishedObserver = Observer<RouteModel> {
         val bundle = Bundle()
         bundle.putParcelable(XRunnerConstants.EXTRA_FINAL_ROUTE_KEY, it)
         val fragment = SummaryRunFragment()

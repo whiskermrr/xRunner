@@ -7,9 +7,9 @@ import com.whisker.mrr.domain.common.ChallengeUtils
 import com.whisker.mrr.domain.common.UserStatsUtils
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.model.Challenge
-import com.whisker.mrr.domain.model.RouteEntity
+import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
-import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.utils.toByteArray
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,7 +30,7 @@ class SummaryRunViewModel
     private val disposables = CompositeDisposable()
     private val isRouteSaved =  MutableLiveData<Boolean> ()
 
-    fun saveRoute(route: Route) {
+    fun saveRoute(route: RouteModel) {
         val routeEntity = RouteMapper.routeToEntityTransform(route)
         disposables.add(
             saveRouteInteractor.saveRoute(routeEntity)
@@ -40,7 +40,7 @@ class SummaryRunViewModel
         )
     }
 
-    private fun updateChallenges(route: RouteEntity) {
+    private fun updateChallenges(route: Route) {
         disposables.add(
             getActiveChallengesInteractor.getChallenges()
                 .map { challenges ->
@@ -56,7 +56,7 @@ class SummaryRunViewModel
         )
     }
 
-    private fun updateUserStats(route: RouteEntity, challenges: List<Challenge>) : Completable {
+    private fun updateUserStats(route: Route, challenges: List<Challenge>) : Completable {
         return getUserStatsInteractor.getUserStats()
                 .flatMapCompletable { userStats ->
                     UserStatsUtils.updateUserStats(userStats, route.routeStats)

@@ -5,10 +5,10 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Route(
+data class RouteModel(
     var name: String = "",
     var routeId: String = "",
     var waypoints: MutableList<LatLng> = mutableListOf(),
-    var routeStats: RouteStats = RouteStats(),
+    var routeStats: RouteStatsModel = RouteStatsModel(),
     var date: Long = 0L)
 : Parcelable

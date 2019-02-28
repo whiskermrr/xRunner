@@ -1,7 +1,7 @@
 package com.whisker.mrr.domain.model
 
 
-data class RouteStatsEntity(
+data class RouteStats(
                  var routeTime: Long = 0L,
                  var averageSpeed: Float = 0f,
                  var paceMin: Int = 0,

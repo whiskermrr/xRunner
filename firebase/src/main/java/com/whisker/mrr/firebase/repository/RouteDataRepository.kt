@@ -1,7 +1,7 @@
 package com.whisker.mrr.firebase.repository
 
-import com.whisker.mrr.domain.model.RouteEntity
-import com.whisker.mrr.domain.model.RouteEntityHolder
+import com.whisker.mrr.domain.model.Route
+import com.whisker.mrr.domain.model.RouteHolder
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.domain.repository.RouteRepository
@@ -32,11 +32,11 @@ class RouteDataRepository
         })
     }
 
-    override fun saveRoute(userId: String, route: RouteEntity): Completable {
+    override fun saveRoute(userId: String, route: Route): Completable {
         return routeDatabaseSource.saveRoute(route, userId)
     }
 
-    override fun getRouteList(userId: String): Flowable<List<RouteEntityHolder>> {
+    override fun getRouteList(userId: String): Flowable<List<RouteHolder>> {
         return routeDatabaseSource.getRoutesByUserId(userId)
     }
 

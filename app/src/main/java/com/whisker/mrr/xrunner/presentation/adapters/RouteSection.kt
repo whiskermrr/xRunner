@@ -5,20 +5,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.model.Route
-import com.whisker.mrr.xrunner.presentation.model.RouteHolder
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
+import com.whisker.mrr.xrunner.presentation.model.RouteHolderModel
 import com.whisker.mrr.xrunner.utils.loadSnapshot
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
 import java.util.*
 
-class RoutesAdapter(private val routeHolder: RouteHolder) :
+class RoutesAdapter(private val routeHolder: RouteHolderModel) :
     StatelessSection(SectionParameters.builder()
         .itemResourceId(R.layout.route_list_item)
         .headerResourceId(R.layout.route_list_header)
         .build()) {
 
-    fun removeItem(position: Int) : Route {
+    fun removeItem(position: Int) : RouteModel {
         return routeHolder.routes.removeAt(position)
     }
 
@@ -53,7 +53,7 @@ class RoutesAdapter(private val routeHolder: RouteHolder) :
         private val tvRouteName: TextView = itemView.findViewById(R.id.tvRouteName)
         private val tvRouteDescription: TextView = itemView.findViewById(R.id.tvRouteDescription)
 
-        fun bind(route: Route) {
+        fun bind(route: RouteModel) {
             ivRouteSnapshot.loadSnapshot(route.date.toString())
             tvRouteName.text = route.name
             tvRouteDescription.text =

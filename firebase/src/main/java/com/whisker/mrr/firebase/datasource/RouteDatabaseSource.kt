@@ -4,8 +4,8 @@ import com.google.firebase.database.*
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_ROUTES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.common.getFirstDayOfTheMonthInMillis
-import com.whisker.mrr.domain.model.RouteEntity
-import com.whisker.mrr.domain.model.RouteEntityHolder
+import com.whisker.mrr.domain.model.Route
+import com.whisker.mrr.domain.model.RouteHolder
 import com.whisker.mrr.domain.source.RouteSource
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : RouteSource {
 
-    override fun saveRoute(route: RouteEntity, userId : String) : Completable {
+    override fun saveRoute(route: Route, userId : String) : Completable {
         val databaseReference = firebaseDatabase.reference
             .child(REFERENCE_USERS).child(userId)
             .child(REFERENCE_ROUTES)
@@ -35,7 +35,7 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
         }
     }
 
-    override fun getRoutesByUserId(userId: String) : Flowable<List<RouteEntityHolder>> {
+    override fun getRoutesByUserId(userId: String) : Flowable<List<RouteHolder>> {
         val databaseReference = firebaseDatabase.reference
             .child(REFERENCE_USERS)
             .child(userId)
@@ -44,12 +44,12 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
         return Flowable.create({ emitter ->
             databaseReference.addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val holders = mutableListOf<RouteEntityHolder>()
+                    val holders = mutableListOf<RouteHolder>()
                     dataSnapshot.children.forEach { childList ->
-                        val holder = RouteEntityHolder()
+                        val holder = RouteHolder()
                         holder.month = childList.key!!.toLong()
                         childList.children.forEach { child ->
-                            val route = child.getValue(RouteEntity::class.java)
+                            val route = child.getValue(Route::class.java)
                             route?.let {
                                 holder.totalDistance += it.routeStats.wgs84distance
                                 holder.totalTime += it.routeStats.routeTime

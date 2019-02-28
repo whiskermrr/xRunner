@@ -1,6 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.model.UserStatsEntity
+import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.repository.UserRepository
 import com.whisker.mrr.domain.source.AuthSource
 import com.whisker.mrr.domain.usecase.CompletableUseCase
@@ -17,7 +17,7 @@ class UpdateUserStatsInteractor(
         const val PARAM_USER_STATS = "param_user_stats"
     }
 
-    fun updateUserStats(userStats: UserStatsEntity) : Completable {
+    fun updateUserStats(userStats: UserStats) : Completable {
         val data = HashMap<String, Any>()
         data[PARAM_USER_STATS] = userStats
         return completable(data)
@@ -29,7 +29,7 @@ class UpdateUserStatsInteractor(
         param?.let { userStats ->
             return authSource.getUserId()
                 .flatMapCompletable {  userId ->
-                    userRepository.updateUserStats(userId, userStats as UserStatsEntity)
+                    userRepository.updateUserStats(userId, userStats as UserStats)
                 }
         } ?: return Completable.error(IllegalArgumentException("Parameter @challenges must be provided."))
     }
