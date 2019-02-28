@@ -1,6 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.model.RouteEntity
+import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.domain.repository.RouteRepository
 import com.whisker.mrr.domain.source.AuthSource
 import com.whisker.mrr.domain.usecase.CompletableUseCase
@@ -18,8 +18,8 @@ class SaveRouteInteractor(
         private const val PARAM_ROUTE = "param_route"
     }
 
-    fun saveRoute(route: RouteEntity) : Completable {
-        val data = HashMap<String, RouteEntity>()
+    fun saveRoute(route: Route) : Completable {
+        val data = HashMap<String, Route>()
         data[PARAM_ROUTE] = route
         return completable(data)
     }
@@ -30,7 +30,7 @@ class SaveRouteInteractor(
         routeEntity?.let {
             return authSource.getUserId()
                 .flatMapCompletable { userId ->
-                    routeRepository.saveRoute(userId, routeEntity as RouteEntity)
+                    routeRepository.saveRoute(userId, routeEntity as Route)
                 }
         } ?: return Completable.error(IllegalArgumentException("Argument @route must be provided."))
     }

@@ -10,7 +10,7 @@ import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_DISTANCE
 import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_TIME
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USER_STATS
-import com.whisker.mrr.domain.model.UserStatsEntity
+import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -20,7 +20,7 @@ class UserDataRepository
 @Inject constructor(private val databaseReference: DatabaseReference)
 : UserRepository {
 
-    override fun updateUserStats(userId: String, userStats: UserStatsEntity): Completable {
+    override fun updateUserStats(userId: String, userStats: UserStats): Completable {
         return Completable.create { emitter ->
             val map = HashMap<String, Any>()
             map[DB_TOTAL_DISTANCE] = userStats.totalDistance
@@ -42,12 +42,12 @@ class UserDataRepository
         }
     }
 
-    override fun getUserStats(userId: String): Single<UserStatsEntity> {
+    override fun getUserStats(userId: String): Single<UserStats> {
         return Single.create { emitter ->
             getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     dataSnapshot.value?.let {
-                        dataSnapshot.getValue(UserStatsEntity::class.java)?.let { userStats ->
+                        dataSnapshot.getValue(UserStats::class.java)?.let { userStats ->
                             emitter.onSuccess(userStats)
                         }
                     }
@@ -62,7 +62,7 @@ class UserDataRepository
 
     override fun createUserStats(userId: String): Completable {
         return Completable.create { emitter ->
-            getReference(userId).setValue(UserStatsEntity()).addOnCompleteListener { task ->
+            getReference(userId).setValue(UserStats()).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
                 } else {

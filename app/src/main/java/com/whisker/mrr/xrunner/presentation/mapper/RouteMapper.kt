@@ -4,12 +4,12 @@ import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.domain.common.DomainConstants.MMM_yyyy
 import com.whisker.mrr.domain.common.formatDate
-import com.whisker.mrr.domain.model.RouteEntity
-import com.whisker.mrr.domain.model.RouteEntityHolder
-import com.whisker.mrr.domain.model.RouteStatsEntity
-import com.whisker.mrr.xrunner.presentation.model.Route
-import com.whisker.mrr.xrunner.presentation.model.RouteHolder
-import com.whisker.mrr.xrunner.presentation.model.RouteStats
+import com.whisker.mrr.domain.model.Route
+import com.whisker.mrr.domain.model.RouteHolder
+import com.whisker.mrr.domain.model.RouteStats
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
+import com.whisker.mrr.xrunner.presentation.model.RouteHolderModel
+import com.whisker.mrr.xrunner.presentation.model.RouteStatsModel
 import com.whisker.mrr.xrunner.utils.KILOMETERS
 import com.whisker.mrr.xrunner.utils.METERS
 import com.whisker.mrr.xrunner.utils.toDistance
@@ -19,8 +19,8 @@ class RouteMapper {
 
     companion object {
 
-        fun routeToEntityTransform(route: Route) : RouteEntity {
-            val entityRoute = RouteEntity()
+        fun routeToEntityTransform(route: RouteModel) : Route {
+            val entityRoute = Route()
             entityRoute.date = route.date
             entityRoute.routeId = route.routeId
             entityRoute.name = route.name
@@ -30,8 +30,8 @@ class RouteMapper {
             return entityRoute
         }
 
-        private fun statsToEntityTransform(routeStats: RouteStats) : RouteStatsEntity {
-            val entityStats = RouteStatsEntity()
+        private fun statsToEntityTransform(routeStats: RouteStatsModel) : RouteStats {
+            val entityStats = RouteStats()
             entityStats.wgs84distance = routeStats.wgs84distance
             entityStats.averageSpeed = routeStats.averageSpeed
             entityStats.paceMin = routeStats.paceMin
@@ -46,8 +46,8 @@ class RouteMapper {
             return entityStats
         }
 
-        private fun entityToRouteTransform(entityRoute: RouteEntity) : Route {
-            val route = Route()
+        private fun entityToRouteTransform(entityRoute: Route) : RouteModel {
+            val route = RouteModel()
             route.date = entityRoute.date
             route.routeId = entityRoute.routeId
             route.name = entityRoute.name
@@ -57,8 +57,8 @@ class RouteMapper {
             return route
         }
 
-        private fun entityToStatsTransform(entityStats: RouteStatsEntity) : RouteStats {
-            val routeStats = RouteStats()
+        private fun entityToStatsTransform(entityStats: RouteStats) : RouteStatsModel {
+            val routeStats = RouteStatsModel()
             routeStats.wgs84distance = entityStats.wgs84distance
             routeStats.averageSpeed = entityStats.averageSpeed
             routeStats.paceMin = entityStats.paceMin
@@ -78,8 +78,8 @@ class RouteMapper {
             return routeStats
         }
 
-        private fun listOfEntityToListOfRoutesTransform(entityRoutes: List<RouteEntity>) : MutableList<Route> {
-            val routes = mutableListOf<Route>()
+        private fun listOfEntityToListOfRoutesTransform(entityRoutes: List<Route>) : MutableList<RouteModel> {
+            val routes = mutableListOf<RouteModel>()
             for(entity in entityRoutes) {
                 val route = entityToRouteTransform(entity)
                 routes.add(route)
@@ -88,9 +88,9 @@ class RouteMapper {
             return routes
         }
 
-        fun listOfEntityHoldersToListOfRouteHolders(entityHolders: List<RouteEntityHolder>) : List<RouteHolder> {
-            val holders = mutableListOf<RouteHolder>()
-            for(entityHolder in entityHolders) {
+        fun listOfEntityHoldersToListOfRouteHolders(holders: List<RouteHolder>) : List<RouteHolderModel> {
+            val holders = mutableListOf<RouteHolderModel>()
+            for(entityHolder in holders) {
                 val holder = entityHolderToRouteHolder(entityHolder)
                 holders.add(holder)
             }
@@ -98,24 +98,24 @@ class RouteMapper {
             return holders
         }
 
-        private fun entityHolderToRouteHolder(entityHolder: RouteEntityHolder) : RouteHolder {
-            val routeHolder = RouteHolder()
-            routeHolder.routes = listOfEntityToListOfRoutesTransform(entityHolder.routes)
-            routeHolder.month = Date(entityHolder.month).formatDate(MMM_yyyy)
+        private fun entityHolderToRouteHolder(holder: RouteHolder) : RouteHolderModel {
+            val routeHolder = RouteHolderModel()
+            routeHolder.routes = listOfEntityToListOfRoutesTransform(holder.routes)
+            routeHolder.month = Date(holder.month).formatDate(MMM_yyyy)
 
-            val distanceMap = entityHolder.totalDistance.toDistance()
+            val distanceMap = holder.totalDistance.toDistance()
             routeHolder.totalDistance =
                     String.format(Locale.getDefault(), "%d.%02dkm", distanceMap[Float.KILOMETERS], distanceMap[Float.METERS])
 
             val calendar = Calendar.getInstance()
-            calendar.time = Date(entityHolder.totalTime)
+            calendar.time = Date(holder.totalTime)
             calendar.get(Calendar.MINUTE)
             val hours = calendar.get(Calendar.HOUR) - 1
             val minutes = calendar.get(Calendar.MINUTE)
             routeHolder.totalTime = String.format(Locale.getDefault(), "%dh%dm", hours, minutes)
 
-            val sumOfAverageSpeed = entityHolder.routes.map { it.routeStats.averageSpeed }.sum()
-            val pace = MINUTES_PER_HOUR / (sumOfAverageSpeed / entityHolder.routes.size)
+            val sumOfAverageSpeed = holder.routes.map { it.routeStats.averageSpeed }.sum()
+            val pace = MINUTES_PER_HOUR / (sumOfAverageSpeed / holder.routes.size)
             val paceMin = pace.toInt()
             val paceSec = (pace % 1 * 60).toInt()
             routeHolder.averagePace = String.format(Locale.getDefault(), "%d'%d''", paceMin, paceSec)

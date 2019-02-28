@@ -8,8 +8,9 @@ ext {
     rxAndroidVersion = '2.0.1'
     javaxAnnotationVersion = '1.0'
     javaxInjectVersion = '1'
-    mockitoKotlinVersion = '1.5.0'
+    mockitoKotlinVersion = '1.6.0'
     robolectricVersion = '3.4.2'
+    mockito_version = '2.7.13'
 
     domainDependencies = [
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
@@ -22,6 +23,7 @@ ext {
     domainTestDependencies = [
             junit:              "junit:junit:${jUnitVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            mockitoInline:      "org.mockito:mockito-inline:$mockito_version",
             assertj:            "org.assertj:assertj-core:${assertJVersion}"
     ]
 

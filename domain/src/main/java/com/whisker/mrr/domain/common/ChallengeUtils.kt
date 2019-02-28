@@ -5,7 +5,7 @@ import com.whisker.mrr.domain.common.DomainConstants.EASY_EXP
 import com.whisker.mrr.domain.common.DomainConstants.NORMAL_EXP
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.ChallengeDifficulty
-import com.whisker.mrr.domain.model.RouteStatsEntity
+import com.whisker.mrr.domain.model.RouteStats
 import io.reactivex.Single
 
 object ChallengeUtils {
@@ -26,7 +26,7 @@ object ChallengeUtils {
         return Single.just(challenge)
     }
 
-    fun updateChallengesProgress(stats: RouteStatsEntity, challenges: List<Challenge>) : List<Challenge> {
+    fun updateChallengesProgress(stats: RouteStats, challenges: List<Challenge>) : List<Challenge> {
         val selectedChallenges = challenges.filter {
             (it.time != null && it.speed == null && it.distance == null)
             || (it.time != null && it.speed == null && it.distance != null)

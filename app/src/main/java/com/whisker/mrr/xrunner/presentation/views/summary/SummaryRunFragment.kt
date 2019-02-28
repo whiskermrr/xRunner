@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
-import com.whisker.mrr.xrunner.presentation.model.Route
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
@@ -31,12 +31,12 @@ class SummaryRunFragment : BaseMapFragment() {
 
     private lateinit var viewModel: SummaryRunViewModel
     private val disposables: CompositeDisposable = CompositeDisposable()
-    private lateinit var finalRoute: Route
+    private lateinit var finalRoute: RouteModel
     override val isMyLocationEnabled: Boolean
         get() = false
 
     private val routeSavedObserver = Observer<Boolean> {
-        Toast.makeText(mainActivity, "Route Saved", Toast.LENGTH_SHORT).show()
+        Toast.makeText(mainActivity, "RouteModel Saved", Toast.LENGTH_SHORT).show()
         viewModel.getIsRouteSaved().removeObservers(this)
     }
 

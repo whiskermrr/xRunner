@@ -18,7 +18,7 @@ import kotlin.collections.HashMap
 class ChallengeDataRepository(private val databaseReference: DatabaseReference) : ChallengeRepository {
 
     companion object {
-        const val DB_REFERENCE_IS_FINISHED = "isFinished"
+        const val DB_REFERENCE_IS_FINISHED = "finished"
         const val DB_REFERENCE_PROGRESS = "progress"
         const val DB_REFERENCE_FINISHED_DISTANCE = "finishedDistance"
         const val DB_REFERENCE_FINISHED_TIME = "finishedTime"

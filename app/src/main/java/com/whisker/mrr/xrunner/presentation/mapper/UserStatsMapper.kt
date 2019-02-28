@@ -4,32 +4,30 @@ import com.whisker.mrr.domain.common.DomainConstants.EXP_RATIO
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.domain.model.UserStatsEntity
-import com.whisker.mrr.xrunner.presentation.model.UserStats
 import io.reactivex.Single
 
 class UserStatsMapper {
 
     companion object {
 
-        fun transformUserStats(statsEntity: UserStatsEntity) : Single<UserStats> {
+        fun transformUserStats(stats: com.whisker.mrr.domain.model.UserStats) : Single<UserStats> {
             val userStats = UserStats()
-            userStats.averagePaceMin = statsEntity.averagePace.toInt()
-            userStats.averagePaceSec = (statsEntity.averagePace % 1 * 60).toInt()
+            userStats.averagePaceMin = stats.averagePace.toInt()
+            userStats.averagePaceSec = (stats.averagePace % 1 * 60).toInt()
 
-            userStats.totalHours = (statsEntity.totalTime / MILLISECONDS_PER_HOUR).toInt()
-            userStats.totalMinutes = ((statsEntity.totalTime % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
+            userStats.totalHours = (stats.totalTime / MILLISECONDS_PER_HOUR).toInt()
+            userStats.totalMinutes = ((stats.totalTime % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
 
-            userStats.totalKilometers = (statsEntity.totalDistance / MILLISECONDS_PER_SECOND).toInt()
-            userStats.totalMeters = (statsEntity.totalDistance - userStats.totalKilometers * MILLISECONDS_PER_SECOND).toInt()
+            userStats.totalKilometers = (stats.totalDistance / MILLISECONDS_PER_SECOND).toInt()
+            userStats.totalMeters = (stats.totalDistance - userStats.totalKilometers * MILLISECONDS_PER_SECOND).toInt()
 
             var level = 0
             var expOfNextLevel = 0
             var levelExp = EXP_RATIO
 
-            while(statsEntity.experience > levelExp) {
+            while(stats.experience > levelExp) {
                 level++
-                expOfNextLevel = statsEntity.experience - levelExp
+                expOfNextLevel = stats.experience - levelExp
                 levelExp += (level + 1) * EXP_RATIO
             }
 
@@ -38,7 +36,7 @@ class UserStatsMapper {
             userStats.expToNextLevel = if(level != 0) {
                 levelExp - expOfNextLevel
             } else {
-                EXP_RATIO - statsEntity.experience
+                EXP_RATIO - stats.experience
             }
 
 

@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
@@ -81,7 +82,7 @@ fun GoogleMap.calculateZoom(points: List<LatLng>, screenWidth: Int) {
             minLng = point.longitude
         }
     }
-
+/*
     val minLocation = Location("A")
     val maxLocation = Location("B")
 
@@ -89,12 +90,24 @@ fun GoogleMap.calculateZoom(points: List<LatLng>, screenWidth: Int) {
     minLocation.longitude = minLng
 
     maxLocation.latitude = maxLat
-    maxLocation.longitude = maxLng
+    maxLocation.longitude = maxLng*/
 
-    val centerOfRoute = this.calculateMiddleLatLng(minLocation, maxLocation)
+    val latLngBuilder = LatLngBounds.builder()
+
+    for(point in points) {
+        latLngBuilder.include(point)
+    }
+
+    val latLngBounds = latLngBuilder.build()
+
+    val padding = screenWidth / 100
+    val cameraUpdate = CameraUpdateFactory.newLatLngBounds(latLngBounds, padding)
+    animateCamera(cameraUpdate)
+
+    /*val centerOfRoute = this.calculateMiddleLatLng(minLocation, maxLocation)
     val longestDistance = minLocation.distanceTo(maxLocation)
     val zoom = this.getZoomBasedOnDistance(longestDistance, screenWidth)
-    animateCamera(CameraUpdateFactory.newLatLngZoom(centerOfRoute, zoom))
+    animateCamera(CameraUpdateFactory.newLatLngZoom(centerOfRoute, zoom))*/
 }
 
 fun GoogleMap.calculateMiddleLatLng(firstLocation: Location, secondLocation: Location) : LatLng {

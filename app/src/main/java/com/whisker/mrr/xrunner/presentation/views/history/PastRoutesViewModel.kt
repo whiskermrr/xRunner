@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.GetRouteListInteractor
 import com.whisker.mrr.domain.interactor.RemoveRouteInteractor
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
-import com.whisker.mrr.xrunner.presentation.model.RouteHolder
+import com.whisker.mrr.xrunner.presentation.model.RouteHolderModel
 import com.whisker.mrr.xrunner.utils.TAG
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ class PastRoutesViewModel
 @Inject constructor(private val getRouteListInteractor: GetRouteListInteractor, private val removeRouteInteractor: RemoveRouteInteractor)
 : ViewModel() {
 
-    private val routeList = MutableLiveData<List<RouteHolder>>()
+    private val routeList = MutableLiveData<List<RouteHolderModel>>()
     private val disposables = CompositeDisposable()
 
     init {

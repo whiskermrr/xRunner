@@ -7,8 +7,8 @@ import com.whisker.mrr.domain.common.DomainConstants.EEE_MMM_d_yyyy
 import com.whisker.mrr.domain.common.formatDate
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.xrunner.presentation.mapper.LatLngMapper
-import com.whisker.mrr.xrunner.presentation.model.Route
-import com.whisker.mrr.xrunner.presentation.model.RouteStats
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
+import com.whisker.mrr.xrunner.presentation.model.RouteStatsModel
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.RunnerTimer
 import io.reactivex.disposables.CompositeDisposable
@@ -23,13 +23,13 @@ class RunViewModel
                     private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor) : ViewModel() {
 
     private val lastKnownLocation = MutableLiveData<LatLng>()
-    private val routeLive = MutableLiveData<Route>()
+    private val routeLive = MutableLiveData<RouteModel>()
     private val isTracking = MutableLiveData<Boolean>()
-    private val finalRoute = MutableLiveData<Route>()
+    private val finalRoute = MutableLiveData<RouteModel>()
 
     private val disposables = CompositeDisposable()
     private val runnerTimer = RunnerTimer()
-    private val route: Route = Route()
+    private val route: RouteModel = RouteModel()
 
     fun onMapShown() {
         disposables.add(
@@ -89,7 +89,7 @@ class RunViewModel
         }
     }
 
-    private fun calculateStats(latLng: LatLng) : RouteStats {
+    private fun calculateStats(latLng: LatLng) : RouteStatsModel {
         return LocationUtils.calculateRouteStats(
                     routeStats = route.routeStats,
                     firstCoords = if(!route.waypoints.isEmpty()) {

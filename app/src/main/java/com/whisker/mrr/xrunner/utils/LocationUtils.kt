@@ -6,7 +6,7 @@ import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
-import com.whisker.mrr.xrunner.presentation.model.RouteStats
+import com.whisker.mrr.xrunner.presentation.model.RouteStatsModel
 
 class LocationUtils {
 
@@ -25,13 +25,13 @@ class LocationUtils {
             return firstLocation.distanceTo(secondLocation)
         }
 
-        private fun calculateDistance(routeStats: RouteStats, firstCoords: LatLng, secondCoords: LatLng) {
+        private fun calculateDistance(routeStats: RouteStatsModel, firstCoords: LatLng, secondCoords: LatLng) {
             routeStats.wgs84distance += calculateWGS84Distance(firstCoords, secondCoords)
             routeStats.kilometers = (routeStats.wgs84distance / MILLISECONDS_PER_SECOND).toInt()
             routeStats.meters = (routeStats.wgs84distance - routeStats.kilometers * MILLISECONDS_PER_SECOND).toInt()
         }
 
-        fun calculateRouteTime(routeStats: RouteStats, time: Long) : RouteStats {
+        fun calculateRouteTime(routeStats: RouteStatsModel, time: Long) : RouteStatsModel {
             routeStats.hours = (time / MILLISECONDS_PER_HOUR).toInt()
             routeStats.minutes = ((time % MILLISECONDS_PER_HOUR) / MILLISECONDS_PER_MINUTE).toInt()
             routeStats.seconds = ((time % MILLISECONDS_PER_MINUTE) / MILLISECONDS_PER_SECOND).toInt()
@@ -39,7 +39,7 @@ class LocationUtils {
             return routeStats
         }
 
-        fun calculateRouteAverageSpeedAndPeace(routeStats: RouteStats, time: Long) {
+        fun calculateRouteAverageSpeedAndPeace(routeStats: RouteStatsModel, time: Long) {
             val totalDistanceInMeters = routeStats.wgs84distance.toInt()
             val totalTimeInSeconds = (time / MILLISECONDS_PER_SECOND).toInt()
 
@@ -51,7 +51,7 @@ class LocationUtils {
             }
         }
 
-        fun calculateRouteStats(routeStats: RouteStats, firstCoords: LatLng, secondCoords: LatLng, time: Long) : RouteStats {
+        fun calculateRouteStats(routeStats: RouteStatsModel, firstCoords: LatLng, secondCoords: LatLng, time: Long) : RouteStatsModel {
             calculateDistance(routeStats, firstCoords, secondCoords)
             calculateRouteAverageSpeedAndPeace(routeStats, time)
 
