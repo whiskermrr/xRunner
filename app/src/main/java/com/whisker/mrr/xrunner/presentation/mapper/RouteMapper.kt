@@ -89,13 +89,13 @@ class RouteMapper {
         }
 
         fun listOfEntityHoldersToListOfRouteHolders(holders: List<RouteHolder>) : List<RouteHolderModel> {
-            val holders = mutableListOf<RouteHolderModel>()
+            val holdersModel = mutableListOf<RouteHolderModel>()
             for(entityHolder in holders) {
                 val holder = entityHolderToRouteHolder(entityHolder)
-                holders.add(holder)
+                holdersModel.add(holder)
             }
 
-            return holders
+            return holdersModel
         }
 
         private fun entityHolderToRouteHolder(holder: RouteHolder) : RouteHolderModel {

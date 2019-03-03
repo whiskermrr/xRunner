@@ -1,6 +1,6 @@
 package com.whisker.mrr.xrunner.presentation.model
 
-data class UserStats(
+data class UserStatsModel(
     var averagePaceMin: Int = 0,
     var averagePaceSec: Int = 0,
     var totalKilometers: Int = 0,
