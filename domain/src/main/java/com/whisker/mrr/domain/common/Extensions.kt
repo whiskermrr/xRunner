@@ -44,3 +44,7 @@ fun String.toLongDate(format: String) : Long? {
         null
     }
 }
+
+fun Date.daysBetween(date: Date) : Int {
+    return ((this.time - date.time) / (1000 * 60 * 60 * 24)).toInt() + 1
+}

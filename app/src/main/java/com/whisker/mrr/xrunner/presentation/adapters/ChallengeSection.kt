@@ -5,12 +5,14 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.whisker.mrr.domain.common.daysBetween
 import com.whisker.mrr.domain.model.ChallengeDifficulty
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.ChallengeModel
 import com.whisker.mrr.xrunner.utils.setTextAndVisibility
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
+import java.util.*
 
 class ChallengeSection(private val isActive: Boolean, private val challenges: List<ChallengeModel>) :
     StatelessSection(SectionParameters.builder()
@@ -46,13 +48,14 @@ class ChallengeSection(private val isActive: Boolean, private val challenges: Li
         private val tvChallengeSpeed: TextView = itemView.findViewById(R.id.tvChallengeSpeed)
         private val tvChallengeTime: TextView = itemView.findViewById(R.id.tvChallengeTime)
         private val progressChallenge: ProgressBar = itemView.findViewById(R.id.progressChallenge)
+        private val tvChallengeDeadline: TextView = itemView.findViewById(R.id.tvChallengeDeadline)
 
         fun bind(challenge: ChallengeModel) {
             val iconDrawable = when(challenge.difficulty) {
-                ChallengeDifficulty.EASY -> R.drawable.ic_bronze_challenge
-                ChallengeDifficulty.NORMAL -> R.drawable.ic_silver_challenge
-                ChallengeDifficulty.HARD -> R.drawable.ic_gold_challenge
-                else -> R.drawable.ic_bronze_challenge
+                ChallengeDifficulty.EASY -> R.drawable.ic_challenge_easy
+                ChallengeDifficulty.NORMAL -> R.drawable.ic_challenge_normal
+                ChallengeDifficulty.HARD -> R.drawable.ic_challenge_hard
+                else -> R.drawable.ic_challenge_easy
             }
 
             ivChallengeIcon.setImageDrawable(itemView.context.getDrawable(iconDrawable))
@@ -61,6 +64,15 @@ class ChallengeSection(private val isActive: Boolean, private val challenges: Li
             tvChallengeSpeed.setTextAndVisibility(challenge.speed)
             tvChallengeTime.setTextAndVisibility(challenge.time)
             progressChallenge.progress = challenge.progress
+            challenge.deadline?.let {
+                val days = Date(it).daysBetween(Date())
+                tvChallengeDeadline.text = if(days > 1) {
+                    itemView.context.getString(R.string.challenge_deadline_days_format, days)
+                } else {
+                    itemView.context.getString(R.string.challenge_deadline_day_format, days)
+                }
+                tvChallengeDeadline.visibility = View.VISIBLE
+            } ?: kotlin.run { tvChallengeDeadline.visibility = View.GONE }
         }
     }
 

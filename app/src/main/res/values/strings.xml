@@ -56,4 +56,6 @@
 	<string name="title_run">xRunner</string>
 	<string name="title_profile">Profile</string>
 	<string name="title_summary">Summary</string>
+	<string name="challenge_deadline_days_format">%d days left</string>
+	<string name="challenge_deadline_day_format">%d day left</string>
 </resources>
