@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<attr name="appToolbarColor" format="reference" />
+	<attr name="appBackground" format="reference" />
+	<attr name="app2ndBackground" format="reference" />
+	<attr name="colorGrey" format="reference" />
+</resources>

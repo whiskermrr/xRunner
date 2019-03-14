@@ -5,13 +5,14 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	app:cardCornerRadius="3dp"
+	app:cardBackgroundColor="@android:color/transparent"
 	android:elevation="5dp"
 	android:layout_height="wrap_content">
 	
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@color/colorPrimary">
+		android:background="@color/colorTransparentPrimary">
 		
 		<View
 			android:id="@+id/vChallengeBackground"
@@ -29,7 +30,6 @@
 			android:layout_width="80dp"
 			android:layout_height="80dp"
 			android:src="@drawable/ic_challenge_normal"
-			android:background="@color/colorPrimary"
 			android:contentDescription="@null"
 			app:layout_constraintDimensionRatio="1"
 			app:layout_constraintStart_toStartOf="parent"

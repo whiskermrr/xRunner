@@ -63,6 +63,7 @@
 			android:id="@+id/navBottom"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			app:itemIconSize="21dp"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:itemBackground="@color/colorPrimary"
 			app:itemIconTint="@drawable/bottom_nav_item_state"

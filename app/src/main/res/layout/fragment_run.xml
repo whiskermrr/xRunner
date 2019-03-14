@@ -9,7 +9,7 @@
 	
 	<View
 		android:id="@+id/vTopPanel"
-		android:background="#111111"
+		android:background="@color/colorPrimaryDark"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		app:layout_constraintHeight_percent=".63"
@@ -20,7 +20,7 @@
 	
 	<View
 		android:id="@+id/vBottomPanel"
-		android:background="#111111"
+		android:background="@color/colorPrimaryDark"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		app:layout_constraintHeight_percent=".25"

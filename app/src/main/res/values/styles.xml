@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
 		<item name="windowActionBar">true</item>
 		<item name="windowNoTitle">true</item>
+		<item name="appBackground">@color/colorAppBackground</item>
+		<item name="app2ndBackground">@color/color2ndBackground</item>
+		<item name="colorGrey">@color/colorTextSecondary</item>
+		<item name="appToolbarColor">@color/colorDarkPrimary</item>
     </style>
     
     <style name="ErrorText" parent="TextAppearance.AppCompat">
