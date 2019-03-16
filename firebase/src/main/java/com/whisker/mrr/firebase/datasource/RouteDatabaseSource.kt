@@ -13,12 +13,10 @@ import io.reactivex.Flowable
 import java.util.*
 import javax.inject.Inject
 
-class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: FirebaseDatabase) : RouteSource {
+class RouteDatabaseSource @Inject constructor(private val databaseReference: DatabaseReference) : RouteSource {
 
     override fun saveRoute(route: Route, userId : String) : Completable {
-        val databaseReference = firebaseDatabase.reference
-            .child(REFERENCE_USERS).child(userId)
-            .child(REFERENCE_ROUTES)
+        val databaseReference = getReference(userId)
             .child(Date(route.date).getFirstDayOfTheMonthInMillis().toString())
 
         route.routeId = databaseReference.push().key!!
@@ -36,10 +34,7 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
     }
 
     override fun getRoutesByUserId(userId: String) : Flowable<List<RouteHolder>> {
-        val databaseReference = firebaseDatabase.reference
-            .child(REFERENCE_USERS)
-            .child(userId)
-            .child(REFERENCE_ROUTES)
+        val databaseReference = getReference(userId)
 
         return Flowable.create({ emitter ->
             databaseReference.addValueEventListener(object: ValueEventListener {
@@ -69,10 +64,7 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
     }
 
     override fun removeRouteById(userId: String, routeId: String, date: Long): Completable {
-        val databaseReference = firebaseDatabase.reference
-            .child(REFERENCE_USERS)
-            .child(userId)
-            .child(REFERENCE_ROUTES)
+        val databaseReference = getReference(userId)
             .child(Date(date).getFirstDayOfTheMonthInMillis().toString())
             .child(routeId)
 
@@ -89,5 +81,12 @@ class RouteDatabaseSource @Inject constructor(private val firebaseDatabase: Fire
                 emitter.onError(it)
             }
         }
+    }
+
+    private fun getReference(userId: String) : DatabaseReference {
+        return databaseReference
+            .child(REFERENCE_USERS)
+            .child(userId)
+            .child(REFERENCE_ROUTES)
     }
 }

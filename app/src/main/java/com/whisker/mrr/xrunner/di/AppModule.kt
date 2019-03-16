@@ -81,8 +81,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseSource(firebaseDatabase: FirebaseDatabase) : RouteSource {
-        return RouteDatabaseSource(firebaseDatabase)
+    fun provideDatabaseSource(database: FirebaseDatabase) : RouteSource {
+        return RouteDatabaseSource(database.reference)
     }
 
     @Provides
