@@ -29,7 +29,7 @@ class RunViewModel
 
     private val disposables = CompositeDisposable()
     private val runnerTimer = RunnerTimer()
-    private val route: RouteModel = RouteModel()
+    private var route: RouteModel = RouteModel()
 
     fun onMapShown() {
         disposables.add(
@@ -46,6 +46,7 @@ class RunViewModel
     }
     
     fun startTracking() {
+        route = RouteModel()
         route.date = System.currentTimeMillis()
         runnerTimer.startTimer()
         isTracking.postValue(true)
