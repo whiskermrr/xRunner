@@ -112,7 +112,7 @@ class SummaryRunFragment : BaseMapFragment() {
     private fun initStatsView() {
         val stats = finalRoute.routeStats
         tvRouteTitle.text = finalRoute.name
-        tvSummaryDistance.text = getString(R.string.distance_format_2, stats.kilometers, stats.meters)
+        tvSummaryDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
         tvSummaryPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
         tvSummaryTime.text = if(stats.hours == 0) {
             getString(R.string.minutes_time_format, stats.minutes, stats.seconds)
