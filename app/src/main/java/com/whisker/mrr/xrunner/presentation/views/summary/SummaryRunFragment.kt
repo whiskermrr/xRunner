@@ -40,6 +40,10 @@ class SummaryRunFragment : BaseMapFragment() {
         viewModel.getIsRouteSaved().removeObservers(this)
     }
 
+    private val snapshotSavedObserver = Observer<Boolean> {
+        if(it) onSnapshotSaved()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null) {
@@ -70,12 +74,11 @@ class SummaryRunFragment : BaseMapFragment() {
         initStatsView()
 
         bSaveSnapshot.setOnClickListener {
-            bSaveSnapshot.isEnabled = false
-            routeProgressBar.visibility = View.VISIBLE
             takeSnapshot()
         }
 
         viewModel.getIsRouteSaved().observe(this, routeSavedObserver)
+        viewModel.getIsSnapshotSaved().observe(this, snapshotSavedObserver)
         viewModel.saveRoute(finalRoute)
     }
 
@@ -109,7 +112,7 @@ class SummaryRunFragment : BaseMapFragment() {
     private fun initStatsView() {
         val stats = finalRoute.routeStats
         tvRouteTitle.text = finalRoute.name
-        tvSummaryDistance.text = getString(R.string.distance_format_2, stats.kilometers, stats.meters)
+        tvSummaryDistance.text = getString(R.string.distance_format, stats.kilometers, stats.meters)
         tvSummaryPace.text = getString(R.string.pace_format, stats.paceMin, stats.paceSec)
         tvSummaryTime.text = if(stats.hours == 0) {
             getString(R.string.minutes_time_format, stats.minutes, stats.seconds)
@@ -126,15 +129,15 @@ class SummaryRunFragment : BaseMapFragment() {
                 mMap.snapshot { bitmap ->
                     subscriber.onSuccess(bitmap)
                 }})
-                .observeOn(Schedulers.io())
-                .flatMapCompletable {
-                    viewModel.saveSnapshot(it, finalRoute.date.toString())
-                }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    onSnapshotSaved()
+                .doOnSubscribe {
+                    bSaveSnapshot.isEnabled = false
+                    routeProgressBar.visibility = View.VISIBLE
                 }
+                .subscribe({
+                    viewModel.saveSnapshot(it, finalRoute.date.toString())
+                }, Throwable::printStackTrace)
         )
     }
 

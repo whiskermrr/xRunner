@@ -12,9 +12,7 @@ import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.utils.toByteArray
 import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SummaryRunViewModel
@@ -28,7 +26,8 @@ class SummaryRunViewModel
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
-    private val isRouteSaved =  MutableLiveData<Boolean> ()
+    private val isRouteSaved =  MutableLiveData<Boolean>()
+    private val isSnapshotSaved = MutableLiveData<Boolean>()
 
     fun saveRoute(route: RouteModel) {
         val routeEntity = RouteMapper.routeToEntityTransform(route)
@@ -67,11 +66,15 @@ class SummaryRunViewModel
                 }
     }
 
-    fun saveSnapshot(bitmap: Bitmap, fileName: String) : Completable {
-        return saveSnapshotInteractor.saveSnapshot(bitmap.toByteArray(Bitmap.CompressFormat.JPEG), fileName)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun saveSnapshot(bitmap: Bitmap, fileName: String) {
+        disposables.add(
+            saveSnapshotInteractor.saveSnapshot(bitmap.toByteArray(Bitmap.CompressFormat.JPEG), fileName)
+                .subscribe({
+                    isSnapshotSaved.postValue(true)
+                }, Throwable::printStackTrace)
+        )
     }
 
     fun getIsRouteSaved() = isRouteSaved
+    fun getIsSnapshotSaved() = isSnapshotSaved
 }
