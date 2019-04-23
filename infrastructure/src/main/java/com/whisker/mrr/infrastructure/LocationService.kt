@@ -1,6 +1,7 @@
 package com.whisker.mrr.infrastructure
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -82,6 +83,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         return true
     }
 
+    @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -89,6 +91,7 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun stopLocationUpdates() {
         locationManager.removeUpdates(this)
     }
