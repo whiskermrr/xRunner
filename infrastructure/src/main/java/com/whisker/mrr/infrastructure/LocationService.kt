@@ -16,7 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.domain.common.bus.RxBus
 
-class LocationService : Service(), Handler.Callback, LocationListener {
+class LocationService : Service(), LocationListener {
     companion object {
         const val HANDLER_THREAD_NAME: String = "LocationThread"
         const val CHANNEL_ID: String = "channel_01"
@@ -25,7 +25,6 @@ class LocationService : Service(), Handler.Callback, LocationListener {
     }
 
     private lateinit var looper: Looper
-    private lateinit var handler: Handler
     private lateinit var locationManager: LocationManager
     private val binder = LocationBinder()
 
@@ -59,16 +58,6 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         val thread = HandlerThread(HANDLER_THREAD_NAME)
         thread.start()
         looper = thread.looper
-        handler = Handler(looper, this)
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        handler.sendMessage(handler.obtainMessage(0, intent))
-        return START_STICKY
-    }
-
-    override fun handleMessage(msg: Message?): Boolean {
-        return true
     }
 
     @SuppressLint("MissingPermission")
