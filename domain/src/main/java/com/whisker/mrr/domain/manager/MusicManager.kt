@@ -8,9 +8,8 @@ interface MusicManager {
     fun setSongs(songs: List<Song>) : Completable
     fun nextSong() : Single<Song>
     fun previousSong() : Single<Song>
-    fun currentSong() : Single<Song>
-    fun start()
-    fun stop()
-    fun pause()
-    fun seekTo(time: Int)
+    fun play() : Completable
+    fun stop() : Completable
+    fun pause() : Completable
+    fun seekTo(time: Int) : Completable
 }

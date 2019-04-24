@@ -67,7 +67,9 @@ class LocationDataSource
     }
 
     override fun stopTracking() {
-        stopLocationService()
+        if(isServiceBounded) {
+            stopLocationService()
+        }
         RxBus.unsubscribe(this)
         locationSubject.onComplete()
     }
