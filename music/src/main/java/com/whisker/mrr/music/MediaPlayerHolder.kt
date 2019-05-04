@@ -4,12 +4,12 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import com.whisker.mrr.domain.model.Song
-import io.reactivex.Completable
 
 class MediaPlayerHolder(private val context: Context) {
 
 
     private var mediaPlayer: MediaPlayer? = null
+    private var listener: MediaPlayer.OnCompletionListener? = null
 
     fun initializeMediaPlayer() {
         if(mediaPlayer == null) {
@@ -19,35 +19,34 @@ class MediaPlayerHolder(private val context: Context) {
         }
     }
 
-    fun playSong(song: Song) : Completable {
-        return Completable.fromAction {
-            mediaPlayer?.apply {
-                reset()
-                setDataSource(context, Uri.parse(song.data))
-                setOnPreparedListener { player ->
-                    player.start()
-                }
-                prepareAsync()
+    fun setOnCompletionListener(listener: MediaPlayer.OnCompletionListener) {
+        this.listener = listener
+    }
+
+    fun playSong(song: Song) {
+        mediaPlayer?.apply {
+            reset()
+            setDataSource(context, Uri.parse(song.data))
+            setOnPreparedListener { player ->
+                player.start()
+            }
+            setOnCompletionListener(listener)
+            prepareAsync()
+        }
+    }
+
+    fun play() {
+        mediaPlayer?.apply {
+            if(!isPlaying) {
+                start()
             }
         }
     }
 
-    fun play() : Completable {
-        return Completable.fromAction {
-            mediaPlayer?.apply {
-                if(!isPlaying) {
-                    start()
-                }
-            }
-        }
-    }
-
-    fun pause() : Completable {
-        return Completable.fromAction {
-            mediaPlayer?.apply {
-                if(isPlaying) {
-                    pause()
-                }
+    fun pause() {
+        mediaPlayer?.apply {
+            if(isPlaying) {
+                pause()
             }
         }
     }

@@ -5,12 +5,12 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.domain.model.Song
-import io.reactivex.Completable
 
 class MusicService : Service() {
 
@@ -51,20 +51,24 @@ class MusicService : Service() {
         mediaPlayerHandler.initializeMediaPlayer()
     }
 
-    fun playSong(song: Song) : Completable {
-        return mediaPlayerHandler.playSong(song)
+    fun playSong(song: Song) {
+        mediaPlayerHandler.playSong(song)
     }
 
-    fun play() : Completable {
-        return mediaPlayerHandler.play()
+    fun play() {
+        mediaPlayerHandler.play()
     }
 
-    fun pause() : Completable {
-        return mediaPlayerHandler.pause()
+    fun pause() {
+        mediaPlayerHandler.pause()
     }
 
     fun seekTo(position: Int) {
         mediaPlayerHandler.seekTo(position)
+    }
+
+    fun setOnCompletionListener(listener: MediaPlayer.OnCompletionListener) {
+        mediaPlayerHandler.setOnCompletionListener(listener)
     }
 
     inner class MusicBinder : Binder() {

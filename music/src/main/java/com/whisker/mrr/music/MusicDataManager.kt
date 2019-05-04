@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.media.MediaPlayer
 import android.os.IBinder
 import com.whisker.mrr.domain.manager.MusicManager
 import com.whisker.mrr.domain.model.Song
@@ -12,7 +13,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
 
-class MusicDataManager(private val context: Context) : MusicManager {
+class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer.OnCompletionListener {
 
     private val currentSongSubject: PublishSubject<Song> = PublishSubject.create()
     private lateinit var musicService: MusicService
@@ -36,6 +37,7 @@ class MusicDataManager(private val context: Context) : MusicManager {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 val binder = service as MusicService.MusicBinder
                 musicService = binder.getService()
+                musicService.setOnCompletionListener(this@MusicDataManager)
                 musicService.play()
                 isServiceBounded = true
             }
@@ -49,30 +51,24 @@ class MusicDataManager(private val context: Context) : MusicManager {
     }
 
     override fun nextSong() : Completable {
-        if(currentPlayerPosition < songs.size - 1) {
-            currentPlayerPosition++
-        } else {
-            currentPlayerPosition = 0
+        return Completable.fromAction {
+            val song = getNextSong()
+            currentSongSubject.onNext(song)
+            musicService.playSong(song)
         }
-        val song = songs[currentPlayerPosition]
-        currentSongSubject.onNext(song)
-        return musicService.playSong(song)
     }
 
     override fun previousSong() : Completable {
-        if(currentPlayerPosition == 0) {
-            currentPlayerPosition = songs.size - 1
-        } else {
-            currentPlayerPosition++
+        return Completable.fromAction {
+            val song = getPreviousSong()
+            currentSongSubject.onNext(song)
+            musicService.playSong(song)
         }
-        val song = songs[currentPlayerPosition]
-        currentSongSubject.onNext(song)
-        return musicService.playSong(song)
     }
 
     override fun play() : Completable {
         when {
-            isServiceBounded -> return musicService.play()
+            isServiceBounded -> return Completable.fromAction { musicService.play() }
             ::songs.isInitialized -> initMusicService()
             else -> return Completable.error(UninitializedPropertyAccessException("Songs are not initialized."))
         }
@@ -88,7 +84,9 @@ class MusicDataManager(private val context: Context) : MusicManager {
     }
 
     override fun pause() : Completable {
-        return musicService.pause()
+        return Completable.fromAction {
+            musicService.pause()
+        }
     }
 
     override fun seekTo(time: Int) : Completable {
@@ -98,5 +96,29 @@ class MusicDataManager(private val context: Context) : MusicManager {
 
     override fun currentSong(): Flowable<Song> {
         return currentSongSubject.toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    private fun getNextSong() : Song {
+        if(currentPlayerPosition < songs.size - 1) {
+            currentPlayerPosition++
+        } else {
+            currentPlayerPosition = 0
+        }
+        return songs[currentPlayerPosition]
+    }
+
+    private fun getPreviousSong() : Song {
+        if(currentPlayerPosition == 0) {
+            currentPlayerPosition = songs.size - 1
+        } else {
+            currentPlayerPosition++
+        }
+        return songs[currentPlayerPosition]
+    }
+
+    override fun onCompletion(mp: MediaPlayer?) {
+        val song = getNextSong()
+        currentSongSubject.onNext(song)
+        musicService.playSong(song)
     }
 }
