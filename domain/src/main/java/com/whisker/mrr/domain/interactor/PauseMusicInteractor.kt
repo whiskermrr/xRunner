@@ -10,11 +10,11 @@ class PauseMusicInteractor(
     private val musicManager: MusicManager
 ) : CompletableUseCase(transformer) {
 
-    fun stopMusic() : Completable {
+    fun pauseMusic() : Completable {
         return completable()
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
-        return musicManager.stop()
+        return musicManager.pause()
     }
 }

@@ -26,7 +26,9 @@ class GetSongsInteractor(
     }
 
     override fun createSingle(data: Map<String, Any>?): Single<List<Song>> {
-        val albumID = data?.get(PARAM_ALBUM_ID) as Long
-        return musicRepository.getSongs(albumID)
+        val albumID = data?.get(PARAM_ALBUM_ID)
+        albumID?.let {
+            return musicRepository.getSongs(it as Long)
+        } ?: return musicRepository.getSongs()
     }
 }
