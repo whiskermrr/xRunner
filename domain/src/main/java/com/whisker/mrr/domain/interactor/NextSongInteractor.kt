@@ -1,21 +1,20 @@
 package com.whisker.mrr.domain.interactor
 
 import com.whisker.mrr.domain.manager.MusicManager
-import com.whisker.mrr.domain.model.Song
-import com.whisker.mrr.domain.usecase.SingleUseCase
-import io.reactivex.Single
-import io.reactivex.SingleTransformer
+import com.whisker.mrr.domain.usecase.CompletableUseCase
+import io.reactivex.Completable
+import io.reactivex.CompletableTransformer
 
 class NextSongInteractor(
-    transformer: SingleTransformer<Song, Song>,
+    transformer: CompletableTransformer,
     private val musicManager: MusicManager
-) : SingleUseCase<Song>(transformer) {
+) : CompletableUseCase(transformer) {
 
-    fun nextSong() : Single<Song> {
-        return single()
+    fun nextSong() : Completable {
+        return completable()
     }
 
-    override fun createSingle(data: Map<String, Any>?): Single<Song> {
+    override fun createCompletable(data: Map<String, Any>?): Completable {
         return musicManager.nextSong()
     }
 }

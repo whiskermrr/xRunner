@@ -27,7 +27,8 @@ class RunViewModel
                     private val nextSongInteractor: NextSongInteractor,
                     private val previousSongInteractor: PreviousSongInteractor,
                     private val pauseMusicInteractor: PauseMusicInteractor,
-                    private val stopMusicInteractor: StopMusicInteractor) : ViewModel() {
+                    private val stopMusicInteractor: StopMusicInteractor,
+                    private val getCurrentSongInteractor: GetCurrentSongInteractor) : ViewModel() {
 
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeLive = MutableLiveData<RouteModel>()
@@ -133,11 +134,21 @@ class RunViewModel
         )
     }
 
+    private fun subscribeToCurrentSong() {
+        disposables.add(
+            getCurrentSongInteractor.getCurrentSong()
+                .subscribe({ song ->
+                    currentSong.postValue(song.displayName)
+                }, Throwable::printStackTrace)
+        )
+    }
+
     fun startPlayingMusic() {
         disposables.add(
             playMusicInteractor.playMusic()
                 .subscribe({
                     isMusicPlaying.postValue(true)
+                    subscribeToCurrentSong()
                 }, Throwable::printStackTrace)
         )
     }
@@ -155,7 +166,7 @@ class RunViewModel
         disposables.add(
             nextSongInteractor.nextSong()
                 .subscribe({
-                    currentSong.postValue(it.displayName)
+                    isMusicPlaying.postValue(true)
                 }, Throwable::printStackTrace)
         )
     }
@@ -164,7 +175,7 @@ class RunViewModel
         disposables.add(
             previousSongInteractor.previousSong()
                 .subscribe({
-                    currentSong.postValue(it.displayName)
+                    isMusicPlaying.postValue(true)
                 }, Throwable::printStackTrace)
         )
     }

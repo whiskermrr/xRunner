@@ -10,7 +10,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.domain.model.Song
-import io.reactivex.Single
+import io.reactivex.Completable
 
 class MusicService : Service() {
 
@@ -51,24 +51,16 @@ class MusicService : Service() {
         mediaPlayerHandler.initializeMediaPlayer()
     }
 
-    fun setSongs(songs: List<Song>) {
-        mediaPlayerHandler.setPlaylist(songs)
+    fun playSong(song: Song) : Completable {
+        return mediaPlayerHandler.playSong(song)
     }
 
-    fun play() {
-        mediaPlayerHandler.play()
+    fun play() : Completable {
+        return mediaPlayerHandler.play()
     }
 
-    fun nextSong() : Single<Song> {
-        return mediaPlayerHandler.nextSong()
-    }
-
-    fun previousSong() : Single<Song> {
-        return mediaPlayerHandler.previousSong()
-    }
-
-    fun pause() {
-        mediaPlayerHandler.pause()
+    fun pause() : Completable {
+        return mediaPlayerHandler.pause()
     }
 
     fun seekTo(position: Int) {

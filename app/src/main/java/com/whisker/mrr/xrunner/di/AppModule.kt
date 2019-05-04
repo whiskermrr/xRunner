@@ -263,13 +263,13 @@ class AppModule {
     @Provides
     @Singleton
     fun provideNextSongInteractor(musicManager: MusicManager) : NextSongInteractor {
-        return NextSongInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicManager)
+        return NextSongInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
     }
 
     @Provides
     @Singleton
     fun providePreviousSongInteractor(musicManager: MusicManager) : PreviousSongInteractor {
-        return PreviousSongInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicManager)
+        return PreviousSongInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
     }
 
     @Provides
@@ -282,5 +282,11 @@ class AppModule {
     @Singleton
     fun provideStopMusicInteractor(musicManager: MusicManager) : StopMusicInteractor {
         return StopMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCurrentSongInteractor(musicManager: MusicManager) : GetCurrentSongInteractor {
+        return GetCurrentSongInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), musicManager)
     }
 }
