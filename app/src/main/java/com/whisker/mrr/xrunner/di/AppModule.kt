@@ -235,4 +235,52 @@ class AppModule {
     fun provideMusicManager(context: Context) : MusicManager {
         return MusicDataManager(context)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetSongsInteractor(musicRepository: MusicRepository) : GetSongsInteractor {
+        return GetSongsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAlbumsInteractor(musicRepository: MusicRepository) : GetAlbumsInteractor {
+        return GetAlbumsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetSongsInteractor(musicManager: MusicManager) : SetSongsInteractor {
+        return SetSongsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlayMusicInteractor(musicManager: MusicManager) : PlayMusicInteractor {
+        return PlayMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNextSongInteractor(musicManager: MusicManager) : NextSongInteractor {
+        return NextSongInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreviousSongInteractor(musicManager: MusicManager) : PreviousSongInteractor {
+        return PreviousSongInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePauseMusicInteractor(musicManager: MusicManager) : PauseMusicInteractor {
+        return PauseMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStopMusicInteractor(musicManager: MusicManager) : StopMusicInteractor {
+        return StopMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
 }
