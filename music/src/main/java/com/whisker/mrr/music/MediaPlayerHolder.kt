@@ -24,6 +24,7 @@ class MediaPlayerHolder(private val context: Context) {
     }
 
     fun playSong(song: Song) {
+        println(Thread.currentThread().name)
         mediaPlayer?.apply {
             reset()
             setDataSource(context, Uri.parse(song.data))
@@ -31,7 +32,7 @@ class MediaPlayerHolder(private val context: Context) {
                 player.start()
             }
             setOnCompletionListener(listener)
-            prepareAsync()
+            prepare()
         }
     }
 
