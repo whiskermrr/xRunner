@@ -28,9 +28,9 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
         var selectionArgs: Array<String>? = null
 
         albumID?.let { id ->
-            selection = MediaStore.Audio.Media.ALBUM_ID + "=?"
+            selection = MediaStore.Audio.Media.ALBUM_ID + "= ?"
             selectionArgs = arrayOf(id.toString())
-        } ?: kotlin.run {
+        } ?: run {
             selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " +
                     MediaStore.Audio.Media.DISPLAY_NAME + " LIKE '%.mp3'"
         }

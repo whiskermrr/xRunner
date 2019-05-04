@@ -20,7 +20,7 @@ class GetSongsInteractor(
             val data = HashMap<String, Any>()
             data[PARAM_ALBUM_ID] = id
             return single(data)
-        } ?: kotlin.run {
+        } ?: run {
             return single()
         }
     }

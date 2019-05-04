@@ -10,11 +10,14 @@ import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.firebase.datasource.*
 import com.whisker.mrr.firebase.repository.*
 import com.whisker.mrr.domain.interactor.*
+import com.whisker.mrr.domain.manager.MusicManager
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.infrastructure.source.LocationDataSource
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
+import com.whisker.mrr.music.MusicDataManager
+import com.whisker.mrr.music.repository.MusicDataRepository
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -219,5 +222,17 @@ class AppModule {
     @Singleton
     fun provideUpdateUserStatsInteractor(authSource: AuthSource, userRepository: UserRepository) : UpdateUserStatsInteractor {
         return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMusicRepository(context: Context) : MusicRepository {
+        return MusicDataRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMusicManager(context: Context) : MusicManager {
+        return MusicDataManager(context)
     }
 }

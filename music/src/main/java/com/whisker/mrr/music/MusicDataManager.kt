@@ -14,24 +14,25 @@ class MusicDataManager(private val context: Context) : MusicManager {
 
     private lateinit var musicService: MusicService
     private var isServiceBounded = false
+    private lateinit var songs: List<Song>
 
     private lateinit var serviceConnection: ServiceConnection
 
     override fun setSongs(songs: List<Song>) : Completable {
+        this.songs = songs
         if(isServiceBounded) {
             musicService.setSongs(songs)
-        } else {
-            initMusicService(songs)
         }
         return Completable.complete()
     }
 
-    private fun initMusicService(songs: List<Song>) {
+    private fun initMusicService() {
         serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 val binder = service as MusicService.MusicBinder
                 musicService = binder.getService()
                 musicService.setSongs(songs)
+                musicService.play()
                 isServiceBounded = true
             }
             override fun onServiceDisconnected(name: ComponentName?) {
@@ -52,7 +53,11 @@ class MusicDataManager(private val context: Context) : MusicManager {
     }
 
     override fun play() : Completable {
-        musicService.play()
+        when {
+            isServiceBounded -> musicService.play()
+            ::songs.isInitialized -> initMusicService()
+            else -> return Completable.error(UninitializedPropertyAccessException("Songs are not initialized."))
+        }
         return Completable.complete()
     }
 
