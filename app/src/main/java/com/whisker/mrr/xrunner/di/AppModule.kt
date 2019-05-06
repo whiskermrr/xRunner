@@ -281,7 +281,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideStopMusicInteractor(musicManager: MusicManager) : StopMusicInteractor {
-        return StopMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+        return StopMusicInteractor(musicManager)
     }
 
     @Provides

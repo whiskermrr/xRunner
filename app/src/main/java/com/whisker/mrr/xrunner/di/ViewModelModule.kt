@@ -7,6 +7,7 @@ import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeViewModel
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.views.login.LoginViewModel
 import com.whisker.mrr.xrunner.presentation.views.map.RunViewModel
+import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerViewModel
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileViewModel
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunViewModel
 import dagger.Binds
@@ -53,4 +54,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddChallengeViewModel::class)
     internal abstract fun bindAddChallengeViewModel(addChallengeViewModel: AddChallengeViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MusicPlayerViewModel::class)
+    internal abstract fun bindMusicPlayerViewModel(musicPlayerViewModel: MusicPlayerViewModel) : ViewModel
 }

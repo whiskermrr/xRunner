@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
+import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,7 +22,6 @@ class RunFragment : BaseMapFragment() {
     private lateinit var viewModel: RunViewModel
     private var isTracking: Boolean = false
     private var isMapShown: Boolean = false
-    private var isMusicPlaying: Boolean = false
 
     private val lastLocationObserver = Observer<LatLng> { lastLocation ->
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 18f))
@@ -61,19 +61,6 @@ class RunFragment : BaseMapFragment() {
         mainActivity.switchContent(fragment)
     }
 
-    private val currentSongObserver = Observer<String> {
-        tvSongName.text = it
-    }
-
-    private val isMusicPlayingObserver = Observer<Boolean> {
-        isMusicPlaying = it
-        if(isMusicPlaying) {
-            ibPlayPauseMusic.background = resources.getDrawable(R.drawable.ic_stop_music)
-        } else {
-            ibPlayPauseMusic.setBackgroundResource(R.drawable.ic_play)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_run, container, false)
     }
@@ -91,8 +78,6 @@ class RunFragment : BaseMapFragment() {
         viewModel.getIsTracking().observe(this, isTrackingObserver)
         viewModel.getTime().observe(this, runTimeObserver)
         viewModel.getFinalRoute().observe(this, onRunFinishedObserver)
-        viewModel.getCurrentSong().observe(this, currentSongObserver)
-        viewModel.getIsMusicPlaying().observe(this, isMusicPlayingObserver)
 
         bStartRun.setOnClickListener { onStartClick() }
 
@@ -106,18 +91,9 @@ class RunFragment : BaseMapFragment() {
 
         bDismiss.setOnClickListener { hideMap() }
 
-        ibPlayPauseMusic.setOnClickListener {
-            if(isMusicPlaying) {
-                viewModel.pausePlayingMusic()
-            } else {
-                viewModel.startPlayingMusic()
-            }
-        }
-
-        ibNextSong.setOnClickListener { viewModel.nextSong() }
-        ibPreviousSong.setOnClickListener { viewModel.previousSong() }
-
-        viewModel.getMusic()
+        childFragmentManager.beginTransaction()
+            .add(R.id.musicPlayerContainer, MusicPlayerFragment())
+            .commit()
     }
 
     override fun onMapCreated() {

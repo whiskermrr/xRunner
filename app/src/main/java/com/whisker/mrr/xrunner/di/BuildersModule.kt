@@ -7,6 +7,7 @@ import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
+import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import dagger.Module
@@ -41,4 +42,7 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun bindAddChallengeDialogFragment() : AddChallengeDialogFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindMusicPlayerFragment() : MusicPlayerFragment
 }

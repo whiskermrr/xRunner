@@ -9,7 +9,7 @@ interface MusicManager {
     fun nextSong() : Completable
     fun previousSong() : Completable
     fun play() : Completable
-    fun stop() : Completable
+    fun stop()
     fun pause() : Completable
     fun seekTo(time: Int) : Completable
     fun currentSong() : Flowable<Song>

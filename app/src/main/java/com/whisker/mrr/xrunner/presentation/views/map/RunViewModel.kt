@@ -16,26 +16,18 @@ import java.util.*
 import javax.inject.Inject
 
 class RunViewModel
-@Inject constructor(private val startTrackingInteractor: StartTrackingInteractor,
-                    private val pauseTrackingInteractor: PauseTrackingInteractor,
-                    private val resumeTrackingInteractor: ResumeTrackingInteractor,
-                    private val stopTrackingInteractor: StopTrackingInteractor,
-                    private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor,
-                    private val getSongsInteractor: GetSongsInteractor,
-                    private val setSongsInteractor: SetSongsInteractor,
-                    private val playMusicInteractor: PlayMusicInteractor,
-                    private val nextSongInteractor: NextSongInteractor,
-                    private val previousSongInteractor: PreviousSongInteractor,
-                    private val pauseMusicInteractor: PauseMusicInteractor,
-                    private val stopMusicInteractor: StopMusicInteractor,
-                    private val getCurrentSongInteractor: GetCurrentSongInteractor) : ViewModel() {
+@Inject constructor(
+    private val startTrackingInteractor: StartTrackingInteractor,
+    private val pauseTrackingInteractor: PauseTrackingInteractor,
+    private val resumeTrackingInteractor: ResumeTrackingInteractor,
+    private val stopTrackingInteractor: StopTrackingInteractor,
+    private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor
+) : ViewModel() {
 
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeLive = MutableLiveData<RouteModel>()
     private val isTracking = MutableLiveData<Boolean>()
     private val finalRoute = MutableLiveData<RouteModel>()
-    private val currentSong = MutableLiveData<String>()
-    private val isMusicPlaying = MutableLiveData<Boolean>()
 
     private val disposables = CompositeDisposable()
     private val runnerTimer = RunnerTimer()
@@ -119,83 +111,11 @@ class RunViewModel
         routeLive.postValue(route)
     }
 
-    fun getMusic() {
-        disposables.add(
-            getSongsInteractor.getSongs()
-                .flatMapCompletable {
-                    if(it.isNotEmpty()) {
-                        currentSong.postValue(it[0].displayName)
-                    }
-                    setSongsInteractor.setSongs(it)
-                }
-                .subscribe({
-                    isMusicPlaying.postValue(false)
-                }, Throwable::printStackTrace)
-        )
-    }
-
-    private fun subscribeToCurrentSong() {
-        disposables.add(
-            getCurrentSongInteractor.getCurrentSong()
-                .subscribe({ song ->
-                    currentSong.postValue(song.displayName)
-                }, Throwable::printStackTrace)
-        )
-    }
-
-    fun startPlayingMusic() {
-        disposables.add(
-            playMusicInteractor.playMusic()
-                .subscribe({
-                    isMusicPlaying.postValue(true)
-                    subscribeToCurrentSong()
-                }, Throwable::printStackTrace)
-        )
-    }
-
-    fun pausePlayingMusic() {
-        disposables.add(
-            pauseMusicInteractor.pauseMusic()
-                .subscribe({
-                    isMusicPlaying.postValue(false)
-                }, Throwable::printStackTrace)
-        )
-    }
-
-    fun nextSong() {
-        disposables.add(
-            nextSongInteractor.nextSong()
-                .subscribe({
-                    isMusicPlaying.postValue(true)
-                }, Throwable::printStackTrace)
-        )
-    }
-
-    fun previousSong() {
-        disposables.add(
-            previousSongInteractor.previousSong()
-                .subscribe({
-                    isMusicPlaying.postValue(true)
-                }, Throwable::printStackTrace)
-        )
-    }
-
-    fun stopMusic() {
-        disposables.add(
-            stopMusicInteractor.stopMusic()
-                .subscribe({
-                    isMusicPlaying.postValue(false)
-                }, Throwable::printStackTrace)
-        )
-    }
-
     fun getLastKnownLocation() = lastKnownLocation
     fun getIsTracking() = isTracking
     fun getTime() = runnerTimer.getTime()
     fun getFinalRoute() = finalRoute
     fun getRoute() = routeLive
-    fun getCurrentSong() = currentSong
-    fun getIsMusicPlaying() = isMusicPlaying
 
     override fun onCleared() {
         super.onCleared()

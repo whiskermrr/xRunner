@@ -80,12 +80,10 @@ class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer
         }
     }
 
-    override fun stop() : Completable {
-        return Completable.fromAction {
-            if(isServiceBounded) {
-                context.unbindService(serviceConnection)
-                isServiceBounded = false
-            }
+    override fun stop() {
+        if(isServiceBounded) {
+            context.unbindService(serviceConnection)
+            isServiceBounded = false
         }
     }
 
