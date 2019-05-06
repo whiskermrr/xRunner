@@ -1,6 +1,7 @@
 package com.whisker.mrr.infrastructure
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -15,10 +16,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.domain.common.bus.RxBus
 
-class LocationService : Service(), Handler.Callback, LocationListener {
+class LocationService : Service(), LocationListener {
     companion object {
-        const val ACTION_START_TRACKING: String = "com.whisker.mrr.action.START_TRACKING"
-        const val ACTION_STOP_TRACKING: String = "com.whisker.mrr.action.STOP_TRACKING"
         const val HANDLER_THREAD_NAME: String = "LocationThread"
         const val CHANNEL_ID: String = "channel_01"
         const val NOTIFICATION_TITLE: String = "Readable title"
@@ -26,11 +25,11 @@ class LocationService : Service(), Handler.Callback, LocationListener {
     }
 
     private lateinit var looper: Looper
-    private lateinit var handler: Handler
     private lateinit var locationManager: LocationManager
+    private val binder = LocationBinder()
 
     override fun onBind(p0: Intent?): IBinder? {
-        return null
+        return binder
     }
 
     override fun onCreate() {
@@ -48,9 +47,9 @@ class LocationService : Service(), Handler.Callback, LocationListener {
             val notification = NotificationCompat.Builder(this,
                 CHANNEL_ID
             )
-                .setContentTitle("")
-                .setContentText("")
-                .build()
+            .setContentTitle("")
+            .setContentText("")
+            .build()
 
             startForeground(1, notification)
         }
@@ -59,37 +58,18 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         val thread = HandlerThread(HANDLER_THREAD_NAME)
         thread.start()
         looper = thread.looper
-        handler = Handler(looper, this)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        handler.sendMessage(handler.obtainMessage(0, intent))
-        return START_STICKY
-    }
-
-    override fun handleMessage(msg: Message?): Boolean {
-        if(msg != null) {
-            val intent: Intent? = msg.obj as Intent
-            if(intent != null) {
-                if(intent.action == ACTION_START_TRACKING) {
-                    startLocationUpdates()
-                } else if(intent.action == ACTION_STOP_TRACKING) {
-                    stopLocationUpdates()
-                }
-            }
-        }
-
-        return true
-    }
-
-    private fun startLocationUpdates() {
+    @SuppressLint("MissingPermission")
+    fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 2f, this, looper)
         }
     }
 
-    private fun stopLocationUpdates() {
+    @SuppressLint("MissingPermission")
+    fun stopLocationUpdates() {
         locationManager.removeUpdates(this)
     }
 
@@ -109,5 +89,9 @@ class LocationService : Service(), Handler.Callback, LocationListener {
         super.onDestroy()
         stopLocationUpdates()
         looper.quit()
+    }
+
+    inner class LocationBinder : Binder() {
+        fun getService() : LocationService = this@LocationService
     }
 }

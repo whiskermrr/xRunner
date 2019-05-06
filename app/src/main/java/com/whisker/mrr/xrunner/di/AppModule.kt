@@ -10,11 +10,14 @@ import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.firebase.datasource.*
 import com.whisker.mrr.firebase.repository.*
 import com.whisker.mrr.domain.interactor.*
+import com.whisker.mrr.domain.manager.MusicManager
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.infrastructure.source.LocationDataSource
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
+import com.whisker.mrr.music.MusicDataManager
+import com.whisker.mrr.music.repository.MusicDataRepository
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -219,5 +222,71 @@ class AppModule {
     @Singleton
     fun provideUpdateUserStatsInteractor(authSource: AuthSource, userRepository: UserRepository) : UpdateUserStatsInteractor {
         return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, userRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMusicRepository(context: Context) : MusicRepository {
+        return MusicDataRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMusicManager(context: Context) : MusicManager {
+        return MusicDataManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSongsInteractor(musicRepository: MusicRepository) : GetSongsInteractor {
+        return GetSongsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAlbumsInteractor(musicRepository: MusicRepository) : GetAlbumsInteractor {
+        return GetAlbumsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetSongsInteractor(musicManager: MusicManager) : SetSongsInteractor {
+        return SetSongsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlayMusicInteractor(musicManager: MusicManager) : PlayMusicInteractor {
+        return PlayMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNextSongInteractor(musicManager: MusicManager) : NextSongInteractor {
+        return NextSongInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreviousSongInteractor(musicManager: MusicManager) : PreviousSongInteractor {
+        return PreviousSongInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePauseMusicInteractor(musicManager: MusicManager) : PauseMusicInteractor {
+        return PauseMusicInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStopMusicInteractor(musicManager: MusicManager) : StopMusicInteractor {
+        return StopMusicInteractor(musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCurrentSongInteractor(musicManager: MusicManager) : GetCurrentSongInteractor {
+        return GetCurrentSongInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), musicManager)
     }
 }

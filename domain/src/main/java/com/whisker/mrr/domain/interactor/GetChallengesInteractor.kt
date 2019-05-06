@@ -6,6 +6,7 @@ import com.whisker.mrr.domain.source.AuthSource
 import com.whisker.mrr.domain.usecase.FlowableUseCase
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
+import java.lang.IllegalArgumentException
 
 class GetChallengesInteractor(
     transformer: FlowableTransformer<List<Challenge>, List<Challenge>>,
@@ -36,5 +37,6 @@ class GetChallengesInteractor(
                     }
                 }
         }
+        return Flowable.error(Throwable(IllegalArgumentException("Argument @active (Boolean) must be provided.")))
     }
 }

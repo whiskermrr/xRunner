@@ -16,11 +16,13 @@ import java.util.*
 import javax.inject.Inject
 
 class RunViewModel
-@Inject constructor(private val startTrackingInteractor: StartTrackingInteractor,
-                    private val pauseTrackingInteractor: PauseTrackingInteractor,
-                    private val resumeTrackingInteractor: ResumeTrackingInteractor,
-                    private val stopTrackingInteractor: StopTrackingInteractor,
-                    private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor) : ViewModel() {
+@Inject constructor(
+    private val startTrackingInteractor: StartTrackingInteractor,
+    private val pauseTrackingInteractor: PauseTrackingInteractor,
+    private val resumeTrackingInteractor: ResumeTrackingInteractor,
+    private val stopTrackingInteractor: StopTrackingInteractor,
+    private val getLastKnownLocationInteractor: GetLastKnownLocationInteractor
+) : ViewModel() {
 
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeLive = MutableLiveData<RouteModel>()

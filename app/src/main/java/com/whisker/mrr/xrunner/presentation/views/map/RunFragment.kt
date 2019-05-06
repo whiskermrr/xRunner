@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
+import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import kotlinx.android.synthetic.main.activity_main.*
@@ -89,6 +90,10 @@ class RunFragment : BaseMapFragment() {
         bLocation.setOnClickListener { showMap() }
 
         bDismiss.setOnClickListener { hideMap() }
+
+        childFragmentManager.beginTransaction()
+            .add(R.id.musicPlayerContainer, MusicPlayerFragment())
+            .commit()
     }
 
     override fun onMapCreated() {
@@ -98,12 +103,14 @@ class RunFragment : BaseMapFragment() {
 
     private fun showMap() {
         isMapShown = true
+        musicPlayerContainer.visibility = View.GONE
         mapView.visibility = View.VISIBLE
         bDismiss.visibility = View.VISIBLE
     }
 
     private fun hideMap() {
         isMapShown = false
+        musicPlayerContainer.visibility = View.VISIBLE
         mapView.visibility = View.GONE
         bDismiss.visibility = View.GONE
     }

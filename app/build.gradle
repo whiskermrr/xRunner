@@ -39,6 +39,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':firebase')
     implementation project(':infrastructure')
+    implementation project(':music')
 
     def presentationDependencies = rootProject.ext.presentationDependencies
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
