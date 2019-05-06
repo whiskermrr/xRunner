@@ -9,6 +9,7 @@ import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.xrunner.presentation.mapper.LatLngMapper
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.presentation.model.RouteStatsModel
+import com.whisker.mrr.xrunner.presentation.model.TrackingState
 import com.whisker.mrr.xrunner.utils.LocationUtils
 import com.whisker.mrr.xrunner.utils.RunnerTimer
 import io.reactivex.disposables.CompositeDisposable
@@ -26,7 +27,7 @@ class RunViewModel
 
     private val lastKnownLocation = MutableLiveData<LatLng>()
     private val routeLive = MutableLiveData<RouteModel>()
-    private val isTracking = MutableLiveData<Boolean>()
+    private val trackingState = MutableLiveData<TrackingState>()
     private val finalRoute = MutableLiveData<RouteModel>()
 
     private val disposables = CompositeDisposable()
@@ -51,7 +52,7 @@ class RunViewModel
         route = RouteModel()
         route.date = System.currentTimeMillis()
         runnerTimer.startTimer()
-        isTracking.postValue(true)
+        trackingState.postValue(TrackingState.START)
         routeLive.postValue(route)
 
         disposables.add(
@@ -72,18 +73,28 @@ class RunViewModel
     }
 
     fun pauseTracking() {
-        runnerTimer.pause()
-        pauseTrackingInteractor.execute()
+        disposables.add(
+            pauseTrackingInteractor.pauseTracking()
+                .subscribe({
+                    runnerTimer.pause()
+                    trackingState.postValue(TrackingState.PAUSE)
+                }, Throwable::printStackTrace)
+        )
     }
 
     fun resumeTracking() {
-        runnerTimer.resume()
-        resumeTrackingInteractor.execute()
+        disposables.add(
+            resumeTrackingInteractor.resumeTracking()
+                .subscribe({
+                    runnerTimer.resume()
+                    trackingState.postValue(TrackingState.RESUME)
+                }, Throwable::printStackTrace)
+        )
     }
 
     fun stopTracking() {
         runnerTimer.stop()
-        isTracking.postValue(false)
+        trackingState.postValue(TrackingState.STOP)
         stopTrackingInteractor.execute()
         if(route.routeStats.wgs84distance > 0) {
             calculateFinalStats()
@@ -95,7 +106,7 @@ class RunViewModel
     private fun calculateStats(latLng: LatLng) : RouteStatsModel {
         return LocationUtils.calculateRouteStats(
                     routeStats = route.routeStats,
-                    firstCoords = if(!route.waypoints.isEmpty()) {
+                    firstCoords = if(route.waypoints.isNotEmpty()) {
                         route.waypoints.last()
                     } else {
                         latLng
@@ -112,7 +123,7 @@ class RunViewModel
     }
 
     fun getLastKnownLocation() = lastKnownLocation
-    fun getIsTracking() = isTracking
+    fun getTrackingState() = trackingState
     fun getTime() = runnerTimer.getTime()
     fun getFinalRoute() = finalRoute
     fun getRoute() = routeLive
