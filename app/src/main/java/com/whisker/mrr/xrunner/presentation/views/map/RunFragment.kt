@@ -103,12 +103,14 @@ class RunFragment : BaseMapFragment() {
 
     private fun showMap() {
         isMapShown = true
+        musicPlayerContainer.visibility = View.GONE
         mapView.visibility = View.VISIBLE
         bDismiss.visibility = View.VISIBLE
     }
 
     private fun hideMap() {
         isMapShown = false
+        musicPlayerContainer.visibility = View.VISIBLE
         mapView.visibility = View.GONE
         bDismiss.visibility = View.GONE
     }
