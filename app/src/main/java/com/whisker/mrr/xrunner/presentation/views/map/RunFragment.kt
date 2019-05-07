@@ -10,6 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
+import com.whisker.mrr.xrunner.presentation.model.TrackingState
 import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_run.*
 class RunFragment : BaseMapFragment() {
 
     private lateinit var viewModel: RunViewModel
-    private var isTracking: Boolean = false
     private var isMapShown: Boolean = false
 
     private val lastLocationObserver = Observer<LatLng> { lastLocation ->
@@ -40,12 +40,19 @@ class RunFragment : BaseMapFragment() {
         }
     }
 
-    private val isTrackingObserver = Observer<Boolean> {
-        isTracking = it
-        if(isTracking && mainActivity.isBottomNavEnabled) {
+    private val trackingStateObserver = Observer<TrackingState> { state ->
+        if((state == TrackingState.RESUME || state == TrackingState.START) && mainActivity.isBottomNavEnabled) {
             mainActivity.disableBottomNavigation()
-        } else if(!isTracking && !mainActivity.isBottomNavEnabled) {
+        } else if((state == TrackingState.STOP || state == TrackingState.PAUSE) && !mainActivity.isBottomNavEnabled) {
             mainActivity.enableBottomNavigation()
+        }
+        state?.let {
+            when(it) {
+                TrackingState.START -> onStartTracking()
+                TrackingState.PAUSE -> onPauseTracking()
+                TrackingState.STOP -> onStopTracking()
+                TrackingState.RESUME -> onResumeTracking()
+            }
         }
     }
 
@@ -75,17 +82,17 @@ class RunFragment : BaseMapFragment() {
         mapView.getMapAsync(this)
 
         viewModel.getRoute().observe(this, routeObserver)
-        viewModel.getIsTracking().observe(this, isTrackingObserver)
+        viewModel.getTrackingState().observe(this, trackingStateObserver)
         viewModel.getTime().observe(this, runTimeObserver)
         viewModel.getFinalRoute().observe(this, onRunFinishedObserver)
 
-        bStartRun.setOnClickListener { onStartClick() }
+        bStartRun.setOnClickListener { viewModel.startTracking() }
 
-        bPauseRun.setOnClickListener { onPauseClick() }
+        bPauseRun.setOnClickListener { viewModel.pauseTracking() }
 
-        bResumeRun.setOnClickListener { onResumeClick() }
+        bResumeRun.setOnClickListener { viewModel.resumeTracking() }
 
-        bStopRun.setOnClickListener { onStopClick() }
+        bStopRun.setOnClickListener { viewModel.stopTracking() }
 
         bLocation.setOnClickListener { showMap() }
 
@@ -115,28 +122,24 @@ class RunFragment : BaseMapFragment() {
         bDismiss.visibility = View.GONE
     }
 
-    private fun onStartClick() {
-        viewModel.startTracking()
+    private fun onStartTracking() {
         bStartRun.visibility = View.GONE
         bPauseRun.visibility = View.VISIBLE
     }
 
-    private fun onPauseClick() {
-        viewModel.pauseTracking()
+    private fun onPauseTracking() {
         bPauseRun.visibility = View.GONE
         bStopRun.visibility = View.VISIBLE
         bResumeRun.visibility = View.VISIBLE
     }
 
-    private fun onResumeClick() {
-        viewModel.resumeTracking()
+    private fun onResumeTracking() {
         bStopRun.visibility = View.GONE
         bResumeRun.visibility = View.GONE
         bPauseRun.visibility = View.VISIBLE
     }
 
-    private fun onStopClick() {
-        viewModel.stopTracking()
+    private fun onStopTracking() {
         bStopRun.visibility = View.GONE
         bResumeRun.visibility = View.GONE
         bStartRun.visibility = View.VISIBLE

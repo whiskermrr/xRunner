@@ -149,13 +149,13 @@ class AppModule {
     @Provides
     @Singleton
     fun providePauseTrackingInteractor(locationSource: LocationSource) : PauseTrackingInteractor {
-        return PauseTrackingInteractor(locationSource)
+        return PauseTrackingInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), locationSource)
     }
 
     @Provides
     @Singleton
     fun provideResumeTrackingInteractor(locationSource: LocationSource) : ResumeTrackingInteractor {
-        return ResumeTrackingInteractor(locationSource)
+        return ResumeTrackingInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), locationSource)
     }
 
     @Provides

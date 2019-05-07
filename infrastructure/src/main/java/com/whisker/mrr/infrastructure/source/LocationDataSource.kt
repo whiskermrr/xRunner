@@ -14,6 +14,7 @@ import com.whisker.mrr.domain.source.LocationSource
 import com.whisker.mrr.infrastructure.LocationEvent
 import com.whisker.mrr.infrastructure.LocationService
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.functions.Consumer
@@ -54,15 +55,19 @@ class LocationDataSource
         return locationSubject.toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun pauseTracking() {
-        if(isServiceBounded) {
-            locationService.stopLocationUpdates()
+    override fun pauseTracking() : Completable {
+        return Completable.fromAction {
+            if(isServiceBounded) {
+                locationService.stopLocationUpdates()
+            }
         }
     }
 
-    override fun resumeTracking() {
-        if(isServiceBounded) {
-            locationService.startLocationUpdates()
+    override fun resumeTracking() : Completable {
+        return Completable.fromAction {
+            if(isServiceBounded) {
+                locationService.startLocationUpdates()
+            }
         }
     }
 
