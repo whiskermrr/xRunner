@@ -7,9 +7,9 @@ import io.reactivex.Single
 
 interface ChallengeRepository {
 
-    fun saveChallenge(userId: String, challenge: Challenge) : Completable
-    fun updateChallenges(userId: String, challenges: List<Challenge>) : Completable
-    fun getChallenges(userId: String) : Flowable<List<Challenge>>
-    fun getActiveChallenges(userId: String) : Flowable<List<Challenge>>
-    fun getActiveChallengesSingle(userId: String) : Single<List<Challenge>>
+    fun saveChallenge(challenge: Challenge) : Completable
+    fun updateChallenges(challenges: List<Challenge>) : Completable
+    fun getChallenges() : Flowable<List<Challenge>>
+    fun getActiveChallenges() : Flowable<List<Challenge>>
+    fun getActiveChallengesSingle() : Single<List<Challenge>>
 }

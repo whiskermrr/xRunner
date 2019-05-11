@@ -47,7 +47,7 @@ class PastRoutesFragment : BaseFragment() {
                     routesAdapter.notifyDataSetChanged()
                 }
 
-                viewModel.removeRoute(route.routeId, route.date)
+                viewModel.removeRoute(route.routeId)
             }
         }
 

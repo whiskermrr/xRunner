@@ -7,8 +7,10 @@ import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.lang.IllegalArgumentException
 
-class SaveSnapshotInteractor(transformer: CompletableTransformer, private val routeRepository: RouteRepository)
-: CompletableUseCase(transformer){
+class SaveSnapshotInteractor(
+    transformer: CompletableTransformer,
+    private val routeRepository: RouteRepository
+) : CompletableUseCase(transformer){
 
     companion object {
         private const val PARAM_BITMAP = "param_bitmap"

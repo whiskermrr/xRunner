@@ -4,5 +4,5 @@ data class RouteHolder(
     var month: Long = 0L,
     var totalDistance: Float = 0f,
     var totalTime: Long = 0L,
-    var routes: MutableList<Route> = mutableListOf()
+    var routes: List<Route> = listOf()
     )

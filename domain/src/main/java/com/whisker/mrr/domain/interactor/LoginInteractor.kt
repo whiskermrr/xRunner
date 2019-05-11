@@ -7,7 +7,9 @@ import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.lang.IllegalArgumentException
 
-class LoginInteractor(transformer: CompletableTransformer, private val loginRepository: LoginRepository
+class LoginInteractor(
+    transformer: CompletableTransformer,
+    private val loginRepository: LoginRepository
 ) : CompletableUseCase(transformer) {
 
     companion object {

@@ -5,7 +5,7 @@ import com.whisker.mrr.domain.model.RouteHolder
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.domain.repository.RouteRepository
-import com.whisker.mrr.domain.source.RouteSource
+import com.whisker.mrr.domain.source.LocalRouteSource
 import com.whisker.mrr.domain.source.SnapshotLocalSource
 import com.whisker.mrr.domain.source.SnapshotRemoteSource
 import io.reactivex.Completable
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class RouteDataRepository
 @Inject constructor(
-    private val routeDatabaseSource: RouteSource,
+    private val localRouteDatabaseSource: LocalRouteSource,
     private val snapshotRemoteDataSource: SnapshotRemoteSource,
     private val snapshotLocalDataSource: SnapshotLocalSource
 )
@@ -33,11 +33,11 @@ class RouteDataRepository
     }
 
     override fun saveRoute(userId: String, route: Route): Completable {
-        return routeDatabaseSource.saveRoute(route, userId)
+        return localRouteDatabaseSource.saveRoute(route, userId)
     }
 
     override fun getRouteList(userId: String): Flowable<List<RouteHolder>> {
-        return routeDatabaseSource.getRoutesByUserId(userId)
+        return localRouteDatabaseSource.getRoutesByUserId(userId)
     }
 
     override fun saveSnapshot(bitmap: ByteArray, fileName: String): Completable {
@@ -69,6 +69,6 @@ class RouteDataRepository
 
     override fun removeRoute(userId: String, routeId: String, date: Long) : Completable {
         // TODO: remove snapshot
-        return routeDatabaseSource.removeRouteById(userId, routeId, date)
+        return localRouteDatabaseSource.removeRouteById(userId, routeId, date)
     }
 }

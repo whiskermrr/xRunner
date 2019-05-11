@@ -37,7 +37,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(':domain')
-    implementation project(':firebase')
+    implementation project(':data')
     implementation project(':infrastructure')
     implementation project(':music')
 

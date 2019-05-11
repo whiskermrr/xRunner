@@ -84,7 +84,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseSource(database: FirebaseDatabase) : RouteSource {
+    fun provideDatabaseSource(database: FirebaseDatabase) : LocalRouteSource {
         return RouteDatabaseSource(database.reference)
     }
 
@@ -103,11 +103,11 @@ class AppModule {
     @Provides
     @Singleton
     fun provideRouteRepository(
-        routeDatabaseSource: RouteSource,
+        localRouteDatabaseSource: LocalRouteSource,
         snapshotRemoteDataSource: SnapshotRemoteSource,
         snapshotLocalDataSource: SnapshotLocalSource
     ) : RouteRepository {
-        return RouteDataRepository(routeDatabaseSource, snapshotRemoteDataSource, snapshotLocalDataSource)
+        return RouteDataRepository(localRouteDatabaseSource, snapshotRemoteDataSource, snapshotLocalDataSource)
     }
 
     @Provides

@@ -6,14 +6,14 @@ import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.common.getFirstDayOfTheMonthInMillis
 import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.domain.model.RouteHolder
-import com.whisker.mrr.domain.source.RouteSource
+import com.whisker.mrr.domain.source.LocalRouteSource
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import java.util.*
 import javax.inject.Inject
 
-class RouteDatabaseSource @Inject constructor(private val databaseReference: DatabaseReference) : RouteSource {
+class LocalRouteDatabaseSource @Inject constructor(private val databaseReference: DatabaseReference) : LocalRouteSource {
 
     override fun saveRoute(route: Route, userId : String) : Completable {
         val databaseReference = getReference(userId)

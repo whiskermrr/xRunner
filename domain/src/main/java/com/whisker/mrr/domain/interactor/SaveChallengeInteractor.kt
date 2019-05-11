@@ -3,7 +3,6 @@ package com.whisker.mrr.domain.interactor
 import com.whisker.mrr.domain.common.ChallengeUtils
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.repository.ChallengeRepository
-import com.whisker.mrr.domain.source.AuthSource
 import com.whisker.mrr.domain.usecase.CompletableUseCase
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
@@ -11,7 +10,6 @@ import java.lang.IllegalArgumentException
 
 class SaveChallengeInteractor(
     transformer: CompletableTransformer,
-    private val authSource: AuthSource,
     private val challengeRepository: ChallengeRepository
 ) : CompletableUseCase(transformer) {
 
@@ -31,10 +29,7 @@ class SaveChallengeInteractor(
         challenge?.let {
             return ChallengeUtils.calculateChallengeDifficultyAndExp(challenge as Challenge)
                 .flatMapCompletable { challenge ->
-                    authSource.getUserId()
-                        .flatMapCompletable {  userId ->
-                            challengeRepository.saveChallenge(userId, challenge)
-                        }
+                    challengeRepository.saveChallenge(challenge)
                 }
 
         } ?: return Completable.error(IllegalArgumentException("Argument @challenge must be provided."))

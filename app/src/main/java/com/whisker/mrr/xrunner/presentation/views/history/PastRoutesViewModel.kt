@@ -38,9 +38,9 @@ class PastRoutesViewModel
         )
     }
 
-    fun removeRoute(routeId: String, date: Long) {
+    fun removeRoute(routeId: Long) {
         disposables.add(
-            removeRouteInteractor.removeRoute(routeId, date)
+            removeRouteInteractor.removeRoute(routeId)
                 .subscribe {
                     Log.e(TAG(), "route removed")
                 }

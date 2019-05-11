@@ -1,9 +1,6 @@
 package com.example.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import com.whisker.mrr.domain.model.Coords
 import com.whisker.mrr.domain.model.RouteStats
@@ -12,25 +9,24 @@ import com.whisker.mrr.domain.model.RouteStats
 data class RouteEntity(
 
     @SerializedName("RouteID")
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COL_ROUTE_ID)
-    var routeId: String = "",
+    var routeId: Long? = null,
 
     @SerializedName("Name")
     @ColumnInfo(name = COL_NAME)
-    var name: String = "",
+    var name: String? = null,
 
     @SerializedName("Waypoints")
     @ColumnInfo(name = COL_WAYPOINTS)
-    var waypoints: List<Coords> = listOf(),
+    var waypoints: List<Coords>? = null,
 
     @SerializedName("Date")
     @ColumnInfo(name = COL_DATE)
-    var date: Long = 0L,
+    var date: Long? = null,
 
-    @Ignore
-    @SerializedName("Waypoints")
-    var routeStats: RouteStats = RouteStats()
+    @Embedded
+    var routeStats: RouteStats? = null
 ) {
     companion object {
         const val COL_ROUTE_ID = "routeID"

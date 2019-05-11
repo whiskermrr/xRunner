@@ -11,11 +11,11 @@ data class ChallengeEntity(
     @SerializedName("ChallengeID")
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = COL_ID)
-    var id: String = "",
+    var id: String? = null,
 
     @SerializedName("IsFinished")
     @ColumnInfo(name = COL_IS_FINISHED)
-    var isFinished: Boolean = false,
+    var isFinished: Boolean? = null,
 
     @SerializedName("Deadline")
     @ColumnInfo(name = COL_DEADLINE)
@@ -23,7 +23,7 @@ data class ChallengeEntity(
 
     @SerializedName("Title")
     @ColumnInfo(name = COL_TITLE)
-    val title: String = "Challenge",
+    val title: String? = null,
 
     @SerializedName("Distance")
     @ColumnInfo(name = COL_DISTANCE)
@@ -39,23 +39,23 @@ data class ChallengeEntity(
 
     @SerializedName("Progress")
     @ColumnInfo(name = COL_PROGRESS)
-    var progress: Int = 0,
+    var progress: Int? = null,
 
     @SerializedName("Difficulty")
     @ColumnInfo(name = COL_DIFFICULTY)
-    var difficulty: ChallengeDifficulty = ChallengeDifficulty.EASY,
+    var difficulty: ChallengeDifficulty? = null,
 
     @SerializedName("Experience")
     @ColumnInfo(name = COL_EXP)
-    var experience: Int = 0,
+    var experience: Int? = null,
 
     @SerializedName("FinishedDistance")
     @ColumnInfo(name = COL_FINISHED_DISTANCE)
-    var finishedDistance: Float = 0f,
+    var finishedDistance: Float? = null,
 
     @SerializedName("FinishedTime")
     @ColumnInfo(name = COL_FINISHED_TIME)
-    var finishedTime: Long = 0
+    var finishedTime: Long? = null
 ) {
     companion object {
         const val COL_ID = "id"

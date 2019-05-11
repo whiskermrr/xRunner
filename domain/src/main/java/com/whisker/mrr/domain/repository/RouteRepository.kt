@@ -6,9 +6,8 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 interface RouteRepository {
-
-    fun saveRoute(userId: String, route: Route) : Completable
+    fun saveRoute(route: Route) : Completable
     fun saveSnapshot(bitmap: ByteArray, fileName: String) : Completable
-    fun getRouteList(userId: String) : Flowable<List<RouteHolder>>
-    fun removeRoute(userId: String, routeId: String, date: Long) : Completable
+    fun getRouteList() : Flowable<List<RouteHolder>>
+    fun removeRoute(routeID: Long) : Completable
 }

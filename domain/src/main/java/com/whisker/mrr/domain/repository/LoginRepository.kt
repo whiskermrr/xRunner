@@ -1,9 +1,8 @@
 package com.whisker.mrr.domain.repository
 
 import io.reactivex.Completable
-import io.reactivex.Single
 
 interface LoginRepository {
     fun login(email: String, password: String) : Completable
-    fun createAccount(email:String, password: String) : Single<String>
+    fun createAccount(email:String, password: String) : Completable
 }
