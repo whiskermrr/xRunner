@@ -1,9 +1,6 @@
 apply plugin: 'com.android.library'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-kapt'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -53,6 +50,11 @@ dependencies {
     kapt dataDependencies.kaptBaseRoom
 
     implementation dataDependencies.gson
+
+    implementation dataDependencies.retrofit
+    implementation dataDependencies.gsonRetrofit
+    implementation dataDependencies.rxRetrofit
+    implementation dataDependencies.okhttp3
 
     testImplementation dataTestDependencies.junit
     testImplementation dataTestDependencies.mockito
