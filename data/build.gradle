@@ -1,5 +1,11 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion 28
 
@@ -26,8 +32,34 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    testImplementation 'junit:junit:4.12'
+    implementation project(':domain')
+
+    def dataDependencies = rootProject.ext.dataDependencies
+    def dataTestDependencies = rootProject.ext.dataTestDependencies
+
+    implementation dataDependencies.javaxAnnotation
+    implementation dataDependencies.javaxInject
+    implementation dataDependencies.rxKotlin
+    implementation dataDependencies.rxJava
+    implementation dataDependencies.kotlin
+
+    implementation dataDependencies.dagger
+    implementation dataDependencies.daggerSupport
+    kapt dataDependencies.daggerAndroidKapt
+    kapt dataDependencies.daggerProcessorKapt
+
+    implementation dataDependencies.baseRoom
+    implementation dataDependencies.rxRoom
+    kapt dataDependencies.kaptBaseRoom
+
+    testImplementation dataTestDependencies.junit
+    testImplementation dataTestDependencies.mockito
+    testImplementation dataTestDependencies.assertj
+    testImplementation dataTestDependencies.testRoom
+
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}
+repositories {
+    mavenCentral()
 }

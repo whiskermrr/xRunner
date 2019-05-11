@@ -11,6 +11,7 @@ ext {
     mockitoKotlinVersion = '1.6.0'
     robolectricVersion = '3.4.2'
     mockito_version = '2.7.13'
+    room_version = '2.1.0-alpha07'
 
     domainDependencies = [
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
@@ -153,5 +154,34 @@ ext {
             junit:              "junit:junit:${jUnitVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}"
+    ]
+
+    dataDependencies = [
+            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
+            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}",
+
+            //Rx
+            rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:2.2.2",
+
+            // Dagger
+            dagger:             "com.google.dagger:dagger:2.16",
+            daggerSupport:      "com.google.dagger:dagger-android-support:2.16",
+            daggerAndroidKapt:  "com.google.dagger:dagger-compiler:2.16",
+            daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
+
+            // Room
+            baseRoom:            "androidx.room:room-runtime:$room_version",
+            kaptBaseRoom:        "androidx.room:room-compiler:$room_version",
+            rxRoom:              "androidx.room:room-rxjava2:$room_version"
+
+    ]
+
+    dataTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}",
+            testRoom:           "androidx.room:room-testing:$room_version"
     ]
 }
