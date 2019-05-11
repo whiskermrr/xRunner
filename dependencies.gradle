@@ -174,7 +174,10 @@ ext {
             // Room
             baseRoom:            "androidx.room:room-runtime:$room_version",
             kaptBaseRoom:        "androidx.room:room-compiler:$room_version",
-            rxRoom:              "androidx.room:room-rxjava2:$room_version"
+            rxRoom:              "androidx.room:room-rxjava2:$room_version",
+
+            // Gson
+            gson:               "com.google.code.gson:gson:2.8.5"
 
     ]
 
