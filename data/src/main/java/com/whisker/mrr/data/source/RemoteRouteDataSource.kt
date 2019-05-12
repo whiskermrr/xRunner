@@ -2,7 +2,6 @@ package com.whisker.mrr.data.source
 
 import com.whisker.mrr.data.api.XRunnerHttpService
 import com.whisker.mrr.data.api.request.GetDataRequest
-import com.whisker.mrr.data.database.model.RouteEntity
 import com.whisker.mrr.data.mapper.RouteEntityMapper
 import com.whisker.mrr.domain.manager.PreferencesManager
 import com.whisker.mrr.domain.model.Route
@@ -36,10 +35,10 @@ class RemoteRouteDataSource(
                     }
                     .map { response ->
                         response.data?.routes?.let { routes ->
-                            return@map routes
-                        } ?: return@map listOf<RouteEntity>()
+                            return@map RouteEntityMapper.transformListFromEntities(routes)
+                        } ?: return@map listOf<Route>()
                     }
-                    .map { RouteEntityMapper.transformListFromEntities(it) }
+                    .onErrorReturn { listOf() }
             }
     }
 

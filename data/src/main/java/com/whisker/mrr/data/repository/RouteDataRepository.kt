@@ -23,14 +23,17 @@ class RouteDataRepository(
     }
 
     override fun getRouteList(): Flowable<List<RouteHolder>> {
-        return localRouteSource.getRoutes()
+        val localFlowable = localRouteSource.getRoutes()
             .map { RouteHolderMapper.transformToRouteHolderList(it) }
-            .doOnSubscribe {
-                remoteRouteSource.getRoutes()
-                    .flatMapCompletable { routes ->
-                        localRouteSource.saveRoutes(routes)
-                    }
+
+        val remoteFlowable = remoteRouteSource.getRoutes()
+            .flatMapPublisher { routes ->
+                Completable.fromAction {
+                    localRouteSource.saveRoutes(routes)
+                }.andThen(Flowable.empty<List<RouteHolder>>())
             }
+
+        return Flowable.concatArray(localFlowable, remoteFlowable)
     }
 
     override fun removeRoute(routeID: Long): Completable {
