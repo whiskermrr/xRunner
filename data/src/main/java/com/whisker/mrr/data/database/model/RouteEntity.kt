@@ -9,7 +9,7 @@ import com.whisker.mrr.domain.model.RouteStats
 data class RouteEntity(
 
     @SerializedName("RouteID")
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = COL_ROUTE_ID)
     var routeId: Long? = null,
 
@@ -25,6 +25,10 @@ data class RouteEntity(
     @ColumnInfo(name = COL_DATE)
     var date: Long? = null,
 
+    @SerializedName("IsDeleted")
+    @ColumnInfo(name = COL_IS_DELETED)
+    var isDeleted: Boolean = false,
+
     @Embedded
     var routeStats: RouteStats? = null
 ) {
@@ -33,5 +37,6 @@ data class RouteEntity(
         const val COL_NAME = "name"
         const val COL_DATE = "date"
         const val COL_WAYPOINTS = "waypoints"
+        const val COL_IS_DELETED = "isDeleted"
     }
 }

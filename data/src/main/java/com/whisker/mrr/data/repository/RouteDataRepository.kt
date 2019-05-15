@@ -15,7 +15,12 @@ class RouteDataRepository(
 ) : RouteRepository {
 
     override fun saveRoute(route: Route): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return localRouteSource.saveRoute(route)
+            .flatMap { localID ->
+                route.routeId = localID
+                remoteRouteSource.saveRoute(route)
+            }
+            .flatMapCompletable { localRouteSource.updateRouteID(route.routeId, it) }
     }
 
     override fun saveSnapshot(bitmap: ByteArray, fileName: String): Completable {

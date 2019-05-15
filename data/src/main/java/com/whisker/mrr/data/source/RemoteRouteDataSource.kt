@@ -18,7 +18,7 @@ class RemoteRouteDataSource(
         const val KEY_ROUTES_TIMESTAMP = "key_routes_timestamp"
     }
 
-    override fun saveRoute(route: Route): Completable {
+    override fun saveRoute(route: Route): Single<Long> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
