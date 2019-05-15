@@ -25,6 +25,7 @@ class LocalRouteDataSource(
     override fun saveRoutes(routes: List<Route>): Completable {
         return Completable.fromAction {
             routeDao.insertAll(RouteEntityMapper.transformListToEntitites(routes))
+            routeDao.deleteIsDeleted()
         }
     }
 
