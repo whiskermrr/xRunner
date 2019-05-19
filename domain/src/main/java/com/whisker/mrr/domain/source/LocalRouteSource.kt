@@ -9,6 +9,7 @@ interface LocalRouteSource {
     fun saveRoute(route: Route) : Single<Long>
     fun saveRoutes(routes: List<Route>) : Completable
     fun getRoutes() : Flowable<List<Route>>
+    fun markRouteAsDeleted(routeID: Long) : Completable
     fun removeRouteById(routeID: Long) : Completable
     fun updateRouteID(oldID: Long, newID: Long) : Completable
 }

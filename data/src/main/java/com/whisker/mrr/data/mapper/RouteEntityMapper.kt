@@ -13,7 +13,7 @@ object RouteEntityMapper {
         return routes
     }
 
-    fun transformListToEntitites(routes: List<Route>) : List<RouteEntity> {
+    fun transformListToEntities(routes: List<Route>) : List<RouteEntity> {
         val entities = mutableListOf<RouteEntity>()
         for(route in routes) {
             entities.add(transformToEntity(route))

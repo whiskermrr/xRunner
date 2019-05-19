@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 interface RemoteRouteSource {
     fun saveRoute(route: Route) : Single<Long>
-    fun saveRoutes(routes: List<Route>) : Completable
+    fun saveRoutes(routes: List<Route>) : Single<List<Long>>
     fun getRoutes() : Single<List<Route>>
     fun removeRouteById(routeId: Long) : Completable
 }

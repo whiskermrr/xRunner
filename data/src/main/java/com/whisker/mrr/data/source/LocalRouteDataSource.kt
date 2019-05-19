@@ -15,16 +15,14 @@ class LocalRouteDataSource(
     override fun saveRoute(route: Route): Single<Long> {
         return Single.fromCallable {
             val nextID = routeDao.getNextLocalID()
-            nextID?.let {
-                route.routeId = it
-            } ?: kotlin.run { route.routeId = -1 }
+            nextID?.let { route.routeId = it } ?: kotlin.run { route.routeId = -1 }
             routeDao.insert(RouteEntityMapper.transformToEntity(route))
         }
     }
 
     override fun saveRoutes(routes: List<Route>): Completable {
         return Completable.fromAction {
-            routeDao.insertAll(RouteEntityMapper.transformListToEntitites(routes))
+            routeDao.insertAll(RouteEntityMapper.transformListToEntities(routes))
             routeDao.deleteIsDeleted()
         }
     }
@@ -36,6 +34,12 @@ class LocalRouteDataSource(
     override fun removeRouteById(routeID: Long): Completable {
         return Completable.fromAction {
             routeDao.deleteRouteById(routeID)
+        }
+    }
+
+    override fun markRouteAsDeleted(routeID: Long): Completable {
+        return Completable.fromAction {
+            routeDao.markRouteAsDeleted(routeID)
         }
     }
 

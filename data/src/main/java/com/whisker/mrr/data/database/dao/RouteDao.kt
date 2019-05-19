@@ -22,6 +22,9 @@ abstract class RouteDao : BaseDao<RouteEntity> {
     @Query("DELETE FROM Route WHERE isDeleted = 1")
     abstract fun deleteIsDeleted()
 
+    @Query("UPDATE Route SET isDeleted = 1 WHERE routeID = :routeID")
+    abstract fun markRouteAsDeleted(routeID: Long)
+
     @Query("SELECT MIN(routeID) - 1 FROM Route WHERE routeID < 0")
     abstract fun getNextLocalID() : Long?
 }
