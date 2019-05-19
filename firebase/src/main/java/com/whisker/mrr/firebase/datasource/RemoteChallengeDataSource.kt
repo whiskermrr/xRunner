@@ -1,4 +1,4 @@
-package com.whisker.mrr.firebase.repository
+package com.whisker.mrr.firebase.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
