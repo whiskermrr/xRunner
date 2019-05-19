@@ -12,7 +12,7 @@ import io.reactivex.Single
 import java.util.*
 import javax.inject.Inject
 
-class RemoteRouteDatabaseSource
+class RemoteRouteDataSource
 @Inject constructor(
     private val databaseReference: DatabaseReference,
     private val firebaseAuth: FirebaseAuth
