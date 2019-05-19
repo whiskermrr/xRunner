@@ -9,16 +9,19 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 
 @Dao
-abstract class challengeDao : BaseDao<ChallengeEntity> {
+abstract class ChallengeDao : BaseDao<ChallengeEntity> {
 
     @Query("SELECT * FROM Challenge WHERE isDeleted = 0")
-    abstract fun getChallenges() : Flowable<ChallengeEntity>
+    abstract fun getChallenges() : Flowable<List<ChallengeEntity>>
 
     @Query("SELECT * FROM Challenge WHERE isDeleted = 0 AND isFinished = 0")
-    abstract fun getActiveChallenges() : Flowable<ChallengeEntity>
+    abstract fun getActiveChallenges() : Flowable<List<ChallengeEntity>>
 
     @Query("SELECT * FROM Challenge WHERE isDeleted = 0 AND isFinished = 0")
-    abstract fun getActiveChallengesSingle() : Single<ChallengeEntity>
+    abstract fun getActiveChallengesSingle() : Single<List<ChallengeEntity>>
+
+    @Query("DELETE FROM Challenge WHERE id = :challengeID")
+    abstract fun deleteChallengeById(challengeID: Long)
 
     @Update
     abstract fun updateChallenges(challenges: List<ChallengeEntity>) : Completable
