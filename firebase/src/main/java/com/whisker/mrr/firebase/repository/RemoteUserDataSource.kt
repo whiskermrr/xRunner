@@ -1,5 +1,7 @@
 package com.whisker.mrr.firebase.repository
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -11,24 +13,33 @@ import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_TIME
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USER_STATS
 import com.whisker.mrr.domain.model.UserStats
-import com.whisker.mrr.domain.repository.UserRepository
+import com.whisker.mrr.domain.source.RemoteUserSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
-class UserDataRepository
-@Inject constructor(private val databaseReference: DatabaseReference)
-: UserRepository {
+class RemoteUserDataSource
+@Inject constructor(
+    private val databaseReference: DatabaseReference,
+    private val firebaseAuth: FirebaseAuth
+) : RemoteUserSource {
 
-    override fun updateUserStats(userId: String, userStats: UserStats): Completable {
+    override fun updateUserStats(userStats: UserStats): Completable {
         return Completable.create { emitter ->
+            var userReference: DatabaseReference = databaseReference
+            try {
+                userReference = getReference()
+            } catch (e : FirebaseAuthInvalidUserException) {
+                emitter.onError(e)
+            }
+
             val map = HashMap<String, Any>()
             map[DB_TOTAL_DISTANCE] = userStats.totalDistance
             map[DB_TOTAL_TIME] = userStats.totalTime
             map[DB_EXPERIENCE] = userStats.experience
             map[DB_AVERAGE_PACE] = userStats.averagePace
 
-            getReference(userId).updateChildren(map).addOnCompleteListener { task ->
+            userReference.updateChildren(map).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
                 } else {
@@ -42,9 +53,15 @@ class UserDataRepository
         }
     }
 
-    override fun getUserStats(userId: String): Single<UserStats> {
+    override fun getUserStats(): Single<UserStats> {
         return Single.create { emitter ->
-            getReference(userId).addListenerForSingleValueEvent(object: ValueEventListener {
+            var userReference: DatabaseReference = databaseReference
+            try {
+                userReference = getReference()
+            } catch (e : FirebaseAuthInvalidUserException) {
+                emitter.onError(e)
+            }
+            userReference.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     dataSnapshot.value?.let {
                         dataSnapshot.getValue(UserStats::class.java)?.let { userStats ->
@@ -60,9 +77,15 @@ class UserDataRepository
         }
     }
 
-    override fun createUserStats(userId: String): Completable {
+    override fun createUserStats(userStats: UserStats): Completable {
         return Completable.create { emitter ->
-            getReference(userId).setValue(UserStats()).addOnCompleteListener { task ->
+            var userReference: DatabaseReference = databaseReference
+            try {
+                userReference = getReference()
+            } catch (e : FirebaseAuthInvalidUserException) {
+                emitter.onError(e)
+            }
+            userReference.setValue(userStats).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     emitter.onComplete()
                 } else {
@@ -76,10 +99,13 @@ class UserDataRepository
         }
     }
 
-    private fun getReference(userId: String) : DatabaseReference {
+    @Throws(FirebaseAuthInvalidUserException::class)
+    private fun getReference() : DatabaseReference {
+        var userUID = ""
+        firebaseAuth.currentUser?.uid?.let { userUID = it } ?: kotlin.run { throw FirebaseAuthInvalidUserException("", "") }
         return databaseReference
             .child(REFERENCE_USERS)
-            .child(userId)
+            .child(userUID)
             .child(REFERENCE_USER_STATS)
     }
 }
