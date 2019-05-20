@@ -5,14 +5,25 @@ import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.whisker.mrr.data.database.DbRunner
+import com.whisker.mrr.data.database.dao.ChallengeDao
+import com.whisker.mrr.data.database.dao.PreferencesDao
+import com.whisker.mrr.data.database.dao.RouteDao
+import com.whisker.mrr.data.database.dao.UserStatsDao
+import com.whisker.mrr.data.repository.ChallengeDataRepository
+import com.whisker.mrr.data.repository.RouteDataRepository
+import com.whisker.mrr.data.repository.UserDataRepository
+import com.whisker.mrr.data.source.LocalChallengeDataSource
+import com.whisker.mrr.data.source.LocalRouteDataSource
+import com.whisker.mrr.data.source.LocalUserDataSource
 import com.whisker.mrr.domain.common.scheduler.*
 import com.whisker.mrr.xrunner.App
-import com.whisker.mrr.firebase.datasource.*
-import com.whisker.mrr.firebase.repository.*
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.manager.MusicManager
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.domain.source.*
+import com.whisker.mrr.firebase.datasource.*
+import com.whisker.mrr.firebase.repository.LoginDataRepository
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
 import com.whisker.mrr.infrastructure.source.LocationDataSource
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
@@ -40,6 +51,36 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideRoomDatabase(context: Context) : DbRunner {
+        return DbRunner.getInstance(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChallengeDao(db: DbRunner) : ChallengeDao {
+        return db.challengeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRouteDao(db: DbRunner) : RouteDao {
+        return db.routeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserStatsDao(db: DbRunner) : UserStatsDao {
+        return db.userStatsDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providePreferencesDao(db: DbRunner) : PreferencesDao {
+        return db.preferencesDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideNetworkStateReceiver() : NetworkStateReceiver {
         return NetworkStateReceiver()
     }
@@ -53,8 +94,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFirebaseDatabase() : FirebaseDatabase {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        FirebaseDatabase.getInstance().reference.keepSynced(true)
         return FirebaseDatabase.getInstance()
     }
 
@@ -84,8 +123,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseSource(database: FirebaseDatabase) : LocalRouteSource {
-        return RouteDatabaseSource(database.reference)
+    fun provideRemoteRouteSource(database: FirebaseDatabase, firebaseAuth: FirebaseAuth) : RemoteRouteSource {
+        return RemoteRouteDataSource(database.reference, firebaseAuth)
     }
 
     @Provides
@@ -102,24 +141,56 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideLocalRouteSource(routeDao: RouteDao) : LocalRouteSource {
+        return LocalRouteDataSource(routeDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocalChallengeSource(challengeDao: ChallengeDao) : LocalChallengeSource {
+        return LocalChallengeDataSource(challengeDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocalUserSource(userStatsDao: UserStatsDao) : LocalUserSource {
+        return LocalUserDataSource(userStatsDao)
+    }
+
+    @Provides
+    @Singleton
     fun provideRouteRepository(
-        localRouteDatabaseSource: LocalRouteSource,
+        localRouteSource: LocalRouteSource,
+        remoteRouteSource: RemoteRouteSource,
         snapshotRemoteDataSource: SnapshotRemoteSource,
         snapshotLocalDataSource: SnapshotLocalSource
     ) : RouteRepository {
-        return RouteDataRepository(localRouteDatabaseSource, snapshotRemoteDataSource, snapshotLocalDataSource)
+        return RouteDataRepository(localRouteSource, remoteRouteSource, snapshotRemoteDataSource, snapshotLocalDataSource)
     }
 
     @Provides
     @Singleton
-    fun provideUserRepository(database: FirebaseDatabase) : UserRepository {
-        return UserDataRepository(database.reference)
+    fun provideChallengeRepository(localChallengeSource: LocalChallengeSource, remoteChallengeSource: RemoteChallengeSource) : ChallengeRepository {
+        return ChallengeDataRepository(localChallengeSource, remoteChallengeSource)
     }
 
     @Provides
     @Singleton
-    fun provideChallengeRepository(database: FirebaseDatabase) : ChallengeRepository {
-        return ChallengeDataRepository(database.reference)
+    fun provideUserRepository(localUserSource: LocalUserSource, remoteUserSource: RemoteUserSource) : UserRepository {
+        return UserDataRepository(localUserSource, remoteUserSource)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideRemoteUserSource(database: FirebaseDatabase, firebaseAuth: FirebaseAuth) : RemoteUserSource {
+        return RemoteUserDataSource(database.reference, firebaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteChallengeSource(database: FirebaseDatabase, firebaseAuth: FirebaseAuth) : RemoteChallengeSource {
+        return RemoteChallengeDataSource(database.reference, firebaseAuth)
     }
 
     @Provides
@@ -136,8 +207,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetRouteListInteractor(routeRepository: RouteRepository, authSource: AuthSource) : GetRouteListInteractor {
-        return GetRouteListInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
+    fun provideGetRouteListInteractor(routeRepository: RouteRepository) : GetRouteListInteractor {
+        return GetRouteListInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), routeRepository)
     }
 
     @Provides
@@ -160,8 +231,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : SaveRouteInteractor {
-        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
+    fun provideSaveRouteInteractor(routeRepository: RouteRepository) : SaveRouteInteractor {
+        return SaveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository)
     }
 
     @Provides
@@ -190,38 +261,38 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetUserStatsInteractor(userRepository: UserRepository, authSource: AuthSource) : GetUserStatsInteractor {
-        return GetUserStatsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), userRepository, authSource)
+    fun provideGetUserStatsInteractor(userRepository: UserRepository) : GetUserStatsInteractor {
+        return GetUserStatsInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), userRepository)
     }
 
     @Provides
     @Singleton
-    fun provideSaveChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : SaveChallengeInteractor {
-        return SaveChallengeInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+    fun provideSaveChallengeInteractor(challengeRepository: ChallengeRepository) : SaveChallengeInteractor {
+        return SaveChallengeInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : UpdateChallengesInteractor {
-        return UpdateChallengesInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+    fun provideUpdateChallengeInteractor(challengeRepository: ChallengeRepository) : UpdateChallengesInteractor {
+        return UpdateChallengesInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideGetChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetChallengesInteractor {
-        return GetChallengesInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+    fun provideGetChallengeInteractor(challengeRepository: ChallengeRepository) : GetChallengesInteractor {
+        return GetChallengesInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideGetActiveChallengeInteractor(authSource: AuthSource, challengeRepository: ChallengeRepository) : GetActiveChallengesInteractor {
-        return GetActiveChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), authSource, challengeRepository)
+    fun provideGetActiveChallengeInteractor(challengeRepository: ChallengeRepository) : GetActiveChallengesInteractor {
+        return GetActiveChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), challengeRepository)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateUserStatsInteractor(authSource: AuthSource, userRepository: UserRepository) : UpdateUserStatsInteractor {
-        return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), authSource, userRepository)
+    fun provideUpdateUserStatsInteractor(userRepository: UserRepository) : UpdateUserStatsInteractor {
+        return UpdateUserStatsInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), userRepository)
     }
 
     @Provides

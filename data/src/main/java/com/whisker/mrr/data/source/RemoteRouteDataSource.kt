@@ -22,7 +22,7 @@ class RemoteRouteDataSource(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun saveRoutes(routes: List<Route>): Completable {
+    override fun saveRoutes(routes: List<Route>): Single<List<Long>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

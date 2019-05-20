@@ -2,20 +2,20 @@ package com.whisker.mrr.domain.interactor
 
 import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.repository.UserRepository
-import com.whisker.mrr.domain.usecase.SingleUseCase
-import io.reactivex.Single
-import io.reactivex.SingleTransformer
+import com.whisker.mrr.domain.usecase.FlowableUseCase
+import io.reactivex.Flowable
+import io.reactivex.FlowableTransformer
 
 class GetUserStatsInteractor(
-    transformer: SingleTransformer<UserStats, UserStats>,
+    transformer: FlowableTransformer<UserStats, UserStats>,
     private val userRepository: UserRepository
-) : SingleUseCase<UserStats>(transformer) {
+) : FlowableUseCase<UserStats>(transformer) {
 
-    fun getUserStats() : Single<UserStats> {
-        return single()
+    fun getUserStats() : Flowable<UserStats> {
+        return flowable()
     }
 
-    override fun createSingle(data: Map<String, Any>?): Single<UserStats> {
+    override fun createFlowable(data: Map<String, Any>?): Flowable<UserStats> {
         return userRepository.getUserStats()
     }
 }
