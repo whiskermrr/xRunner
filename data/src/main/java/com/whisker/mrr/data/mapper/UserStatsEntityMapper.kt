@@ -6,8 +6,7 @@ import com.whisker.mrr.domain.model.UserStats
 object UserStatsEntityMapper {
 
     fun transformFromEntity(entity: UserStatsEntity) : UserStats {
-        val stats = UserStats()
-        entity.userID?.let { stats.userID = it }
+        val stats = UserStats(entity.userID)
         entity.averagePace?.let { stats.averagePace = it }
         entity.experience?.let { stats.experience = it }
         entity.totalDistance?.let { stats.totalDistance = it }
@@ -17,8 +16,7 @@ object UserStatsEntityMapper {
     }
 
     fun transformToEntity(stats: UserStats) : UserStatsEntity {
-        val entity = UserStatsEntity()
-        entity.userID = stats.userID
+        val entity = UserStatsEntity(stats.userID)
         entity.averagePace = stats.averagePace
         entity.experience = stats.experience
         entity.totalDistance = stats.totalDistance

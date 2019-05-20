@@ -24,7 +24,7 @@ abstract class ChallengeDao : BaseDao<ChallengeEntity> {
     abstract fun deleteChallengeById(challengeID: Long)
 
     @Update
-    abstract fun updateChallenges(challenges: List<ChallengeEntity>) : Completable
+    abstract fun updateChallenges(challenges: List<ChallengeEntity>)
 
     @Query("DELETE FROM Challenge WHERE isDeleted = 1")
     abstract fun deleteIsDeleted()

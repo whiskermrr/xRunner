@@ -37,6 +37,6 @@ class UserDataRepository(
             .flatMapCompletable {
                 localUserSource.createUserStats(it)
                 .andThen(remoteUserSource.createUserStats(it))
-            }
+            }.doOnError { it.printStackTrace() }
     }
 }

@@ -71,6 +71,11 @@ ext {
             // Picasso
             picasso:            'com.squareup.picasso:picasso:2.71828',
 
+            // Room
+            baseRoom:            "androidx.room:room-runtime:$room_version",
+            kaptBaseRoom:        "androidx.room:room-compiler:$room_version",
+            rxRoom:              "androidx.room:room-rxjava2:$room_version",
+
             sectionedRecycler:  'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0',
     ]
 
@@ -79,7 +84,8 @@ ext {
             kotlinJUnit:        "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            robolectric:        "org.robolectric:robolectric:${robolectricVersion}"
+            robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
+            testRoom:           "androidx.room:room-testing:$room_version"
     ]
 
     firebaseDependencies = [

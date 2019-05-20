@@ -6,13 +6,12 @@ import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
 import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.xrunner.presentation.model.UserStatsModel
-import io.reactivex.Single
 
 class UserStatsMapper {
 
     companion object {
 
-        fun transformUserStats(stats: UserStats) : Single<UserStatsModel> {
+        fun transformUserStats(stats: UserStats) : UserStatsModel {
             val userStats = UserStatsModel()
             userStats.averagePaceMin = stats.averagePace.toInt()
             userStats.averagePaceSec = (stats.averagePace % 1 * 60).toInt()
@@ -45,7 +44,7 @@ class UserStatsMapper {
             userStats.level = level
             userStats.percentExp = ((expOfNextLevel.toFloat() / levelExp) * 100).toInt()
 
-            return Single.just(userStats)
+            return userStats
         }
      }
 }

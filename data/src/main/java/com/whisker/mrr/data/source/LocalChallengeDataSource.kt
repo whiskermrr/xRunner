@@ -52,7 +52,9 @@ class LocalChallengeDataSource(
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
-        return challengeDao.updateChallenges(ChallengeEntityMapper.transformListToEntities(challenges))
+        return Completable.fromAction {
+            challengeDao.updateChallenges(ChallengeEntityMapper.transformListToEntities(challenges))
+        }
     }
 
     override fun updateChallengeID(newID: Long, oldID: Long): Completable {

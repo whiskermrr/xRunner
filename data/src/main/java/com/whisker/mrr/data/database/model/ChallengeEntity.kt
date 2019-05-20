@@ -8,6 +8,7 @@ import com.whisker.mrr.domain.model.ChallengeDifficulty
 
 @Entity(tableName = "Challenge")
 data class ChallengeEntity(
+
     @SerializedName("ChallengeID")
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = COL_ID)

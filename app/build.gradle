@@ -82,11 +82,16 @@ dependencies {
 
     implementation presentationDependencies.sectionedRecycler
 
+    implementation presentationDependencies.baseRoom
+    implementation presentationDependencies.rxRoom
+    kapt presentationDependencies.kaptBaseRoom
+
     testImplementation presentationTestDependencies.junit
     testImplementation presentationTestDependencies.kotlinJUnit
     testImplementation presentationTestDependencies.assertj
     testImplementation presentationTestDependencies.mockito
     testImplementation presentationTestDependencies.robolectric
+    testImplementation presentationTestDependencies.testRoom
 
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

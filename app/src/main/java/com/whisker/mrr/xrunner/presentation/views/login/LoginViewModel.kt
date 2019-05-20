@@ -20,8 +20,6 @@ class LoginViewModel
     fun firebaseLogin(email: String, password: String) {
         disposables.add(
             loginInteractor.loginUser(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {
                     loginStatus.postValue(true)
                 }, {
@@ -33,8 +31,6 @@ class LoginViewModel
     fun firebaseCreateAccount(email: String, password: String) {
         disposables.add(
             createAccountInteractor.createAccount(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {
                     createAccountStatus.postValue(true)
                 }, {

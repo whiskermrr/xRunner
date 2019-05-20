@@ -12,7 +12,9 @@ class LocalUserDataSource(
 ) : LocalUserSource {
 
     override fun updateUserStats(userStats: UserStats): Completable {
-        return userStatsDao.updateUserStats(UserStatsEntityMapper.transformToEntity(userStats))
+        return Completable.fromAction {
+            userStatsDao.updateUserStats(UserStatsEntityMapper.transformToEntity(userStats))
+        }
     }
 
     override fun getUserStats(): Flowable<UserStats> {

@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.whisker.mrr.data.converter.CoordsTypeConverter
+import com.whisker.mrr.data.converter.DifficultyConverter
 import com.whisker.mrr.data.database.dao.ChallengeDao
 import com.whisker.mrr.data.database.dao.PreferencesDao
 import com.whisker.mrr.data.database.dao.RouteDao
@@ -25,7 +26,7 @@ import com.whisker.mrr.data.database.model.UserStatsEntity
     version = 1,
     exportSchema = true
 )
-@TypeConverters(CoordsTypeConverter::class)
+@TypeConverters(CoordsTypeConverter::class, DifficultyConverter::class)
 abstract class DbRunner : RoomDatabase() {
 
     companion object {
