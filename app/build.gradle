@@ -86,6 +86,9 @@ dependencies {
     implementation presentationDependencies.rxRoom
     kapt presentationDependencies.kaptBaseRoom
 
+    implementation presentationDependencies.stetho
+    implementation presentationDependencies.stethoOkHttp
+
     testImplementation presentationTestDependencies.junit
     testImplementation presentationTestDependencies.kotlinJUnit
     testImplementation presentationTestDependencies.assertj

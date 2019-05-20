@@ -15,7 +15,7 @@ class LocalRouteDataSource(
     override fun saveRoute(route: Route): Single<Long> {
         return Single.fromCallable {
             val nextID = routeDao.getNextLocalID()
-            nextID?.let { route.routeId = it } ?: kotlin.run { route.routeId = -1 }
+            nextID?.let { route.routeId = it } ?: run { route.routeId = -1 }
             routeDao.insert(RouteEntityMapper.transformToEntity(route))
         }
     }

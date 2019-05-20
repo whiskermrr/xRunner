@@ -77,6 +77,10 @@ ext {
             rxRoom:              "androidx.room:room-rxjava2:$room_version",
 
             sectionedRecycler:  'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0',
+
+            //Stetho
+            stetho:              'com.facebook.stetho:stetho:1.5.1',
+            stethoOkHttp:        'com.facebook.stetho:stetho-okhttp3:1.5.1'
     ]
 
     presentationTestDependencies = [

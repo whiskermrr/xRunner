@@ -94,7 +94,7 @@ class RemoteRouteDataSource
     @Throws(FirebaseAuthInvalidUserException::class)
     private fun getReference() : DatabaseReference {
         var userUID = ""
-        firebaseAuth.currentUser?.uid?.let { userUID = it } ?: kotlin.run { throw FirebaseAuthInvalidUserException("", "") }
+        firebaseAuth.currentUser?.uid?.let { userUID = it } ?: run { throw FirebaseAuthInvalidUserException("", "") }
         return databaseReference
             .child(REFERENCE_USERS)
             .child(userUID)

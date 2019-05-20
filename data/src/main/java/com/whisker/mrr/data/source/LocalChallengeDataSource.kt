@@ -15,7 +15,7 @@ class LocalChallengeDataSource(
     override fun saveChallenge(challenge: Challenge): Single<Long> {
         return Single.fromCallable {
             val nextID = challengeDao.getNextLocalID()
-            nextID?.let { challenge.id = nextID } ?: kotlin.run { challenge.id   = -1L }
+            nextID?.let { challenge.id = nextID } ?: run { challenge.id   = -1L }
             challengeDao.insert(ChallengeEntityMapper.transformToEntity(challenge))
         }
      }
