@@ -20,13 +20,15 @@ class ChallengeDataRepository(
                 remoteChallengeSource.saveChallenge(challenge)
             }
             .flatMapCompletable {
-                localChallengeSource.updateChallengeID(challenge.id, it)
+                localChallengeSource.updateChallengeID(it, challenge.id)
             }
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
-        return localChallengeSource.updateChallenges(challenges)
-            .andThen { remoteChallengeSource.updateChallenges(challenges) }
+        return Completable.concatArray(
+            localChallengeSource.updateChallenges(challenges),
+            remoteChallengeSource.updateChallenges(challenges)
+        )
     }
 
     override fun getChallenges(): Flowable<List<Challenge>> {

@@ -28,10 +28,11 @@ class RemoteRouteDataSource
                 emitter.onError(e)
             }
 
-            val newId = System.currentTimeMillis()
-            routeReference.child(newId.toString()).setValue(route).addOnCompleteListener { task ->
+            val oldID = route.routeId
+            route.routeId = System.currentTimeMillis()
+            routeReference.child(route.routeId.toString()).setValue(route).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    emitter.onSuccess(newId)
+                    emitter.onSuccess(oldID)
                 } else {
                     task.exception?.let {
                         emitter.onError(it)
@@ -51,7 +52,13 @@ class RemoteRouteDataSource
 
     override fun getRoutes() : Single<List<Route>> {
         return Single.create<List<Route>> { emitter ->
-            databaseReference.addListenerForSingleValueEvent(object: ValueEventListener {
+            var routeReference: DatabaseReference = databaseReference
+            try {
+                routeReference = getReference()
+            } catch (e : FirebaseAuthInvalidUserException) {
+                emitter.onError(e)
+            }
+            routeReference.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val routes = mutableListOf<Route>()
                     dataSnapshot.children.forEach { child ->

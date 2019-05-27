@@ -32,16 +32,18 @@ class SummaryRunViewModel
     fun saveRoute(route: RouteModel) {
         val routeEntity = RouteMapper.routeToEntityTransform(route)
         disposables.add(
-            saveRouteInteractor.saveRoute(routeEntity)
-                .andThen(updateChallenges(routeEntity))
-                .subscribe({ isRouteSaved.postValue(true) }, Throwable::printStackTrace)
+            Completable.concatArray(
+                saveRouteInteractor.saveRoute(routeEntity),
+                updateChallenges(routeEntity)
+            )
+            .subscribe({ isRouteSaved.postValue(true) }, Throwable::printStackTrace)
         )
     }
 
     private fun updateChallenges(route: Route) : Completable {
         return getActiveChallengesInteractor.getChallenges()
             .map { challenges ->
-                return@map ChallengeUtils.updateChallengesProgress(route.routeStats, challenges)
+                ChallengeUtils.updateChallengesProgress(route.routeStats, challenges)
             }.flatMapCompletable { updatedChallenges ->
                 Completable.concatArray(
                     updateChallengesInteractor.updateChallenges(updatedChallenges),
@@ -51,7 +53,7 @@ class SummaryRunViewModel
     }
 
     private fun updateUserStats(route: Route, challenges: List<Challenge>) : Completable {
-        return getUserStatsInteractor.getUserStats()
+        return getUserStatsInteractor.getUserStats().firstElement()
                 .flatMapCompletable { userStats ->
                     UserStatsUtils.updateUserStats(userStats, route.routeStats)
                     for(challenge in challenges.filter { it.isFinished }) {

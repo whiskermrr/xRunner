@@ -23,13 +23,11 @@ class UserDataRepository(
         val localFlowable = localUserSource.getUserStats()
 
         val remoteFlowable = remoteUserSource.getUserStats()
-            .flatMapPublisher {  stats ->
-                Completable.fromAction {
-                    localUserSource.updateUserStats(stats)
-                }.andThen(Flowable.empty<UserStats>())
-            }
+            .flatMapCompletable {  stats ->
+                localUserSource.saveUserStats(stats)
+            }.andThen(Flowable.empty<UserStats>())
 
-        return Flowable.concatArray(localFlowable, remoteFlowable)
+        return localFlowable.mergeWith(remoteFlowable)
     }
 
     override fun createUserStats(userID: String): Completable {

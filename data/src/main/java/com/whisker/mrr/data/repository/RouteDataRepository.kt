@@ -38,7 +38,7 @@ class RouteDataRepository(
                 route.routeId = localID
                 remoteRouteSource.saveRoute(route)
             }
-            .flatMapCompletable { localRouteSource.updateRouteID(route.routeId, it) }
+            .flatMapCompletable { localRouteSource.updateRouteID(it, route.routeId) }
     }
 
     override fun getRouteList(): Flowable<List<RouteHolder>> {
@@ -46,19 +46,19 @@ class RouteDataRepository(
             .map { RouteHolderMapper.transformToRouteHolderList(it) }
 
         val remoteFlowable = remoteRouteSource.getRoutes()
-            .flatMapPublisher { routes ->
-                Completable.fromAction {
-                    localRouteSource.saveRoutes(routes)
-                }.andThen(Flowable.empty<List<RouteHolder>>())
-            }
+            .flatMapCompletable { routes ->
+                localRouteSource.saveRoutes(routes)
+            }.andThen(Flowable.empty<List<RouteHolder>>())
 
-        return Flowable.concatArray(localFlowable, remoteFlowable)
+        return localFlowable.mergeWith(remoteFlowable)
     }
 
     override fun removeRoute(routeID: Long): Completable {
-        return localRouteSource.markRouteAsDeleted(routeID)
-            .andThen(remoteRouteSource.removeRouteById(routeID))
-            .andThen(localRouteSource.removeRouteById(routeID))
+        return Completable.concatArray(
+            localRouteSource.markRouteAsDeleted(routeID),
+            remoteRouteSource.removeRouteById(routeID),
+            localRouteSource.removeRouteById(routeID)
+        )
     }
 
     override fun saveSnapshot(bitmap: ByteArray, fileName: String): Completable {

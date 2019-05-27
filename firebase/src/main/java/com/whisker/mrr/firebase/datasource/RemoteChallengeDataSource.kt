@@ -38,10 +38,11 @@ class RemoteChallengeDataSource(
             } catch (e: Exception) {
                 emitter.onError(e)
             }
-            val newId = System.currentTimeMillis()
-            reference.child(newId.toString()).setValue(challenge).addOnCompleteListener { task ->
+            val oldID = challenge.id
+            challenge.id = System.currentTimeMillis()
+            reference.child(challenge.id.toString()).setValue(challenge).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    emitter.onSuccess(newId)
+                    emitter.onSuccess(oldID)
                 } else {
                     task.exception?.let {
                         emitter.onError(it)
@@ -52,6 +53,7 @@ class RemoteChallengeDataSource(
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
+        Log.e("Update Challenge", challenges.size.toString())
         val reference = getReference()
         val completableList = mutableListOf<Completable>()
         for(challenge in challenges) {
@@ -63,6 +65,7 @@ class RemoteChallengeDataSource(
                     map[DB_REFERENCE_FINISHED_DISTANCE] = challenge.finishedDistance
                     map[DB_REFERENCE_FINISHED_TIME] = challenge.finishedTime
                     reference.child(challenge.id.toString()).updateChildren(map).addOnCompleteListener { task ->
+                        Log.e("Update Challenge", "onComplete")
                         if(task.isSuccessful) {
                             emitter.onComplete()
                         } else {
@@ -80,7 +83,6 @@ class RemoteChallengeDataSource(
 
     override fun getChallenges(): Single<List<Challenge>> {
         return Single.create<List<Challenge>> { emitter ->
-            Log.e("RXCHAIN", "remoteChallengeSource.getChallenges")
             var reference: DatabaseReference = databaseReference
             try {
                 reference = getReference()
