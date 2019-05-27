@@ -34,9 +34,7 @@ class SummaryRunViewModel
         disposables.add(
             saveRouteInteractor.saveRoute(routeEntity)
                 .andThen(updateChallenges(routeEntity))
-                .subscribe {
-                    isRouteSaved.postValue(true)
-                }
+                .subscribe({ isRouteSaved.postValue(true) }, Throwable::printStackTrace)
         )
     }
 

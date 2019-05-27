@@ -82,9 +82,8 @@ class RouteDataRepository(
     }
 
     private fun cacheSnapshot(bitmap: ByteArray, fileName: String) : Completable {
-        return Completable.create {emitter ->
+        return Completable.fromAction {
             snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName)
-            emitter.onComplete()
         }
     }
 }
