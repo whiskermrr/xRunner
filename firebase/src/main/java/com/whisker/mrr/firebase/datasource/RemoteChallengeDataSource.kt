@@ -1,5 +1,6 @@
 package com.whisker.mrr.firebase.datasource
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.DataSnapshot
@@ -37,10 +38,10 @@ class RemoteChallengeDataSource(
             } catch (e: Exception) {
                 emitter.onError(e)
             }
-            challenge.id = System.currentTimeMillis()
-            reference.child(challenge.id.toString()).setValue(challenge).addOnCompleteListener { task ->
+            val newId = System.currentTimeMillis()
+            reference.child(newId.toString()).setValue(challenge).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    emitter.onSuccess(challenge.id)
+                    emitter.onSuccess(newId)
                 } else {
                     task.exception?.let {
                         emitter.onError(it)
@@ -79,6 +80,7 @@ class RemoteChallengeDataSource(
 
     override fun getChallenges(): Single<List<Challenge>> {
         return Single.create<List<Challenge>> { emitter ->
+            Log.e("RXCHAIN", "remoteChallengeSource.getChallenges")
             var reference: DatabaseReference = databaseReference
             try {
                 reference = getReference()

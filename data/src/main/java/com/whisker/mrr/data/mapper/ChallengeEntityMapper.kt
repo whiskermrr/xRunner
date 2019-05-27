@@ -16,7 +16,7 @@ object ChallengeEntityMapper {
     fun transformListToEntities(challenges: List<Challenge>) : List<ChallengeEntity> {
         val entities = mutableListOf<ChallengeEntity>()
         for(challenge in challenges) {
-
+            entities.add(transformToEntity(challenge))
         }
         return entities
     }

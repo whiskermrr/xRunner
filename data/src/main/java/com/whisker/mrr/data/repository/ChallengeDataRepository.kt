@@ -19,7 +19,9 @@ class ChallengeDataRepository(
                 challenge.id = localID
                 remoteChallengeSource.saveChallenge(challenge)
             }
-            .flatMapCompletable { localChallengeSource.updateChallengeID(challenge.id, it) }
+            .flatMapCompletable {
+                localChallengeSource.updateChallengeID(challenge.id, it)
+            }
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
@@ -31,26 +33,22 @@ class ChallengeDataRepository(
         val localFlowable = localChallengeSource.getChallenges()
 
         val remoteFlowable = remoteChallengeSource.getChallenges()
-            .flatMapPublisher { challenges ->
-                Completable.fromAction {
-                    localChallengeSource.saveChallenges(challenges)
-                }.andThen(Flowable.empty<List<Challenge>>())
-            }
+            .flatMapCompletable { challenges ->
+                localChallengeSource.saveChallenges(challenges)
+            }.andThen(Flowable.empty<List<Challenge>>())
 
-        return Flowable.concatArray(localFlowable, remoteFlowable)
+        return localFlowable.mergeWith(remoteFlowable)
     }
 
     override fun getActiveChallenges(): Flowable<List<Challenge>> {
         val localFlowable = localChallengeSource.getActiveChallenges()
 
         val remoteFlowable = remoteChallengeSource.getChallenges()
-            .flatMapPublisher { challenges ->
-                Completable.fromAction {
-                    localChallengeSource.saveChallenges(challenges)
-                }.andThen(Flowable.empty<List<Challenge>>())
-            }
+            .flatMapCompletable { challenges ->
+                localChallengeSource.saveChallenges(challenges)
+            }.andThen(Flowable.empty<List<Challenge>>())
 
-        return Flowable.concatArray(localFlowable, remoteFlowable)
+        return localFlowable.mergeWith(remoteFlowable)
     }
 
     override fun getActiveChallengesSingle(): Single<List<Challenge>> {

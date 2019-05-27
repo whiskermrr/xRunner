@@ -28,10 +28,10 @@ class RemoteRouteDataSource
                 emitter.onError(e)
             }
 
-            route.routeId = System.currentTimeMillis()
-            routeReference.child(route.routeId.toString()).setValue(route).addOnCompleteListener { task ->
+            val newId = System.currentTimeMillis()
+            routeReference.child(newId.toString()).setValue(route).addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    emitter.onSuccess(route.routeId)
+                    emitter.onSuccess(newId)
                 } else {
                     task.exception?.let {
                         emitter.onError(it)
