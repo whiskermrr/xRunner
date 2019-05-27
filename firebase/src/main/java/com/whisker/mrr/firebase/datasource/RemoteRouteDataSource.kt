@@ -96,7 +96,7 @@ class RemoteRouteDataSource
             }.addOnFailureListener {
                 emitter.onError(it)
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     @Throws(FirebaseAuthInvalidUserException::class)

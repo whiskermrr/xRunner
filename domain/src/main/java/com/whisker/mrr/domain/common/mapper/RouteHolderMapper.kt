@@ -11,7 +11,7 @@ object RouteHolderMapper {
 
     fun transformToRouteHolderList(routes: List<Route>) : List<RouteHolder> {
         val holders = mutableListOf<RouteHolder>()
-        val months = routes.map { it.date }.distinctBy { Date(it).getFirstDayOfTheMonthInMillis() }
+        val months = routes.map { Date(it.date).getFirstDayOfTheMonthInMillis() }.distinct()
         for(month in months) {
             val holder = RouteHolder()
             val matchingRoutes = routes.filter { Date(it.date).getFirstDayOfTheMonthInMillis() == month }
