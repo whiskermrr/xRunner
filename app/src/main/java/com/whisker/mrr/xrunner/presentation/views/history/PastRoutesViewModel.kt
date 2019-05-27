@@ -30,8 +30,6 @@ class PastRoutesViewModel
                 .map {
                     RouteMapper.listOfEntityHoldersToListOfRouteHolders(it)
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { routes ->
                     routeList.postValue(routes)
                 }

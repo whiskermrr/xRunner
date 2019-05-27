@@ -12,6 +12,7 @@ import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.source.RemoteChallengeSource
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.HashMap
@@ -29,7 +30,7 @@ class RemoteChallengeDataSource(
     }
 
     override fun saveChallenge(challenge: Challenge): Single<Long> {
-        return Single.create { emitter ->
+        return Single.create<Long> { emitter ->
             var reference: DatabaseReference = databaseReference
             try {
                 reference = getReference()
@@ -46,7 +47,7 @@ class RemoteChallengeDataSource(
                     }
                 }
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
@@ -69,7 +70,7 @@ class RemoteChallengeDataSource(
                             }
                         }
                     }
-                }
+                }.observeOn(Schedulers.io())
             )
         }
 
@@ -77,7 +78,7 @@ class RemoteChallengeDataSource(
     }
 
     override fun getChallenges(): Single<List<Challenge>> {
-        return Single.create { emitter ->
+        return Single.create<List<Challenge>> { emitter ->
             var reference: DatabaseReference = databaseReference
             try {
                 reference = getReference()
@@ -99,7 +100,7 @@ class RemoteChallengeDataSource(
                     emitter.onError(databaseError.toException())
                 }
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun saveChallenges(challenges: List<Challenge>): Single<List<Long>> {
@@ -130,7 +131,7 @@ class RemoteChallengeDataSource(
             }.addOnFailureListener {
                 emitter.onError(it)
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     @Throws(FirebaseAuthInvalidUserException::class)

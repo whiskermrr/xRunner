@@ -6,7 +6,6 @@ import com.whisker.mrr.domain.common.whenBothNotNull
 import com.whisker.mrr.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
-import io.reactivex.schedulers.Schedulers
 import java.lang.IllegalArgumentException
 
 class CreateAccountInteractor(

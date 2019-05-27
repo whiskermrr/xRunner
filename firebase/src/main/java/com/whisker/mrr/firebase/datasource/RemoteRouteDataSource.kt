@@ -9,6 +9,7 @@ import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.domain.source.RemoteRouteSource
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class RemoteRouteDataSource
 ) : RemoteRouteSource {
 
     override fun saveRoute(route: Route) : Single<Long> {
-        return Single.create { emitter ->
+        return Single.create<Long> { emitter ->
             var routeReference: DatabaseReference = databaseReference
             try {
                 routeReference = getReference()
@@ -37,7 +38,7 @@ class RemoteRouteDataSource
                     }
                 }
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun saveRoutes(routes: List<Route>): Single<List<Long>> {
@@ -49,7 +50,7 @@ class RemoteRouteDataSource
     }
 
     override fun getRoutes() : Single<List<Route>> {
-        return Single.create { emitter ->
+        return Single.create<List<Route>> { emitter ->
             databaseReference.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val routes = mutableListOf<Route>()
@@ -66,7 +67,7 @@ class RemoteRouteDataSource
                     emitter.onError(databaseError.toException())
                 }
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun removeRouteById(routeId: Long): Completable {

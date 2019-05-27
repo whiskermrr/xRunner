@@ -16,6 +16,7 @@ import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.source.RemoteUserSource
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RemoteUserDataSource
@@ -50,11 +51,11 @@ class RemoteUserDataSource
             }.addOnFailureListener {
                 emitter.onError(it)
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun getUserStats(): Single<UserStats> {
-        return Single.create { emitter ->
+        return Single.create<UserStats> { emitter ->
             var userReference: DatabaseReference = databaseReference
             try {
                 userReference = getReference()
@@ -74,7 +75,7 @@ class RemoteUserDataSource
                     emitter.onError(databaseError.toException())
                 }
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun createUserStats(userStats: UserStats): Completable {
@@ -96,7 +97,7 @@ class RemoteUserDataSource
             }.addOnFailureListener {
                 emitter.onError(it)
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     @Throws(FirebaseAuthInvalidUserException::class)

@@ -4,9 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.CreateAccountInteractor
 import com.whisker.mrr.domain.interactor.LoginInteractor
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class LoginViewModel
@@ -34,6 +32,7 @@ class LoginViewModel
                 .subscribe( {
                     createAccountStatus.postValue(true)
                 }, {
+                    it.printStackTrace()
                     createAccountStatus.postValue(false)
                 })
         )

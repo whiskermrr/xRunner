@@ -70,15 +70,15 @@ class RouteDataRepository(
     }
 
     private fun saveSnapshotRemote(bitmap: ByteArray, fileName: String) : Completable {
-        return Single.create<String> { emitter ->
-            emitter.onSuccess(snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName))
+        return Single.fromCallable {
+            snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName)
         }
-            .flatMapCompletable { filePath ->
-                snapshotRemoteDataSource.saveSnapshotRemote(filePath, fileName)
-                    .doOnComplete {
-                        snapshotLocalDataSource.markSnapshotAsSent(fileName)
-                    }
-            }
+        .flatMapCompletable { filePath ->
+            snapshotRemoteDataSource.saveSnapshotRemote(filePath, fileName)
+                .doOnComplete {
+                    snapshotLocalDataSource.markSnapshotAsSent(fileName)
+                }
+        }
     }
 
     private fun cacheSnapshot(bitmap: ByteArray, fileName: String) : Completable {
