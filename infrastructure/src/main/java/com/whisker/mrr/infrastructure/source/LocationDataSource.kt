@@ -100,20 +100,22 @@ class LocationDataSource
 
     @SuppressLint("MissingPermission")
     override fun getBestLastKnownLocation() : Maybe<Coords> {
-        val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val providers = locationManager.getProviders(true)
-        var bestLocation: Location? = null
+        return Maybe.fromCallable {
+            val locationManager: LocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val providers = locationManager.getProviders(true)
+            var bestLocation: Location? = null
 
-        for(provider in providers) {
-            val location: Location = locationManager.getLastKnownLocation(provider) ?: continue
-            if(bestLocation == null || location.accuracy < bestLocation.accuracy) {
-                bestLocation = location
+            for(provider in providers) {
+                val location: Location = locationManager.getLastKnownLocation(provider) ?: continue
+                if(bestLocation == null || location.accuracy < bestLocation.accuracy) {
+                    bestLocation = location
+                }
             }
-        }
-        return if(bestLocation != null) {
-            Maybe.just(Coords(bestLocation.latitude, bestLocation.longitude))
-        } else {
-            Maybe.empty()
+            if(bestLocation != null) {
+                Coords(bestLocation.latitude, bestLocation.longitude)
+            } else {
+                null
+            }
         }
     }
 }
