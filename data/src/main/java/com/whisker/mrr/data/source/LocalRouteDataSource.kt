@@ -22,8 +22,10 @@ class LocalRouteDataSource(
 
     override fun saveRoutes(routes: List<Route>): Completable {
         return Completable.fromAction {
-            routeDao.insertAll(RouteEntityMapper.transformListToEntities(routes))
-            routeDao.deleteIsDeleted()
+            if(routes.isNotEmpty()) {
+                routeDao.insertAll(RouteEntityMapper.transformListToEntities(routes))
+                routeDao.deleteIsDeleted()
+            }
         }
     }
 
@@ -45,7 +47,9 @@ class LocalRouteDataSource(
 
     override fun updateRouteID(oldID: Long, newID: Long): Completable {
         return Completable.fromAction {
-            routeDao.updateRouteID(oldID, newID)
+            if(oldID != newID) {
+                routeDao.updateRouteID(oldID, newID)
+            }
         }
     }
 }

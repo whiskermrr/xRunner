@@ -29,6 +29,7 @@ class SummaryRunViewModel
     private val isRouteSaved =  MutableLiveData<Boolean>()
     private val isSnapshotSaved = MutableLiveData<Boolean>()
 
+    //TODO: new chain for saving stats
     fun saveRoute(route: RouteModel) {
         val routeEntity = RouteMapper.routeToEntityTransform(route)
         disposables.add(
@@ -45,22 +46,22 @@ class SummaryRunViewModel
             .map { challenges ->
                 ChallengeUtils.updateChallengesProgress(route.routeStats, challenges)
             }.flatMapCompletable { updatedChallenges ->
-                Completable.concatArray(
-                    updateChallengesInteractor.updateChallenges(updatedChallenges),
-                    updateUserStats(route, updatedChallenges)
-                )
+                updateChallengesInteractor.updateChallenges(updatedChallenges)
+                    .doFinally { updateUserStats(route, updatedChallenges) }
             }
     }
 
-    private fun updateUserStats(route: Route, challenges: List<Challenge>) : Completable {
-        return getUserStatsInteractor.getUserStats().firstElement()
+    private fun updateUserStats(route: Route, challenges: List<Challenge>) {
+        disposables.add(
+            getUserStatsInteractor.getUserStats().firstElement()
                 .flatMapCompletable { userStats ->
                     UserStatsUtils.updateUserStats(userStats, route.routeStats)
                     for(challenge in challenges.filter { it.isFinished }) {
                         userStats.experience += challenge.experience
                     }
                     updateUserStatsInteractor.updateUserStats(userStats)
-                }
+                }.subscribe({}, Throwable::printStackTrace)
+        )
     }
 
     fun saveSnapshot(bitmap: Bitmap, fileName: String) {

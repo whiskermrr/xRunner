@@ -34,11 +34,12 @@ class RouteDataRepository(
 
     override fun saveRoute(route: Route): Completable {
         return localRouteSource.saveRoute(route)
-            .flatMap { localID ->
+            .flatMapCompletable { localID ->
                 route.routeId = localID
                 remoteRouteSource.saveRoute(route)
-            }
-            .flatMapCompletable { localRouteSource.updateRouteID(it, route.routeId) }
+                    .flatMapCompletable { localRouteSource.updateRouteID(localID, it) }
+            }.onErrorComplete() //TODO: custom NoInternetException
+
     }
 
     override fun getRouteList(): Flowable<List<RouteHolder>> {
@@ -56,8 +57,11 @@ class RouteDataRepository(
     override fun removeRoute(routeID: Long): Completable {
         return Completable.concatArray(
             localRouteSource.markRouteAsDeleted(routeID),
-            remoteRouteSource.removeRouteById(routeID),
-            localRouteSource.removeRouteById(routeID)
+            remoteRouteSource.removeRouteById(routeID)
+                .andThen {
+                    localRouteSource.removeRouteById(routeID)
+                }
+
         )
     }
 

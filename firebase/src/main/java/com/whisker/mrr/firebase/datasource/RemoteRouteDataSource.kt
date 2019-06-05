@@ -16,30 +16,31 @@ import javax.inject.Inject
 class RemoteRouteDataSource
 @Inject constructor(
     private val databaseReference: DatabaseReference,
-    private val firebaseAuth: FirebaseAuth
-) : RemoteRouteSource {
+    connectivityReference: DatabaseReference,
+    firebaseAuth: FirebaseAuth
+) : BaseSource(connectivityReference, firebaseAuth), RemoteRouteSource {
 
     override fun saveRoute(route: Route) : Single<Long> {
-        return Single.create<Long> { emitter ->
-            var routeReference: DatabaseReference = databaseReference
-            try {
-                routeReference = getReference()
-            } catch (e : FirebaseAuthInvalidUserException) {
-                emitter.onError(e)
-            }
-
-            val oldID = route.routeId
-            route.routeId = System.currentTimeMillis()
-            routeReference.child(route.routeId.toString()).setValue(route).addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    emitter.onSuccess(oldID)
-                } else {
-                    task.exception?.let {
-                        emitter.onError(it)
+        return checkConnection().andThen(
+            Single.create<Long> { emitter ->
+                var routeReference: DatabaseReference = databaseReference
+                try {
+                    routeReference = getReference()
+                } catch (e : FirebaseAuthInvalidUserException) {
+                    emitter.onError(e)
+                }
+                route.routeId = System.currentTimeMillis()
+                routeReference.child(route.routeId.toString()).setValue(route).addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        emitter.onSuccess(route.routeId)
+                    } else {
+                        task.exception?.let {
+                            emitter.onError(it)
+                        }
                     }
                 }
-            }
-        }.observeOn(Schedulers.io())
+            }.observeOn(Schedulers.io())
+        )
     }
 
     override fun saveRoutes(routes: List<Route>): Single<List<Long>> {
@@ -47,7 +48,7 @@ class RemoteRouteDataSource
         for(route in routes) {
             singles.add(saveRoute(route))
         }
-        return Single.zip(singles) { args -> Arrays.asList(args) as List<Long> }
+        return checkConnection().andThen(Single.zip(singles) { args -> Arrays.asList(args) as List<Long> })
     }
 
     override fun getRoutes() : Single<List<Route>> {
@@ -74,38 +75,38 @@ class RemoteRouteDataSource
                     emitter.onError(databaseError.toException())
                 }
             })
-        }.observeOn(Schedulers.io())
+        }.observeOn(Schedulers.io()).onErrorReturn { emptyList() }
     }
 
     override fun removeRouteById(routeId: Long): Completable {
-        return Completable.create { emitter ->
-            var routeReference: DatabaseReference = databaseReference
-            try {
-                routeReference = getReference().child(routeId.toString())
-            } catch (e: FirebaseAuthInvalidUserException) {
-                emitter.onError(e)
-            }
-            routeReference.removeValue().addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    emitter.onComplete()
-                } else {
-                    task.exception?.let {
-                        emitter.onError(it)
-                    }
+        return checkConnection().andThen {
+            Completable.create { emitter ->
+                var routeReference: DatabaseReference = databaseReference
+                try {
+                    routeReference = getReference().child(routeId.toString())
+                } catch (e: FirebaseAuthInvalidUserException) {
+                    emitter.onError(e)
                 }
-            }.addOnFailureListener {
-                emitter.onError(it)
-            }
-        }.observeOn(Schedulers.io())
+                routeReference.removeValue().addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        task.exception?.let {
+                            emitter.onError(it)
+                        }
+                    }
+                }.addOnFailureListener {
+                    emitter.onError(it)
+                }
+            }.observeOn(Schedulers.io())
+        }
     }
 
     @Throws(FirebaseAuthInvalidUserException::class)
     private fun getReference() : DatabaseReference {
-        var userUID = ""
-        firebaseAuth.currentUser?.uid?.let { userUID = it } ?: run { throw FirebaseAuthInvalidUserException("", "") }
         return databaseReference
             .child(REFERENCE_USERS)
-            .child(userUID)
+            .child(getUserID())
             .child(REFERENCE_ROUTES)
     }
 }

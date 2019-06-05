@@ -11,15 +11,10 @@ import io.reactivex.Single
 
 class MusicDataRepository(private val context: Context) : MusicRepository {
 
-    companion object {
-        const val MUSIC_PREFERENCES = "music_preferences"
-        const val KEY_LAST_ALBUM_ID = "last_album_id"
-    }
+    override fun getSongs(albumID: Long?): Single<List<Song>> {
+        val externalUri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
-    private val externalUri: Uri by lazy { MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI }
-
-    private val songsProjections: Array<String> by lazy {
-        arrayOf(
+        val projection: Array<String> = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.TITLE,
@@ -28,19 +23,7 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.ALBUM_ID
         )
-    }
 
-    private val albumProjections: Array<String> by lazy {
-        arrayOf(
-            MediaStore.Audio.Albums._ID,
-            MediaStore.Audio.Albums.ALBUM,
-            MediaStore.Audio.Albums.ARTIST,
-            MediaStore.Audio.Albums.NUMBER_OF_SONGS,
-            MediaStore.Audio.Albums.ALBUM_ART
-        )
-    }
-
-    override fun getSongs(albumID: Long?): Single<List<Song>> {
         var selection: String? = null
         var selectionArgs: Array<String>? = null
 
@@ -53,7 +36,7 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
         }
 
         val musicCursor: Cursor? = context.contentResolver.query(
-            externalUri, songsProjections, selection, selectionArgs, null)
+            externalUri, projection, selection, selectionArgs, null)
 
         val songsList: MutableList<Song> = mutableListOf()
 
@@ -74,31 +57,22 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
         }
 
         musicCursor?.close()
-        albumID?.let {
-            saveLastAlbumID(it)
-        }
         return Single.just(songsList)
     }
 
-    private fun saveLastAlbumID(albumID: Long) {
-        val sharedPreferences = context.getSharedPreferences(MUSIC_PREFERENCES, Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putLong(KEY_LAST_ALBUM_ID, albumID)
-        editor.apply()
-    }
-
-    private fun getLastSavedAlbumID() : Long? {
-        val sharedPreferences = context.getSharedPreferences(MUSIC_PREFERENCES, Context.MODE_PRIVATE)
-        val albumID = sharedPreferences.getLong(KEY_LAST_ALBUM_ID, -1)
-        if(albumID < 0) {
-            return null
-        }
-        return albumID
-    }
-
     override fun getAlbums(): Single<List<Album>> {
+        val externalUri: Uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
+
+        val projection: Array<String> = arrayOf(
+            MediaStore.Audio.Albums._ID,
+            MediaStore.Audio.Albums.ALBUM,
+            MediaStore.Audio.Albums.ARTIST,
+            MediaStore.Audio.Albums.NUMBER_OF_SONGS,
+            MediaStore.Audio.Albums.ALBUM_ART
+        )
+
         val albumCursor = context.contentResolver.query(
-            externalUri, albumProjections, null, null, null)
+            externalUri, projection, null, null, null)
 
         val albumsList: MutableList<Album> = mutableListOf()
 
@@ -121,8 +95,6 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
     }
 
     override fun getLastPlaylist(): Single<List<Song>> {
-        getLastSavedAlbumID()?.let { albumID ->
-            return getSongs(albumID)
-        } ?: return Single.just(listOf())
+        return Single.just(listOf())
     }
 }

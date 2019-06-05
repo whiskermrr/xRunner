@@ -14,5 +14,5 @@ interface LocalChallengeSource {
     fun removeChallengeById(challengeID: Long) : Completable
     fun markChallengeAsDeleted(challengeID: Long) : Completable
     fun updateChallenges(challenges: List<Challenge>) : Completable
-    fun updateChallengeID(newID: Long, oldID: Long) : Completable
+    fun updateChallengeID(oldID: Long, newID: Long) : Completable
 }

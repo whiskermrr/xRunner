@@ -34,6 +34,7 @@ class AddChallengeDialogFragment : BaseDialogFragment(), DatePickerDialog.OnDate
             if(it) {
                activity?.onBackPressed()
             } else {
+                bSubmitChallenge.isEnabled = true
                 Toast.makeText(context, "Problem with saving challenge.", Toast.LENGTH_SHORT).show()
             }
         })
@@ -73,6 +74,7 @@ class AddChallengeDialogFragment : BaseDialogFragment(), DatePickerDialog.OnDate
 
         bSubmitChallenge.setOnClickListener {
             if(isInputValid()) {
+                bSubmitChallenge.isEnabled = false
                 viewModel.saveChallenge(getChallengeFromInput())
             }
         }

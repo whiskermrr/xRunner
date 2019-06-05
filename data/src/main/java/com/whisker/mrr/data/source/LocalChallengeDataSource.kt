@@ -22,8 +22,10 @@ class LocalChallengeDataSource(
 
     override fun saveChallenges(challenges: List<Challenge>): Completable {
         return Completable.fromAction {
-            challengeDao.insertAll(ChallengeEntityMapper.transformListToEntities(challenges))
-            challengeDao.deleteIsDeleted()
+            if(challenges.isNotEmpty()) {
+                challengeDao.insertAll(ChallengeEntityMapper.transformListToEntities(challenges))
+                challengeDao.deleteIsDeleted()
+            }
         }
     }
 
@@ -57,9 +59,11 @@ class LocalChallengeDataSource(
         }
     }
 
-    override fun updateChallengeID(newID: Long, oldID: Long): Completable {
+    override fun updateChallengeID(oldID: Long, newID: Long): Completable {
         return Completable.fromAction {
-            challengeDao.updateChallengeID(newID, oldID)
+            if(oldID != newID) {
+                challengeDao.updateChallengeID(oldID, newID)
+            }
         }
     }
 }
