@@ -38,8 +38,7 @@ class RouteDataRepository(
                 route.routeId = localID
                 remoteRouteSource.saveRoute(route)
                     .flatMapCompletable { localRouteSource.updateRouteID(localID, it) }
-            }.onErrorComplete() //TODO: custom NoInternetException
-
+            }
     }
 
     override fun getRouteList(): Flowable<List<RouteHolder>> {

@@ -11,7 +11,6 @@ import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.utils.toByteArray
-import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -28,42 +27,46 @@ class SummaryRunViewModel
     private val disposables = CompositeDisposable()
     private val isRouteSaved =  MutableLiveData<Boolean>()
     private val isSnapshotSaved = MutableLiveData<Boolean>()
+    private val isChallengesUpdated = MutableLiveData<Boolean>()
+    private val isUserStatsUpdated = MutableLiveData<Boolean>()
 
     fun saveRoute(route: RouteModel) {
         val routeEntity = RouteMapper.routeToEntityTransform(route)
         disposables.add(
-            Completable.concatArray(
-                saveRouteInteractor.saveRoute(routeEntity),
-                updateChallenges(routeEntity)
-            )
-            .subscribe({ isRouteSaved.postValue(true) }, Throwable::printStackTrace)
+            saveRouteInteractor.saveRoute(routeEntity)
+                .doFinally { updateChallenges(routeEntity) }
+                .subscribe({ isRouteSaved.postValue(true) }, Throwable::printStackTrace)
         )
     }
 
-    private fun updateChallenges(route: Route) : Completable {
-        return getActiveChallengesInteractor.getChallenges()
-            .map { challenges ->
-                ChallengeUtils.updateChallengesProgress(route.routeStats, challenges)
-            }.flatMapCompletable { updatedChallenges ->
-                Completable.concatArray(
-                    updateChallengesInteractor.updateChallenges(updatedChallenges),
-                    updateUserStats(route, updatedChallenges)
-                )
-            }
+    private fun updateChallenges(route: Route) {
+        disposables.add(
+            getActiveChallengesInteractor.getChallenges()
+                .map { challenges ->
+                    ChallengeUtils.updateChallengesProgress(route.routeStats, challenges)
+                }.flatMapCompletable { updatedChallenges ->
+                        updateChallengesInteractor.updateChallenges(updatedChallenges)
+                            .doFinally { updateUserStats(route, updatedChallenges) }
+                }
+                .subscribe({ isChallengesUpdated.postValue(true) }, Throwable::printStackTrace)
+        )
     }
 
-    private fun updateUserStats(route: Route, challenges: List<Challenge>) : Completable {
-        return getUserStatsInteractor.getUserStats().firstElement()
-            .map { userStats ->
-                UserStatsUtils.updateUserStats(userStats, route.routeStats)
-                for(challenge in challenges.filter { it.isFinished }) {
-                    userStats.experience += challenge.experience
+    private fun updateUserStats(route: Route, challenges: List<Challenge>) {
+        disposables.add(
+            getUserStatsInteractor.getUserStats().firstElement()
+                .map { userStats ->
+                    UserStatsUtils.updateUserStats(userStats, route.routeStats)
+                    for(challenge in challenges.filter { it.isFinished }) {
+                        userStats.experience += challenge.experience
+                    }
+                    userStats
                 }
-                userStats
-            }
-            .flatMapCompletable { userStats ->
-                updateUserStatsInteractor.updateUserStats(userStats)
-            }
+                .flatMapCompletable { userStats ->
+                    updateUserStatsInteractor.updateUserStats(userStats)
+                }
+                .subscribe({ isUserStatsUpdated.postValue(true) }, Throwable::printStackTrace)
+        )
     }
 
     fun saveSnapshot(bitmap: Bitmap, fileName: String) {
@@ -77,4 +80,6 @@ class SummaryRunViewModel
 
     fun getIsRouteSaved() = isRouteSaved
     fun getIsSnapshotSaved() = isSnapshotSaved
+    fun getIsChallengesUpdated() = isChallengesUpdated
+    fun getIsUserStatsUpdated() = isUserStatsUpdated
 }

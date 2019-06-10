@@ -19,7 +19,7 @@ class ChallengeDataRepository(
                 challenge.id = localID
                 remoteChallengeSource.saveChallenge(challenge)
                     .flatMapCompletable { localChallengeSource.updateChallengeID(localID, it) }
-            }.onErrorComplete() //TODO: custom NoInternetException
+            }
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
