@@ -3,12 +3,15 @@ package com.whisker.mrr.firebase.datasource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.*
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_ROUTES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.domain.source.RemoteRouteSource
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
@@ -16,9 +19,16 @@ import javax.inject.Inject
 class RemoteRouteDataSource
 @Inject constructor(
     private val databaseReference: DatabaseReference,
-    connectivityReference: DatabaseReference,
     firebaseAuth: FirebaseAuth
-) : BaseSource(connectivityReference, firebaseAuth), RemoteRouteSource {
+) : BaseSource(firebaseAuth), RemoteRouteSource {
+
+    init {
+        RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
+            if(event is NetworkStateEvent) {
+                isNetworkAvailable = event.isNetworkAvailable
+            }
+        })
+    }
 
     override fun saveRoute(route: Route) : Single<Long> {
         return checkConnection().andThen(

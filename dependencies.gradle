@@ -63,10 +63,10 @@ ext {
             daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
 
             // Firebase
-            firebaseAuth:       'com.google.firebase:firebase-auth:16.0.4',
-            firebaseCore:       'com.google.firebase:firebase-core:16.0.4',
-            firebaseDatabase:   'com.google.firebase:firebase-database:16.0.4',
-            firebaseStorage:    'com.google.firebase:firebase-storage:16.0.4',
+            firebaseAuth:       'com.google.firebase:firebase-auth:17.0.0',
+            firebaseCore:       'com.google.firebase:firebase-core:16.0.9',
+            firebaseDatabase:   'com.google.firebase:firebase-database:17.0.0',
+            firebaseStorage:    'com.google.firebase:firebase-storage:17.0.0',
 
             // Picasso
             picasso:            'com.squareup.picasso:picasso:2.71828',
@@ -108,10 +108,10 @@ ext {
             daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
 
             // Firebase
-            firebaseAuth:       'com.google.firebase:firebase-auth:16.0.4',
-            firebaseCore:       'com.google.firebase:firebase-core:16.0.4',
-            firebaseDatabase:   'com.google.firebase:firebase-database:16.0.4',
-            firebaseStorage:    'com.google.firebase:firebase-storage:16.0.4',
+            firebaseAuth:       'com.google.firebase:firebase-auth:17.0.0',
+            firebaseCore:       'com.google.firebase:firebase-core:16.0.9',
+            firebaseDatabase:   'com.google.firebase:firebase-database:17.0.0',
+            firebaseStorage:    'com.google.firebase:firebase-storage:17.0.0'
     ]
 
     firebaseTestDependencies = [

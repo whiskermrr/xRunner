@@ -37,4 +37,9 @@ class UserDataRepository(
                 .andThen(remoteUserSource.createUserStats(it))
             }
     }
+
+    override fun synchroUserStats(): Completable {
+        return remoteUserSource.getUserStats()
+            .flatMapCompletable { localUserSource.saveUserStats(it) }
+    }
 }

@@ -3,11 +3,14 @@ package com.whisker.mrr.firebase.datasource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.*
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_CHALLENGES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.source.RemoteChallengeSource
 import io.reactivex.*
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 import java.util.*
@@ -15,9 +18,16 @@ import kotlin.collections.HashMap
 
 class RemoteChallengeDataSource(
     private val databaseReference: DatabaseReference,
-    connectivityReference: DatabaseReference,
     firebaseAuth: FirebaseAuth
-) : BaseSource(connectivityReference, firebaseAuth), RemoteChallengeSource {
+) : BaseSource(firebaseAuth), RemoteChallengeSource {
+
+    init {
+        RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
+            if(event is NetworkStateEvent) {
+                isNetworkAvailable = event.isNetworkAvailable
+            }
+        })
+    }
 
     companion object {
         const val DB_REFERENCE_IS_FINISHED = "finished"

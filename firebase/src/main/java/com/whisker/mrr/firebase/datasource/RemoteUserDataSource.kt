@@ -6,6 +6,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.whisker.mrr.domain.common.bus.RxBus
+import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.firebase.common.DataConstants.DB_AVERAGE_PACE
 import com.whisker.mrr.firebase.common.DataConstants.DB_EXPERIENCE
 import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_DISTANCE
@@ -16,18 +18,26 @@ import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.source.RemoteUserSource
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RemoteUserDataSource
 @Inject constructor(
     private val databaseReference: DatabaseReference,
-    connectivityReference: DatabaseReference,
     firebaseAuth: FirebaseAuth
-) : BaseSource(connectivityReference, firebaseAuth), RemoteUserSource {
+) : BaseSource(firebaseAuth), RemoteUserSource {
+
+    init {
+        RxBus.subscribeSticky(NetworkStateEvent::class.java.name, this, Consumer { event ->
+            if(event is NetworkStateEvent) {
+                isNetworkAvailable = event.isNetworkAvailable
+            }
+        })
+    }
 
     override fun updateUserStats(userStats: UserStats): Completable {
-        return checkConnection().andThen {
+        return checkConnection().andThen(
                 Completable.create { emitter ->
                     var userReference: DatabaseReference = databaseReference
                     try {
@@ -54,7 +64,7 @@ class RemoteUserDataSource
                         emitter.onError(it)
                     }
                 }.observeOn(Schedulers.io())
-            }
+        )
     }
 
     override fun getUserStats(): Single<UserStats> {

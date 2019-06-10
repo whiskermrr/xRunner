@@ -8,4 +8,5 @@ interface UserRepository {
     fun updateUserStats(userStats: UserStats) : Completable
     fun getUserStats() : Flowable<UserStats>
     fun createUserStats(userID: String) : Completable
+    fun synchroUserStats() : Completable
 }

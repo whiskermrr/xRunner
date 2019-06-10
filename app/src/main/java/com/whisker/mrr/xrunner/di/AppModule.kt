@@ -3,7 +3,6 @@ package com.whisker.mrr.xrunner.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.data.database.DbRunner
@@ -106,12 +105,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideConnectivityReference() : DatabaseReference {
-        return FirebaseDatabase.getInstance().getReference(".info/connected")
-    }
-
-    @Provides
-    @Singleton
     fun provideLoginRepository(authDataSource: AuthSource) : LoginRepository {
         return LoginDataRepository(authDataSource)
     }
@@ -130,8 +123,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteRouteSource(database: FirebaseDatabase, connectivityRef: DatabaseReference, firebaseAuth: FirebaseAuth) : RemoteRouteSource {
-        return RemoteRouteDataSource(database.reference, connectivityRef, firebaseAuth)
+    fun provideRemoteRouteSource(database: FirebaseDatabase, firebaseAuth: FirebaseAuth) : RemoteRouteSource {
+        return RemoteRouteDataSource(database.reference, firebaseAuth)
     }
 
     @Provides
@@ -190,14 +183,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteUserSource(database: FirebaseDatabase, connectivityRef: DatabaseReference, firebaseAuth: FirebaseAuth) : RemoteUserSource {
-        return RemoteUserDataSource(database.reference, connectivityRef, firebaseAuth)
+    fun provideRemoteUserSource(database: FirebaseDatabase,  firebaseAuth: FirebaseAuth) : RemoteUserSource {
+        return RemoteUserDataSource(database.reference, firebaseAuth)
     }
 
     @Provides
     @Singleton
-    fun provideRemoteChallengeSource(database: FirebaseDatabase, connectivityRef: DatabaseReference, firebaseAuth: FirebaseAuth) : RemoteChallengeSource {
-        return RemoteChallengeDataSource(database.reference, connectivityRef, firebaseAuth)
+    fun provideRemoteChallengeSource(database: FirebaseDatabase,  firebaseAuth: FirebaseAuth) : RemoteChallengeSource {
+        return RemoteChallengeDataSource(database.reference, firebaseAuth)
     }
 
     @Provides
@@ -220,8 +213,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLoginInteractor(loginRepository: LoginRepository) : LoginInteractor {
-        return LoginInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), loginRepository)
+    fun provideLoginInteractor(loginRepository: LoginRepository, userRepository: UserRepository) : LoginInteractor {
+        return LoginInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), loginRepository, userRepository)
     }
 
     @Provides
