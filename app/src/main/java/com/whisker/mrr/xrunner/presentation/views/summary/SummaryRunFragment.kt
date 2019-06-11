@@ -125,10 +125,10 @@ class SummaryRunFragment : BaseMapFragment() {
 
     private fun takeSnapshot() {
         disposables.add(
-            Single.create(SingleOnSubscribe<Bitmap> { subscriber ->
+            Single.create<Bitmap> { subscriber ->
                 mMap.snapshot { bitmap ->
                     subscriber.onSuccess(bitmap)
-                }})
+                }}
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {

@@ -48,3 +48,19 @@ fun String.toLongDate(format: String) : Long? {
 fun Date.daysBetween(date: Date) : Int {
     return ((this.time - date.time) / (1000 * 60 * 60 * 24)).toInt() + 1
 }
+
+inline fun <T> Iterable<T>.sumByFloat(selector: (T) -> Float): Float {
+    var sum = 0f
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}
+
+inline fun <T> Iterable<T>.sumByLong(selector: (T) -> Long): Long {
+    var sum = 0L
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}

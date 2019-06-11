@@ -20,7 +20,7 @@ class UserProfileViewModel @Inject constructor(private val getUserStatsInteracto
     private fun getUserStats() {
         disposables.add(
             getUserStatsInteractor.getUserStats()
-                .flatMap {  statsEntity ->
+                .map {  statsEntity ->
                     UserStatsMapper.transformUserStats(statsEntity)
                 }
                 .subscribe( { stats ->

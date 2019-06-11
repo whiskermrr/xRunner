@@ -30,10 +30,10 @@ object ChallengeUtils {
         val selectedChallenges = challenges.filter {
             (it.time != null && it.speed == null && it.distance == null)
             || (it.time != null && it.speed == null && it.distance != null)
-            || (it.time != null && it.speed != null && it.distance != null && it.speed <= stats.averageSpeed)
-            || (it.time != null && it.speed != null && it.distance == null && it.speed <= stats.averageSpeed)
+            || (it.time != null && it.speed != null && it.distance != null && it.speed!! <= stats.averageSpeed)
+            || (it.time != null && it.speed != null && it.distance == null && it.speed!! <= stats.averageSpeed)
             || (it.time == null && it.speed == null && it.distance != null)
-            || (it.time == null && it.speed != null && it.distance != null && it.speed <= stats.averageSpeed)
+            || (it.time == null && it.speed != null && it.distance != null && it.speed!! <= stats.averageSpeed)
         }.distinctBy { Triple(it.time == null, it.distance == null, it.speed == null) }
 
         for(challenge in selectedChallenges) {

@@ -4,6 +4,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_SNAPSHOT
 import com.whisker.mrr.domain.source.SnapshotRemoteSource
 import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
 import java.io.File
 import java.io.FileInputStream
 
@@ -22,7 +23,7 @@ class SnapshotRemoteDataSource(private val firebaseStorage: FirebaseStorage) : S
             }.addOnFailureListener {
                 emitter.onError(it)
             }
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun saveListOfSnapshotsRemote(files: MutableList<Pair<String, String>>): List<Completable> {
@@ -43,7 +44,7 @@ class SnapshotRemoteDataSource(private val firebaseStorage: FirebaseStorage) : S
                     }.addOnFailureListener {
                         emitter.onError(it)
                     }
-                }
+                }.observeOn(Schedulers.io())
             )
         }
 

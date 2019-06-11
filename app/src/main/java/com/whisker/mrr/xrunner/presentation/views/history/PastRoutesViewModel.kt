@@ -30,17 +30,15 @@ class PastRoutesViewModel
                 .map {
                     RouteMapper.listOfEntityHoldersToListOfRouteHolders(it)
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { routes ->
                     routeList.postValue(routes)
                 }
         )
     }
 
-    fun removeRoute(routeId: String, date: Long) {
+    fun removeRoute(routeId: Long) {
         disposables.add(
-            removeRouteInteractor.removeRoute(routeId, date)
+            removeRouteInteractor.removeRoute(routeId)
                 .subscribe {
                     Log.e(TAG(), "route removed")
                 }

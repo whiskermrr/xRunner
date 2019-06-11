@@ -23,7 +23,6 @@ import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment
-import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import com.whisker.mrr.xrunner.utils.XRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
@@ -154,7 +153,7 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode) {
-            XRunnerConstants.REQUEST_LOCATION_CODE -> {
+            REQUEST_LOCATION_CODE -> {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                         && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

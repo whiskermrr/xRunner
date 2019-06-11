@@ -104,8 +104,8 @@ class RunFragment : BaseMapFragment() {
     }
 
     override fun onMapCreated() {
-        viewModel.onMapShown()
         viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
+        viewModel.onMapShown()
     }
 
     private fun showMap() {

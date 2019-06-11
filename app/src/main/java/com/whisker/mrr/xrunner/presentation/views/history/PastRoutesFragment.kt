@@ -35,7 +35,7 @@ class PastRoutesFragment : BaseFragment() {
         rvRoutes.layoutManager = LinearLayoutManager(context)
         rvRoutes.adapter = routesAdapter
 
-        val swipeHandler = object : SwipeToDeleteCallback(context!!) {
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val section = routesAdapter.getSectionForPosition(viewHolder.adapterPosition) as RoutesAdapter
                 val globalPosition = routesAdapter.getPositionInAdapter(section, 0)
@@ -47,7 +47,7 @@ class PastRoutesFragment : BaseFragment() {
                     routesAdapter.notifyDataSetChanged()
                 }
 
-                viewModel.removeRoute(route.routeId, route.date)
+                viewModel.removeRoute(route.routeId)
             }
         }
 

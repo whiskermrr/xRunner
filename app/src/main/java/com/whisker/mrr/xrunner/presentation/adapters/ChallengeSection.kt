@@ -72,7 +72,7 @@ class ChallengeSection(private val isActive: Boolean, private val challenges: Li
                     itemView.context.getString(R.string.challenge_deadline_day_format, days)
                 }
                 tvChallengeDeadline.visibility = View.VISIBLE
-            } ?: kotlin.run { tvChallengeDeadline.visibility = View.GONE }
+            } ?: run { tvChallengeDeadline.visibility = View.GONE }
         }
     }
 

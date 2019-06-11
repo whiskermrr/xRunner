@@ -3,11 +3,15 @@ package com.whisker.mrr.domain.interactor
 import com.whisker.mrr.domain.repository.LoginRepository
 import com.whisker.mrr.domain.usecase.CompletableUseCase
 import com.whisker.mrr.domain.common.whenBothNotNull
+import com.whisker.mrr.domain.repository.UserRepository
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.lang.IllegalArgumentException
 
-class LoginInteractor(transformer: CompletableTransformer, private val loginRepository: LoginRepository
+class LoginInteractor(
+    transformer: CompletableTransformer,
+    private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository
 ) : CompletableUseCase(transformer) {
 
     companion object {
@@ -28,6 +32,7 @@ class LoginInteractor(transformer: CompletableTransformer, private val loginRepo
 
         whenBothNotNull(emailData, passwordData) { email, password ->
             return loginRepository.login(email.toString(), password.toString())
+                .andThen(userRepository.synchroUserStats())
         }
 
         return Completable.error(IllegalArgumentException("@email and @password must be provided."))

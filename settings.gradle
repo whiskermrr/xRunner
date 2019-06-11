@@ -1,1 +1,1 @@
-include ':app', ':domain', ':firebase', ':infrastructure', ':music'
+include ':app', ':domain', ':firebase', ':infrastructure', ':music', ':data'

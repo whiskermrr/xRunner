@@ -1,0 +1,69 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':domain')
+
+    def dataDependencies = rootProject.ext.dataDependencies
+    def dataTestDependencies = rootProject.ext.dataTestDependencies
+
+    implementation dataDependencies.javaxAnnotation
+    implementation dataDependencies.javaxInject
+    implementation dataDependencies.rxKotlin
+    implementation dataDependencies.rxJava
+    implementation dataDependencies.kotlin
+
+    implementation dataDependencies.dagger
+    implementation dataDependencies.daggerSupport
+    kapt dataDependencies.daggerAndroidKapt
+    kapt dataDependencies.daggerProcessorKapt
+
+    implementation dataDependencies.baseRoom
+    implementation dataDependencies.rxRoom
+    kapt dataDependencies.kaptBaseRoom
+
+    implementation dataDependencies.gson
+
+    implementation dataDependencies.retrofit
+    implementation dataDependencies.gsonRetrofit
+    implementation dataDependencies.rxRetrofit
+    implementation dataDependencies.okhttp3
+
+    testImplementation dataTestDependencies.junit
+    testImplementation dataTestDependencies.mockito
+    testImplementation dataTestDependencies.assertj
+    testImplementation dataTestDependencies.testRoom
+
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}
+repositories {
+    mavenCentral()
+}

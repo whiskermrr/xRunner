@@ -16,25 +16,19 @@ class RemoveRouteInteractor(
 
     companion object {
         const val PARAM_ROUTE_ID = "param_route_id"
-        const val PARAM_ROUTE_DATE = "param_route_date"
     }
 
-    fun removeRoute(routeId: String, date: Long) : Completable {
+    fun removeRoute(routeId: Long) : Completable {
         val data = HashMap<String, Any>()
         data[PARAM_ROUTE_ID]  = routeId
-        data[PARAM_ROUTE_DATE] = date
         return completable(data)
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
         val routeId = data?.get(PARAM_ROUTE_ID)
-        val routeDate = data?.get(PARAM_ROUTE_DATE)
 
-        whenBothNotNull(routeId, routeDate) { id, date ->
-            return authSource.getUserId()
-                .flatMapCompletable { userId ->
-                    routeRepository.removeRoute(userId, id.toString(), date.toString().toLong())
-                }
+        routeId?.let { id ->
+            return routeRepository.removeRoute(id as Long)
         }
 
         return Completable.error(IllegalArgumentException("Parameter @routeId must be provided."))
