@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    def webApiDependencies = rootProject.ext.webApiDependencies
+    def webApiTestDependencies = rootProject.ext.webApiTestDependencies
+
+    implementation webApiDependencies.javaxAnnotation
+    implementation webApiDependencies.javaxInject
+    implementation webApiDependencies.rxKotlin
+    implementation webApiDependencies.rxJava
+    implementation webApiDependencies.kotlin
+
+    implementation webApiDependencies.dagger
+    implementation webApiDependencies.daggerSupport
+    kapt webApiDependencies.daggerAndroidKapt
+    kapt webApiDependencies.daggerProcessorKapt
+
+    implementation webApiDependencies.gson
+
+    implementation webApiDependencies.retrofit
+    implementation webApiDependencies.gsonRetrofit
+    implementation webApiDependencies.rxRetrofit
+    implementation webApiDependencies.okhttp3
+
+    testImplementation webApiTestDependencies.junit
+    testImplementation webApiTestDependencies.mockito
+    testImplementation webApiTestDependencies.assertj
+
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}

@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':domain')
+
+    def roomDependencies = rootProject.ext.roomDependencies
+    def roomTestDependencies = rootProject.ext.roomTestDependencies
+
+    implementation roomDependencies.javaxAnnotation
+    implementation roomDependencies.javaxInject
+    implementation roomDependencies.rxKotlin
+    implementation roomDependencies.rxJava
+    implementation roomDependencies.kotlin
+
+    implementation roomDependencies.dagger
+    implementation roomDependencies.daggerSupport
+    kapt roomDependencies.daggerAndroidKapt
+    kapt roomDependencies.daggerProcessorKapt
+
+    implementation roomDependencies.baseRoom
+    implementation roomDependencies.rxRoom
+    kapt roomDependencies.kaptBaseRoom
+
+    implementation roomDependencies.gson
+
+    testImplementation roomTestDependencies.junit
+    testImplementation roomTestDependencies.mockito
+    testImplementation roomTestDependencies.assertj
+    testImplementation roomTestDependencies.testRoom
+
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}

@@ -60,7 +60,6 @@ class RouteDataRepository(
                 .andThen {
                     localRouteSource.removeRouteById(routeID)
                 }
-
         )
     }
 
