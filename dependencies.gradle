@@ -180,11 +180,59 @@ ext {
             daggerSupport:      "com.google.dagger:dagger-android-support:2.16",
             daggerAndroidKapt:  "com.google.dagger:dagger-compiler:2.16",
             daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
+    ]
+
+    dataTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}"
+    ]
+
+    roomDependencies = [
+            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
+            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
+
+            //Rx
+            rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:2.2.2",
+
+            // Dagger
+            dagger:             "com.google.dagger:dagger:2.16",
+            daggerSupport:      "com.google.dagger:dagger-android-support:2.16",
+            daggerAndroidKapt:  "com.google.dagger:dagger-compiler:2.16",
+            daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
 
             // Room
             baseRoom:            "androidx.room:room-runtime:$room_version",
             kaptBaseRoom:        "androidx.room:room-compiler:$room_version",
             rxRoom:              "androidx.room:room-rxjava2:$room_version",
+
+            // Gson
+            gson:               "com.google.code.gson:gson:2.8.5"
+    ]
+
+    roomTestDependencies = [
+            junit:              "junit:junit:${jUnitVersion}",
+            mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            assertj:            "org.assertj:assertj-core:${assertJVersion}",
+            testRoom:           "androidx.room:room-testing:$room_version"
+    ]
+
+    webApiDependencies = [
+            javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
+            kotlin:             "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}",
+
+            //Rx
+            rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
+            rxJava:             "io.reactivex.rxjava2:rxjava:2.2.2",
+
+            // Dagger
+            dagger:             "com.google.dagger:dagger:2.16",
+            daggerSupport:      "com.google.dagger:dagger-android-support:2.16",
+            daggerAndroidKapt:  "com.google.dagger:dagger-compiler:2.16",
+            daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
 
             // Gson
             gson:               "com.google.code.gson:gson:2.8.5",
@@ -194,13 +242,11 @@ ext {
             gsonRetrofit:       'com.squareup.retrofit2:converter-gson:2.4.0',
             rxRetrofit:         'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0',
             okhttp3:            'com.squareup.okhttp3:logging-interceptor:3.10.0'
-
     ]
 
-    dataTestDependencies = [
+    webApiTestDependencies = [
             junit:              "junit:junit:${jUnitVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            assertj:            "org.assertj:assertj-core:${assertJVersion}",
-            testRoom:           "androidx.room:room-testing:$room_version"
+            assertj:            "org.assertj:assertj-core:${assertJVersion}"
     ]
 }
