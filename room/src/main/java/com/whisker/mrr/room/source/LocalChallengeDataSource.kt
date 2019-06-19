@@ -1,7 +1,7 @@
 package com.whisker.mrr.room.source
 
 import com.whisker.mrr.domain.model.Challenge
-import com.whisker.mrr.domain.source.LocalChallengeSource
+import com.whisker.mrr.data.source.LocalChallengeSource
 import com.whisker.mrr.room.dao.ChallengeDao
 import com.whisker.mrr.room.mapper.ChallengeEntityMapper
 import io.reactivex.Completable

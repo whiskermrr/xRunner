@@ -8,7 +8,7 @@ import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_ROUTES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Route
-import com.whisker.mrr.domain.source.RemoteRouteSource
+import com.whisker.mrr.data.source.RemoteRouteSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer

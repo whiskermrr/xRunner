@@ -1,4 +1,4 @@
-package com.whisker.mrr.domain.source
+package com.whisker.mrr.data.source
 
 import io.reactivex.Completable
 import io.reactivex.Single

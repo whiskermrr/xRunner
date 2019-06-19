@@ -6,10 +6,10 @@ import com.whisker.mrr.domain.common.mapper.RouteHolderMapper
 import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.domain.model.RouteHolder
 import com.whisker.mrr.domain.repository.RouteRepository
-import com.whisker.mrr.domain.source.LocalRouteSource
-import com.whisker.mrr.domain.source.RemoteRouteSource
-import com.whisker.mrr.domain.source.SnapshotLocalSource
-import com.whisker.mrr.domain.source.SnapshotRemoteSource
+import com.whisker.mrr.data.source.LocalRouteSource
+import com.whisker.mrr.data.source.RemoteRouteSource
+import com.whisker.mrr.data.source.SnapshotLocalSource
+import com.whisker.mrr.data.source.SnapshotRemoteSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

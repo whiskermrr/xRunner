@@ -1,11 +1,11 @@
-package com.whisker.mrr.domain.source
+package com.whisker.mrr.domain.manager
 
 import com.whisker.mrr.domain.model.Coords
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 
-interface LocationSource {
+interface LocationManager {
 
     fun startTracking() : Flowable<Coords>
     fun pauseTracking() : Completable

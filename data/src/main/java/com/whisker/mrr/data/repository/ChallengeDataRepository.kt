@@ -2,8 +2,8 @@ package com.whisker.mrr.data.repository
 
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.repository.ChallengeRepository
-import com.whisker.mrr.domain.source.LocalChallengeSource
-import com.whisker.mrr.domain.source.RemoteChallengeSource
+import com.whisker.mrr.data.source.LocalChallengeSource
+import com.whisker.mrr.data.source.RemoteChallengeSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

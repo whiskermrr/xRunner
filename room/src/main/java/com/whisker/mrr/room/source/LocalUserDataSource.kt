@@ -1,7 +1,7 @@
 package com.whisker.mrr.room.source
 
 import com.whisker.mrr.domain.model.UserStats
-import com.whisker.mrr.domain.source.LocalUserSource
+import com.whisker.mrr.data.source.LocalUserSource
 import com.whisker.mrr.room.dao.UserStatsDao
 import com.whisker.mrr.room.mapper.UserStatsEntityMapper
 import io.reactivex.Completable

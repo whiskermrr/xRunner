@@ -2,7 +2,7 @@ package com.whisker.mrr.firebase.datasource
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.whisker.mrr.domain.source.AuthSource
+import com.whisker.mrr.data.source.AuthSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

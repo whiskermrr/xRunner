@@ -1,13 +1,13 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.source.LocationSource
+import com.whisker.mrr.domain.manager.LocationManager
 import com.whisker.mrr.domain.usecase.CompletableUseCase
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 
 class ResumeTrackingInteractor(
     transformer: CompletableTransformer,
-    private val locationSource: LocationSource
+    private val locationManager: LocationManager
 ) : CompletableUseCase(transformer) {
 
     fun resumeTracking() : Completable {
@@ -15,6 +15,6 @@ class ResumeTrackingInteractor(
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
-        return locationSource.resumeTracking()
+        return locationManager.resumeTracking()
     }
 }

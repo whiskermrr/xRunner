@@ -2,7 +2,7 @@ package com.whisker.mrr.firebase.datasource
 
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_SNAPSHOT
-import com.whisker.mrr.domain.source.SnapshotRemoteSource
+import com.whisker.mrr.data.source.SnapshotRemoteSource
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.io.File

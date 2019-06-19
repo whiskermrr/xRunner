@@ -10,8 +10,8 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.SyncEvent
-import com.whisker.mrr.domain.source.SnapshotLocalSource
-import com.whisker.mrr.domain.source.SnapshotRemoteSource
+import com.whisker.mrr.data.source.SnapshotLocalSource
+import com.whisker.mrr.data.source.SnapshotRemoteSource
 import dagger.android.AndroidInjection
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
