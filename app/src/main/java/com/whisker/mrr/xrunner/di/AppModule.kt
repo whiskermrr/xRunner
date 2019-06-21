@@ -19,13 +19,14 @@ import com.whisker.mrr.room.source.LocalUserDataSource
 import com.whisker.mrr.domain.common.scheduler.*
 import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.domain.interactor.*
+import com.whisker.mrr.domain.manager.LocationManager
 import com.whisker.mrr.domain.manager.MusicManager
 import com.whisker.mrr.domain.repository.*
-import com.whisker.mrr.domain.source.*
+import com.whisker.mrr.data.source.*
 import com.whisker.mrr.firebase.datasource.*
 import com.whisker.mrr.firebase.repository.LoginDataRepository
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
-import com.whisker.mrr.infrastructure.source.LocationDataSource
+import com.whisker.mrr.infrastructure.source.LocationDataManager
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
 import com.whisker.mrr.music.MusicDataManager
 import com.whisker.mrr.music.repository.MusicDataRepository
@@ -117,8 +118,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocationDataSource(context: Context) : LocationSource {
-        return LocationDataSource(context)
+    fun provideLocationDataSource(context: Context) : LocationManager {
+        return LocationDataManager(context)
     }
 
     @Provides
@@ -201,8 +202,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGetLastKnownLocationInteractor(locationSource: LocationSource) : GetLastKnownLocationInteractor {
-        return GetLastKnownLocationInteractor(IOMaybeTransformer(AndroidSchedulers.mainThread()), locationSource)
+    fun provideGetLastKnownLocationInteractor(locationManager: LocationManager) : GetLastKnownLocationInteractor {
+        return GetLastKnownLocationInteractor(IOMaybeTransformer(AndroidSchedulers.mainThread()), locationManager)
     }
 
     @Provides
@@ -219,14 +220,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providePauseTrackingInteractor(locationSource: LocationSource) : PauseTrackingInteractor {
-        return PauseTrackingInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), locationSource)
+    fun providePauseTrackingInteractor(locationManager: LocationManager) : PauseTrackingInteractor {
+        return PauseTrackingInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), locationManager)
     }
 
     @Provides
     @Singleton
-    fun provideResumeTrackingInteractor(locationSource: LocationSource) : ResumeTrackingInteractor {
-        return ResumeTrackingInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), locationSource)
+    fun provideResumeTrackingInteractor(locationManager: LocationManager) : ResumeTrackingInteractor {
+        return ResumeTrackingInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), locationManager)
     }
 
     @Provides
@@ -243,20 +244,20 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideStartTrackingInteractor(locationSource: LocationSource) : StartTrackingInteractor {
-        return StartTrackingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), locationSource)
+    fun provideStartTrackingInteractor(locationManager: LocationManager) : StartTrackingInteractor {
+        return StartTrackingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), locationManager)
     }
 
     @Provides
     @Singleton
-    fun provideStopTrackingInteractor(locationSource: LocationSource) : StopTrackingInteractor {
-        return StopTrackingInteractor(locationSource)
+    fun provideStopTrackingInteractor(locationManager: LocationManager) : StopTrackingInteractor {
+        return StopTrackingInteractor(locationManager)
     }
 
     @Provides
     @Singleton
-    fun provideRemoveRouteInteractor(routeRepository: RouteRepository, authSource: AuthSource) : RemoveRouteInteractor {
-        return RemoveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository, authSource)
+    fun provideRemoveRouteInteractor(routeRepository: RouteRepository) : RemoveRouteInteractor {
+        return RemoveRouteInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository)
     }
 
     @Provides

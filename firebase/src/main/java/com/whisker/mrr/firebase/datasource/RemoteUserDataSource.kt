@@ -15,7 +15,7 @@ import com.whisker.mrr.firebase.common.DataConstants.DB_TOTAL_TIME
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USER_STATS
 import com.whisker.mrr.domain.model.UserStats
-import com.whisker.mrr.domain.source.RemoteUserSource
+import com.whisker.mrr.data.source.RemoteUserSource
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer

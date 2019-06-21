@@ -8,7 +8,7 @@ import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_CHALLENGES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Challenge
-import com.whisker.mrr.domain.source.RemoteChallengeSource
+import com.whisker.mrr.data.source.RemoteChallengeSource
 import io.reactivex.*
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers

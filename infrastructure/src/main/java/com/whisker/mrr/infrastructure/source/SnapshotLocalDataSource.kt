@@ -2,7 +2,7 @@ package com.whisker.mrr.infrastructure.source
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.whisker.mrr.domain.source.SnapshotLocalSource
+import com.whisker.mrr.data.source.SnapshotLocalSource
 import java.io.FileOutputStream
 import javax.inject.Inject
 

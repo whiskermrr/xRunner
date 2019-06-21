@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.IBinder
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.model.Coords
-import com.whisker.mrr.domain.source.LocationSource
 import com.whisker.mrr.infrastructure.LocationEvent
 import com.whisker.mrr.infrastructure.LocationService
 import io.reactivex.BackpressureStrategy
@@ -21,10 +20,10 @@ import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-class LocationDataSource
+class LocationDataManager
 @Inject constructor(
     private val context: Context
-) : LocationSource {
+) : com.whisker.mrr.domain.manager.LocationManager {
 
     private lateinit var locationSubject: PublishSubject<Coords>
     private lateinit var locationService: LocationService

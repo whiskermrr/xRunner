@@ -1,4 +1,4 @@
-package com.whisker.mrr.domain.source
+package com.whisker.mrr.data.source
 
 import com.whisker.mrr.domain.model.Challenge
 import io.reactivex.Completable

@@ -2,8 +2,8 @@ package com.whisker.mrr.data.repository
 
 import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.repository.UserRepository
-import com.whisker.mrr.domain.source.LocalUserSource
-import com.whisker.mrr.domain.source.RemoteUserSource
+import com.whisker.mrr.data.source.LocalUserSource
+import com.whisker.mrr.data.source.RemoteUserSource
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

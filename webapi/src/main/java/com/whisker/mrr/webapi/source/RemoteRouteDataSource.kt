@@ -3,7 +3,7 @@ package com.whisker.mrr.webapi.source
 import com.whisker.mrr.webapi.request.GetDataRequest
 import com.whisker.mrr.domain.manager.PreferencesManager
 import com.whisker.mrr.domain.model.Route
-import com.whisker.mrr.domain.source.RemoteRouteSource
+import com.whisker.mrr.data.source.RemoteRouteSource
 import com.whisker.mrr.webapi.mapper.RouteDtoMapper
 import io.reactivex.Completable
 import io.reactivex.Single

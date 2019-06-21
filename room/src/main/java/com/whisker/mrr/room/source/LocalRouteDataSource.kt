@@ -1,7 +1,7 @@
 package com.whisker.mrr.room.source
 
 import com.whisker.mrr.domain.model.Route
-import com.whisker.mrr.domain.source.LocalRouteSource
+import com.whisker.mrr.data.source.LocalRouteSource
 import com.whisker.mrr.room.dao.RouteDao
 import com.whisker.mrr.room.mapper.RouteEntityMapper
 import io.reactivex.Completable
