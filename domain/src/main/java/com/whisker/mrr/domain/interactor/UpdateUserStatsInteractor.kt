@@ -26,12 +26,12 @@ class UpdateUserStatsInteractor(
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
         val routeStats = data?.get(PARAM_ROUTE_STATS)
-        val exp = data?.get(PARAM_EXP)
+        val exp = data?.get(PARAM_EXP) ?: 0
 
         routeStats?.let { stats ->
             return userRepository.getUserStats().firstElement()
                 .map { UserStatsUtils.updateUserStats(it, stats as RouteStats, exp as Int) }
                 .flatMapCompletable { userRepository.updateUserStats(it) }
-        } ?: return Completable.error(IllegalArgumentException("Parameter @challenges must be provided."))
+        } ?: return Completable.error(IllegalArgumentException("Parameter @stats must be provided."))
     }
 }

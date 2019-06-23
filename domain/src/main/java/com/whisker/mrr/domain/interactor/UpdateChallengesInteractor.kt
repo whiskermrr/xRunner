@@ -1,7 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
 import com.whisker.mrr.domain.common.ChallengeUtils
-import com.whisker.mrr.domain.common.exception.NoConnectivityException
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.repository.ChallengeRepository
@@ -32,7 +31,10 @@ class UpdateChallengesInteractor(
                 .map { ChallengeUtils.updateChallengesProgress(stats, it) }
                 .flatMap { updatedChallenges ->
                     challengeRepository.updateChallenges(updatedChallenges)
-                        .onErrorComplete { it is NoConnectivityException }
+                        .onErrorResumeNext {
+                            val progressList = ChallengeUtils.getChallengesProgress(stats, updatedChallenges)
+                            challengeRepository.saveChallengesProgressListLocally(progressList)
+                        }
                         .andThen(Single.just(updatedChallenges))
                 }
         } ?: return Single.error(IllegalArgumentException("Parameter @routeStats must be provided."))

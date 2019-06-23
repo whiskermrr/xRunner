@@ -2,6 +2,7 @@ package com.whisker.mrr.room.source
 
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.data.source.LocalChallengeSource
+import com.whisker.mrr.domain.model.ChallengeProgress
 import com.whisker.mrr.room.dao.ChallengeDao
 import com.whisker.mrr.room.mapper.ChallengeEntityMapper
 import io.reactivex.Completable
@@ -65,5 +66,9 @@ class LocalChallengeDataSource(
                 challengeDao.updateChallengeID(oldID, newID)
             }
         }
+    }
+
+    override fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>): Completable {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

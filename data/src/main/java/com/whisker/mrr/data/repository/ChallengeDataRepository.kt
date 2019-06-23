@@ -4,6 +4,7 @@ import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.repository.ChallengeRepository
 import com.whisker.mrr.data.source.LocalChallengeSource
 import com.whisker.mrr.data.source.RemoteChallengeSource
+import com.whisker.mrr.domain.model.ChallengeProgress
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -53,5 +54,9 @@ class ChallengeDataRepository(
 
     override fun getActiveChallengesSingle(): Single<List<Challenge>> {
         return localChallengeSource.getActiveChallengesSingle()
+    }
+
+    override fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>): Completable {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

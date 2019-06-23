@@ -275,7 +275,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideUpdateChallengeInteractor(challengeRepository: ChallengeRepository) : UpdateChallengesInteractor {
-        return UpdateChallengesInteractor(IOCompletableTransformer(AndroidSchedulers.mainThread()), challengeRepository)
+        return UpdateChallengesInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), challengeRepository)
     }
 
     @Provides
