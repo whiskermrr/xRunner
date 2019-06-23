@@ -6,11 +6,12 @@ import kotlin.math.roundToInt
 
 object UserStatsUtils {
 
-    fun updateUserStats(userStats: UserStats, routeStats: RouteStats) : UserStats {
+    fun updateUserStats(userStats: UserStats, routeStats: RouteStats, exp: Int) : UserStats {
         userStats.totalDistance += routeStats.wgs84distance
         userStats.totalTime += routeStats.routeTime
         userStats.experience += calculateExp(routeStats)
         userStats.averagePace = calculateAveragePace(userStats.totalDistance, userStats.totalTime)
+        userStats.experience += exp
 
         return userStats
     }

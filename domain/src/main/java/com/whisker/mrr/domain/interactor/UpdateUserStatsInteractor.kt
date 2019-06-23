@@ -1,6 +1,7 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.model.UserStats
+import com.whisker.mrr.domain.common.UserStatsUtils
+import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.repository.UserRepository
 import com.whisker.mrr.domain.usecase.CompletableUseCase
 import io.reactivex.Completable
@@ -12,20 +13,25 @@ class UpdateUserStatsInteractor(
 ) : CompletableUseCase(transformer) {
 
     companion object {
-        const val PARAM_USER_STATS = "param_user_stats"
+        const val PARAM_ROUTE_STATS = "param_route_stats"
+        const val PARAM_EXP = "param_exp"
     }
 
-    fun updateUserStats(userStats: UserStats) : Completable {
+    fun updateUserStats(stats: RouteStats, challengeExp: Int) : Completable {
         val data = HashMap<String, Any>()
-        data[PARAM_USER_STATS] = userStats
+        data[PARAM_ROUTE_STATS] = stats
+        data[PARAM_EXP] = challengeExp
         return completable(data)
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
-        val param = data?.get(PARAM_USER_STATS)
+        val routeStats = data?.get(PARAM_ROUTE_STATS)
+        val exp = data?.get(PARAM_EXP)
 
-        param?.let { userStats ->
-            return userRepository.updateUserStats(userStats as UserStats)
+        routeStats?.let { stats ->
+            return userRepository.getUserStats().firstElement()
+                .map { UserStatsUtils.updateUserStats(it, stats as RouteStats, exp as Int) }
+                .flatMapCompletable { userRepository.updateUserStats(it) }
         } ?: return Completable.error(IllegalArgumentException("Parameter @challenges must be provided."))
     }
 }

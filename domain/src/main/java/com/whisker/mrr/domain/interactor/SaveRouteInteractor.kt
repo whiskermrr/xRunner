@@ -1,5 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
+import com.whisker.mrr.domain.common.exception.NoConnectivityException
 import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.domain.repository.RouteRepository
 import com.whisker.mrr.domain.usecase.CompletableUseCase
@@ -27,6 +28,7 @@ class SaveRouteInteractor(
 
         routeEntity?.let {
             return routeRepository.saveRoute(routeEntity as Route)
+                .onErrorComplete { it is NoConnectivityException }
         } ?: return Completable.error(IllegalArgumentException("Argument @route must be provided."))
     }
 }
