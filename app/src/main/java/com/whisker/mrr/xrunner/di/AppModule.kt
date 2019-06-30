@@ -6,10 +6,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.room.DbRunner
-import com.whisker.mrr.room.dao.ChallengeDao
-import com.whisker.mrr.room.dao.PreferencesDao
-import com.whisker.mrr.room.dao.RouteDao
-import com.whisker.mrr.room.dao.UserStatsDao
 import com.whisker.mrr.data.repository.ChallengeDataRepository
 import com.whisker.mrr.data.repository.RouteDataRepository
 import com.whisker.mrr.data.repository.UserDataRepository
@@ -30,6 +26,7 @@ import com.whisker.mrr.infrastructure.source.LocationDataManager
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
 import com.whisker.mrr.music.MusicDataManager
 import com.whisker.mrr.music.repository.MusicDataRepository
+import com.whisker.mrr.room.dao.*
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import dagger.Module
 import dagger.Provides
@@ -60,6 +57,12 @@ class AppModule {
     @Singleton
     fun provideChallengeDao(db: DbRunner) : ChallengeDao {
         return db.challengeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideChallengeProgressDao(db: DbRunner) : ChallengeProgressDao {
+        return db.challengeProgressDao()
     }
 
     @Provides
@@ -148,8 +151,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalChallengeSource(challengeDao: ChallengeDao) : LocalChallengeSource {
-        return LocalChallengeDataSource(challengeDao)
+    fun provideLocalChallengeSource(challengeDao: ChallengeDao, challengeProgressDao: ChallengeProgressDao) : LocalChallengeSource {
+        return LocalChallengeDataSource(challengeDao, challengeProgressDao)
     }
 
     @Provides

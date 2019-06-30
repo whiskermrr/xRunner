@@ -4,13 +4,16 @@ import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.data.source.LocalChallengeSource
 import com.whisker.mrr.domain.model.ChallengeProgress
 import com.whisker.mrr.room.dao.ChallengeDao
+import com.whisker.mrr.room.dao.ChallengeProgressDao
 import com.whisker.mrr.room.mapper.ChallengeEntityMapper
+import com.whisker.mrr.room.mapper.ChallengeProgressEntityMapper
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
 class LocalChallengeDataSource(
-    private val challengeDao: ChallengeDao
+    private val challengeDao: ChallengeDao,
+    private val challengeProgressDao: ChallengeProgressDao
 ) : LocalChallengeSource {
 
     override fun saveChallenge(challenge: Challenge): Single<Long> {
@@ -69,6 +72,8 @@ class LocalChallengeDataSource(
     }
 
     override fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.fromAction {
+            challengeProgressDao.insertAll(ChallengeProgressEntityMapper.transofrmListToEntities(progressList))
+        }
     }
 }

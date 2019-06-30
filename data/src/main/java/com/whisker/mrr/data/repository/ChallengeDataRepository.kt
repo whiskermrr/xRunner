@@ -57,6 +57,6 @@ class ChallengeDataRepository(
     }
 
     override fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return localChallengeSource.saveChallengesProgressListLocally(progressList)
     }
 }
