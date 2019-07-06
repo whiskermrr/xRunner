@@ -1,6 +1,7 @@
 package com.whisker.mrr.domain.interactor
 
 import com.whisker.mrr.domain.common.UserStatsUtils
+import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.repository.UserRepository
 import com.whisker.mrr.domain.usecase.CompletableUseCase
@@ -17,10 +18,10 @@ class UpdateUserStatsInteractor(
         const val PARAM_EXP = "param_exp"
     }
 
-    fun updateUserStats(stats: RouteStats, challengeExp: Int) : Completable {
+    fun updateUserStats(stats: RouteStats, challenges: List<Challenge>) : Completable {
         val data = HashMap<String, Any>()
         data[PARAM_ROUTE_STATS] = stats
-        data[PARAM_EXP] = challengeExp
+        data[PARAM_EXP] = challenges.filter { it.isFinished }.sumBy { it.experience }
         return completable(data)
     }
 

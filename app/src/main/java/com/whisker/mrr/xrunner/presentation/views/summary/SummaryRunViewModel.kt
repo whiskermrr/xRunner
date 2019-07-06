@@ -51,7 +51,7 @@ class SummaryRunViewModel
 
     private fun updateUserStats(route: Route, challenges: List<Challenge>) {
         disposables.add(
-            updateUserStatsInteractor.updateUserStats(route.routeStats, challenges.filter { it.isFinished }.sumBy { it.experience })
+            updateUserStatsInteractor.updateUserStats(route.routeStats, challenges)
                 .subscribe({ isUserStatsUpdated.postValue(true) }, Throwable::printStackTrace)
         )
     }
