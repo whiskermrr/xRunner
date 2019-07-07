@@ -18,9 +18,7 @@ class SummaryRunViewModel
 @Inject constructor(
     private val saveRouteInteractor: SaveRouteInteractor,
     private val saveSnapshotInteractor: SaveSnapshotInteractor,
-    private val getActiveChallengesInteractor: GetActiveChallengesInteractor,
     private val updateChallengesInteractor: UpdateChallengesInteractor,
-    private val getUserStatsInteractor: GetUserStatsInteractor,
     private val updateUserStatsInteractor: UpdateUserStatsInteractor
 ) : ViewModel() {
 
@@ -34,37 +32,26 @@ class SummaryRunViewModel
         val routeEntity = RouteMapper.routeToEntityTransform(route)
         disposables.add(
             saveRouteInteractor.saveRoute(routeEntity)
-                .doFinally { updateChallenges(routeEntity) }
-                .subscribe({ isRouteSaved.postValue(true) }, Throwable::printStackTrace)
+                .subscribe({
+                    isRouteSaved.postValue(true)
+                    updateChallenges(routeEntity)
+                }, Throwable::printStackTrace)
         )
     }
 
     private fun updateChallenges(route: Route) {
         disposables.add(
-            getActiveChallengesInteractor.getChallenges()
-                .map { challenges ->
-                    ChallengeUtils.updateChallengesProgress(route.routeStats, challenges)
-                }.flatMapCompletable { updatedChallenges ->
-                        updateChallengesInteractor.updateChallenges(updatedChallenges)
-                            .doFinally { updateUserStats(route, updatedChallenges) }
-                }
-                .subscribe({ isChallengesUpdated.postValue(true) }, Throwable::printStackTrace)
+            updateChallengesInteractor.updateChallenges(route.routeStats)
+                .subscribe({ updatedChallenges ->
+                    isChallengesUpdated.postValue(true)
+                    updateUserStats(route, updatedChallenges)
+                }, Throwable::printStackTrace)
         )
     }
 
     private fun updateUserStats(route: Route, challenges: List<Challenge>) {
         disposables.add(
-            getUserStatsInteractor.getUserStats().firstElement()
-                .map { userStats ->
-                    UserStatsUtils.updateUserStats(userStats, route.routeStats)
-                    for(challenge in challenges.filter { it.isFinished }) {
-                        userStats.experience += challenge.experience
-                    }
-                    userStats
-                }
-                .flatMapCompletable { userStats ->
-                    updateUserStatsInteractor.updateUserStats(userStats)
-                }
+            updateUserStatsInteractor.updateUserStats(route.routeStats, challenges)
                 .subscribe({ isUserStatsUpdated.postValue(true) }, Throwable::printStackTrace)
         )
     }

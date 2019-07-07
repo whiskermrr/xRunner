@@ -5,6 +5,7 @@ import com.whisker.mrr.domain.common.DomainConstants.EASY_EXP
 import com.whisker.mrr.domain.common.DomainConstants.NORMAL_EXP
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.ChallengeDifficulty
+import com.whisker.mrr.domain.model.ChallengeProgress
 import com.whisker.mrr.domain.model.RouteStats
 import io.reactivex.Single
 
@@ -26,16 +27,18 @@ object ChallengeUtils {
         return Single.just(challenge)
     }
 
-    fun updateChallengesProgress(stats: RouteStats, challenges: List<Challenge>) : List<Challenge> {
-        val selectedChallenges = challenges.filter {
+    fun getSelectedChallenges(stats: RouteStats, challenges: List<Challenge>) : List<Challenge> {
+        return challenges.filter {
             (it.time != null && it.speed == null && it.distance == null)
-            || (it.time != null && it.speed == null && it.distance != null)
-            || (it.time != null && it.speed != null && it.distance != null && it.speed!! <= stats.averageSpeed)
-            || (it.time != null && it.speed != null && it.distance == null && it.speed!! <= stats.averageSpeed)
-            || (it.time == null && it.speed == null && it.distance != null)
-            || (it.time == null && it.speed != null && it.distance != null && it.speed!! <= stats.averageSpeed)
+                    || (it.time != null && it.speed == null && it.distance != null)
+                    || (it.time != null && it.speed != null && it.distance != null && it.speed!! <= stats.averageSpeed)
+                    || (it.time != null && it.speed != null && it.distance == null && it.speed!! <= stats.averageSpeed)
+                    || (it.time == null && it.speed == null && it.distance != null)
+                    || (it.time == null && it.speed != null && it.distance != null && it.speed!! <= stats.averageSpeed)
         }.distinctBy { Triple(it.time == null, it.distance == null, it.speed == null) }
+    }
 
+    fun updateChallengesProgress(stats: RouteStats, selectedChallenges: List<Challenge>) : List<Challenge> {
         for(challenge in selectedChallenges) {
             var challengeRatio = 0
             var timeProgress = 0f
@@ -66,5 +69,22 @@ object ChallengeUtils {
         }
 
         return selectedChallenges
+    }
+
+    fun getChallengesProgress(stats: RouteStats, selectedChallenges: List<Challenge>) : List<ChallengeProgress> {
+        val challengeProgressList = mutableListOf<ChallengeProgress>()
+
+        for(challenge in selectedChallenges) {
+            val progress = ChallengeProgress(challenge.id)
+            challenge.time?.let {
+                progress.timeProgress = stats.routeTime
+            }
+            challenge.distance?.let {
+                progress.distanceProgress = stats.wgs84distance
+            }
+            challengeProgressList.add(progress)
+        }
+
+        return challengeProgressList
     }
 }

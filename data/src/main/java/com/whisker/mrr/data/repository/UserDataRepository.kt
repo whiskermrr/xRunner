@@ -4,6 +4,7 @@ import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.domain.repository.UserRepository
 import com.whisker.mrr.data.source.LocalUserSource
 import com.whisker.mrr.data.source.RemoteUserSource
+import com.whisker.mrr.domain.model.UserStatsProgress
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -21,7 +22,6 @@ class UserDataRepository(
 
     override fun getUserStats(): Flowable<UserStats> {
         val localFlowable = localUserSource.getUserStats()
-
         val remoteFlowable = remoteUserSource.getUserStats()
             .flatMapCompletable {  stats ->
                 localUserSource.saveUserStats(stats)
@@ -38,8 +38,12 @@ class UserDataRepository(
             }
     }
 
-    override fun synchroUserStats(): Completable {
+    override fun synchronizeUserStats(): Completable {
         return remoteUserSource.getUserStats()
             .flatMapCompletable { localUserSource.saveUserStats(it) }
+    }
+
+    override fun saveUserStatsProgressLocally(statsProgress: UserStatsProgress) : Completable {
+        return localUserSource.saveUserStatsProgressLocally(statsProgress)
     }
 }

@@ -1,35 +1,42 @@
 package com.whisker.mrr.domain.interactor
 
+import com.whisker.mrr.domain.common.ChallengeUtils
 import com.whisker.mrr.domain.model.Challenge
+import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.repository.ChallengeRepository
-import com.whisker.mrr.domain.usecase.CompletableUseCase
-import io.reactivex.Completable
-import io.reactivex.CompletableTransformer
+import com.whisker.mrr.domain.usecase.SingleUseCase
+import io.reactivex.Single
+import io.reactivex.SingleTransformer
 
 class UpdateChallengesInteractor(
-    transformer: CompletableTransformer,
+    transformer: SingleTransformer<List<Challenge>, List<Challenge>>,
     private val challengeRepository: ChallengeRepository
-) : CompletableUseCase(transformer) {
+) : SingleUseCase<List<Challenge>>(transformer) {
 
     companion object {
-        const val PARAM_CHALLENGES_LIST = "param_challenges_list"
+        const val PARAM_ROUTE_STATS = "param_route_stats"
     }
 
-    fun updateChallenges(challenges: List<Challenge>) : Completable {
+    fun updateChallenges(routeStats: RouteStats) : Single<List<Challenge>> {
         val data = HashMap<String, Any>()
-        data[PARAM_CHALLENGES_LIST] = challenges
-        return completable(data)
+        data[PARAM_ROUTE_STATS] = routeStats
+        return single(data)
     }
 
-    override fun createCompletable(data: Map<String, Any>?): Completable {
-        val param = data?.get(PARAM_CHALLENGES_LIST)
-
-        param?.let {challenges ->
-            return if(challenges is List<*>) {
-                challengeRepository.updateChallenges(challenges.filterIsInstance<Challenge>())
-            } else {
-                Completable.error(ClassCastException("Cannot cost parameter @challenges to List<Challenges>"))
-            }
-        } ?: return Completable.error(IllegalArgumentException("Parameter @challenges must be provided."))
+    override fun createSingle(data: Map<String, Any>?): Single<List<Challenge>> {
+        val param = data?.get(PARAM_ROUTE_STATS) as RouteStats?
+        param?.let {stats ->
+            return challengeRepository.getActiveChallengesSingle()
+                .map { ChallengeUtils.getSelectedChallenges(stats, it) }
+                .map { ChallengeUtils.updateChallengesProgress(stats, it) }
+                .flatMap { updatedChallenges ->
+                    challengeRepository.updateChallenges(updatedChallenges)
+                        .onErrorResumeNext {
+                            val progressList = ChallengeUtils.getChallengesProgress(stats, updatedChallenges)
+                            challengeRepository.saveChallengesProgressListLocally(progressList)
+                        }
+                        .andThen(Single.just(updatedChallenges))
+                }
+        } ?: return Single.error(IllegalArgumentException("Parameter @routeStats must be provided."))
     }
 }

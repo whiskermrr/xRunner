@@ -7,21 +7,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.whisker.mrr.room.converter.CoordsTypeConverter
 import com.whisker.mrr.room.converter.DifficultyConverter
-import com.whisker.mrr.room.dao.ChallengeDao
-import com.whisker.mrr.room.dao.PreferencesDao
-import com.whisker.mrr.room.dao.RouteDao
-import com.whisker.mrr.room.dao.UserStatsDao
-import com.whisker.mrr.room.model.ChallengeEntity
-import com.whisker.mrr.room.model.Preferences
-import com.whisker.mrr.room.model.RouteEntity
-import com.whisker.mrr.room.model.UserStatsEntity
+import com.whisker.mrr.room.dao.*
+import com.whisker.mrr.room.model.*
 
 @Database(
     entities = [
         ChallengeEntity::class,
         RouteEntity::class,
         UserStatsEntity::class,
-        Preferences::class
+        Preferences::class,
+        ChallengeProgressDao::class,
+        UserStatsProgressEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -54,4 +50,6 @@ abstract class DbRunner : RoomDatabase() {
     abstract fun routeDao() : RouteDao
     abstract fun userStatsDao() : UserStatsDao
     abstract fun preferencesDao() : PreferencesDao
+    abstract fun challengeProgressDao() : ChallengeProgressDao
+    abstract fun userStatsProgressDao() : UserStatsProgressDao
 }
