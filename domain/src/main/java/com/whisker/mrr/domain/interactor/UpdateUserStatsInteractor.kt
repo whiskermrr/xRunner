@@ -31,8 +31,13 @@ class UpdateUserStatsInteractor(
 
         routeStats?.let { stats ->
             return userRepository.getUserStats().firstElement()
-                .map { UserStatsUtils.updateUserStats(it, stats as RouteStats, exp as Int) }
-                .flatMapCompletable { userRepository.updateUserStats(it) }
+                .flatMapCompletable { userStats ->
+                    val statsProcess = UserStatsUtils.getUserStatsProgress(stats as RouteStats, exp as Int)
+                    userRepository.updateUserStats(UserStatsUtils.updateUserStats(userStats, statsProcess))
+                        .onErrorResumeNext {
+                            userRepository.saveUserStatsProgressLocally(statsProcess)
+                        }
+                }
         } ?: return Completable.error(IllegalArgumentException("Parameter @stats must be provided."))
     }
 }

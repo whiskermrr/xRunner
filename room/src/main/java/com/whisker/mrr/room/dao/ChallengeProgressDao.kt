@@ -8,9 +8,8 @@ import io.reactivex.Single
 @Dao
 abstract class ChallengeProgressDao : BaseDao<ChallengeProgressEntity> {
 
-
     @Query("SELECT * FROM ChallengeProgress")
-    abstract fun getChallengeProgreesList() : Single<List<ChallengeProgressEntity>>
+    abstract fun getChallengeProgressList() : Single<List<ChallengeProgressEntity>>
 
     @Query("DELETE FROM ChallengeProgress")
     abstract fun clearChallengeProgressTable()

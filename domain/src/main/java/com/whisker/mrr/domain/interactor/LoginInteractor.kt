@@ -32,7 +32,7 @@ class LoginInteractor(
 
         whenBothNotNull(emailData, passwordData) { email, password ->
             return loginRepository.login(email.toString(), password.toString())
-                .andThen(userRepository.synchroUserStats())
+                .andThen(userRepository.synchronizeUserStats())
         }
 
         return Completable.error(IllegalArgumentException("@email and @password must be provided."))
