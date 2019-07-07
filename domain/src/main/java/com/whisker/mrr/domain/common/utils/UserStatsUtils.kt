@@ -1,4 +1,4 @@
-package com.whisker.mrr.domain.common
+package com.whisker.mrr.domain.common.utils
 
 import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.model.UserStats
@@ -11,7 +11,10 @@ object UserStatsUtils {
         userStats.totalDistance += statsProgress.distanceProgress
         userStats.totalTime += statsProgress.timeProgress
         userStats.experience += statsProgress.expProgress
-        userStats.averagePace = calculateAveragePace(userStats.totalDistance, userStats.totalTime)
+        userStats.averagePace = calculateAveragePace(
+            userStats.totalDistance,
+            userStats.totalTime
+        )
 
         return userStats
     }

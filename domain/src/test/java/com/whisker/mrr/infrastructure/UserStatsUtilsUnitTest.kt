@@ -1,6 +1,6 @@
 package com.whisker.mrr.infrastructure
 
-import com.whisker.mrr.domain.common.UserStatsUtils
+import com.whisker.mrr.domain.common.utils.UserStatsUtils
 import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.model.UserStats
 import org.junit.Assert

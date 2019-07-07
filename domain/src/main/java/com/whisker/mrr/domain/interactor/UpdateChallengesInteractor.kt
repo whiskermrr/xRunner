@@ -1,6 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
-import com.whisker.mrr.domain.common.ChallengeUtils
+import com.whisker.mrr.domain.common.utils.ChallengeUtils
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.RouteStats
 import com.whisker.mrr.domain.repository.ChallengeRepository

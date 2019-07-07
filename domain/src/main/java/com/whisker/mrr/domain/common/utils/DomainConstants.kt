@@ -1,4 +1,4 @@
-package com.whisker.mrr.domain.common
+package com.whisker.mrr.domain.common.utils
 
 object DomainConstants {
 
