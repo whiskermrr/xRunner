@@ -3,45 +3,23 @@
     <color name="colorPrimary">#252525</color>
     <color name="colorPrimaryDark">#111111</color>
     <color name="colorAccent">#1F1F1F</color>
-    <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#A5A5A5</color>
-    <color name="colorIcons">#FFFFFF</color>
-    <color name="colorDivider">#BDBDBD</color>
-    <color name="colorBackgroud">#22AAA1</color>
-    <color name="colorSolarGreen">#03BB3F</color>
     <color name="gradientGrey">#2A2A2A</color>
-    
-    <color name="colorYellowSoft">#F0ED62</color>
+
     <color name="colorWhite">#FAFAFA</color>
-    <color name="colorDarkOceanBlue">#355282</color>
-    <color name="colorFortniteDarkBlue">#33549B</color>
-    <color name="colorSoloBlue">#19C2FE</color>
     <color name="colorStatsBackground">#E5ECF6</color>
-    <color name="colorDarkFactoryBlue">#708BB4</color>
-    <color name="colorTurkishOrange">#EC9157</color>
-    <color name="colorLightFortniteViolet">#B83CF2</color>
-    <color name="colorFuckingGray">#353535</color>
-    <color name="colorLikeBlue">#065FD4</color>
     <color name="colorDeleteRed">#f44336</color>
-    
-    <color name="colorCatalogGrayTitle">#657496</color>
+
     <color name="colorCatalogLightGrayTitle">#ABBDD5</color>
-    
-    <color name="colorBalticGreen">#008577</color>
-    <color name="colorGreenAlgae">#00574B</color>
+
     <color name="colorFlashGreen">#1db954</color>
-    
-    <color name="colorTransparentFlashGreen">#D91db954</color>
+
     <color name="colorTransparentAccent">#D91F1F1F</color>
     <color name="colorTransparentPrimary">#D9252525</color>
-    <color name="colorTransparentPrimaryDark">#D9111111</color>
-    
-    
-    <color name="colorJustGreen">#7FBA00</color>
+
+
     <color name="colorAppBackground">#252525</color>
-    <color name="colorGreyIcon">#A5A5A5</color>
     <color name="color2ndBackground">#454545</color>
-    <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#A5A5A5</color>
     <color name="colorDarkPrimary">#1F1F1F</color>
 </resources>

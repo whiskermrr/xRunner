@@ -10,9 +10,7 @@
 	<string name="kilometers">Kilometers</string>
 	<string name="starting_distance">0.000</string>
 	<string name="empty_record">---</string>
-	<string name="empty_time">--:--</string>
 	<string name="distance_format">%d.%03d</string>
-	<string name="distance_format_2">%d.%02d</string>
 	<string name="distance_format_3">%s.%s</string>
 	<string name="average_speed_format">%.2f</string>
 	<string name="minutes_time_format">%02d:%02d</string>
@@ -49,7 +47,6 @@
 	<string name="hint_speed">avg. speed</string>
 	<string name="hint_deadline">deadline</string>
 	<string name="submit_label">Submit</string>
-	<string name="error_challenge_title">title is required.</string>
 	<string name="challenge_deadline_format">MM/dd/yyy</string>
 	<string name="title_challenges">Challenges</string>
 	<string name="title_history">History</string>
