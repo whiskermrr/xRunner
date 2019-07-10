@@ -1,4 +1,4 @@
-package com.whisker.mrr.infrastructure
+package com.whisker.mrr.infrastructure.location
 
 import android.location.Location
 

@@ -10,8 +10,8 @@ import android.location.LocationManager
 import android.os.IBinder
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.model.Coords
-import com.whisker.mrr.infrastructure.LocationEvent
-import com.whisker.mrr.infrastructure.LocationService
+import com.whisker.mrr.infrastructure.location.LocationEvent
+import com.whisker.mrr.infrastructure.location.LocationService
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable

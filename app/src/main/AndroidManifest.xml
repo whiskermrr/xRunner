@@ -31,7 +31,7 @@
         <activity android:name=".presentation.views.BaseActivity">
         </activity>
         
-        <service android:name="com.whisker.mrr.infrastructure.LocationService">
+        <service android:name="com.whisker.mrr.infrastructure.location.LocationService">
             <intent-filter>
                 <action android:name="com.whisker.mrr.action.START_TRACKING"/>
                 <action android:name="com.whisker.mrr.action.STOP_TRACKING"/>
