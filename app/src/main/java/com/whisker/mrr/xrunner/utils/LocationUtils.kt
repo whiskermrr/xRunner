@@ -2,10 +2,10 @@ package com.whisker.mrr.xrunner.utils
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
-import com.whisker.mrr.domain.common.DomainConstants.MINUTES_PER_HOUR
+import com.whisker.mrr.domain.common.utils.DomainConstants.MILLISECONDS_PER_HOUR
+import com.whisker.mrr.domain.common.utils.DomainConstants.MILLISECONDS_PER_MINUTE
+import com.whisker.mrr.domain.common.utils.DomainConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.domain.common.utils.DomainConstants.MINUTES_PER_HOUR
 import com.whisker.mrr.xrunner.presentation.model.RouteStatsModel
 
 class LocationUtils {

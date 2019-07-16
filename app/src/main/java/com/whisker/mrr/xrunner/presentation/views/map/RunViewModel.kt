@@ -3,7 +3,7 @@ package com.whisker.mrr.xrunner.presentation.views.map
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
-import com.whisker.mrr.domain.common.DomainConstants.EEE_MMM_d_yyyy
+import com.whisker.mrr.domain.common.utils.DomainConstants.EEE_MMM_d_yyyy
 import com.whisker.mrr.domain.common.formatDate
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.xrunner.presentation.mapper.LatLngMapper

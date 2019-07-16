@@ -3,8 +3,6 @@ package com.whisker.mrr.xrunner.presentation.views.summary
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.whisker.mrr.domain.common.ChallengeUtils
-import com.whisker.mrr.domain.common.UserStatsUtils
 import com.whisker.mrr.domain.interactor.*
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.Route

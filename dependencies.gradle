@@ -12,6 +12,7 @@ ext {
     robolectricVersion = '3.4.2'
     mockito_version = '2.7.13'
     room_version = '2.0.0'
+    work_version = '2.0.1'
 
     domainDependencies = [
             javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
@@ -128,6 +129,7 @@ ext {
             //Rx
             rxKotlin:           "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             rxJava:             "io.reactivex.rxjava2:rxjava:2.2.2",
+            rxAndroid:          "io.reactivex.rxjava2:rxandroid:2.1.0",
 
             // Dagger
             dagger:             "com.google.dagger:dagger:2.16",
@@ -136,12 +138,16 @@ ext {
             daggerProcessorKapt: "com.google.dagger:dagger-android-processor:2.16",
 
             playService:        'com.google.android.gms:play-services-location:16.0.0',
+
+            workManager:        "androidx.work:work-runtime-ktx:$work_version",
+            rxWorkManager:      "androidx.work:work-rxjava2:$work_version"
     ]
 
     infrastructureTestDependencies = [
             junit:              "junit:junit:${jUnitVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
-            assertj:            "org.assertj:assertj-core:${assertJVersion}"
+            assertj:            "org.assertj:assertj-core:${assertJVersion}",
+            testWorkManager:    "androidx.work:work-testing:$work_version"
     ]
 
     musicDependencies = [

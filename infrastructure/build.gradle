@@ -42,6 +42,7 @@ dependencies {
     implementation infrastructureDependencies.javaxInject
     implementation infrastructureDependencies.rxKotlin
     implementation infrastructureDependencies.rxJava
+    implementation infrastructureDependencies.rxAndroid
     implementation infrastructureDependencies.kotlin
 
     implementation infrastructureDependencies.dagger
@@ -49,9 +50,13 @@ dependencies {
     kapt infrastructureDependencies.daggerAndroidKapt
     kapt infrastructureDependencies.daggerProcessorKapt
 
-    infrastructureDependencies.playService
+    implementation infrastructureDependencies.playService
+
+    implementation infrastructureDependencies.workManager
+    implementation infrastructureDependencies.rxWorkManager
 
     testImplementation infrastructureTestDependencies.junit
     testImplementation infrastructureTestDependencies.mockito
     testImplementation infrastructureTestDependencies.assertj
+    testImplementation infrastructureTestDependencies.testWorkManager
 }

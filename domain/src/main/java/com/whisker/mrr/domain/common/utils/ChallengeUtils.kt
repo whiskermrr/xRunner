@@ -1,8 +1,8 @@
-package com.whisker.mrr.domain.common
+package com.whisker.mrr.domain.common.utils
 
-import com.whisker.mrr.domain.common.DomainConstants.DEFAULT_SPEED
-import com.whisker.mrr.domain.common.DomainConstants.EASY_EXP
-import com.whisker.mrr.domain.common.DomainConstants.NORMAL_EXP
+import com.whisker.mrr.domain.common.utils.DomainConstants.DEFAULT_SPEED
+import com.whisker.mrr.domain.common.utils.DomainConstants.EASY_EXP
+import com.whisker.mrr.domain.common.utils.DomainConstants.NORMAL_EXP
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.domain.model.ChallengeDifficulty
 import com.whisker.mrr.domain.model.ChallengeProgress

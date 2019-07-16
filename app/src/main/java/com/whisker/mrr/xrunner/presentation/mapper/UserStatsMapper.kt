@@ -1,9 +1,9 @@
 package com.whisker.mrr.xrunner.presentation.mapper
 
-import com.whisker.mrr.domain.common.DomainConstants.EXP_RATIO
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_HOUR
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_MINUTE
-import com.whisker.mrr.domain.common.DomainConstants.MILLISECONDS_PER_SECOND
+import com.whisker.mrr.domain.common.utils.DomainConstants.EXP_RATIO
+import com.whisker.mrr.domain.common.utils.DomainConstants.MILLISECONDS_PER_HOUR
+import com.whisker.mrr.domain.common.utils.DomainConstants.MILLISECONDS_PER_MINUTE
+import com.whisker.mrr.domain.common.utils.DomainConstants.MILLISECONDS_PER_SECOND
 import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.xrunner.presentation.model.UserStatsModel
 
