@@ -1,7 +1,6 @@
 package com.whisker.mrr.domain.interactor
 
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import com.whisker.mrr.domain.common.exception.NoConnectivityException
