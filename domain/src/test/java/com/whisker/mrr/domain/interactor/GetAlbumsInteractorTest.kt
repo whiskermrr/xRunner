@@ -40,7 +40,7 @@ class GetAlbumsInteractorTest {
         getAlbumsInteractor.getAlbums()
             .test()
             .await()
-            .assertComplete()
+            .assertValue(albums)
     }
 
     @Test
@@ -53,7 +53,7 @@ class GetAlbumsInteractorTest {
         getAlbumsInteractor.getAlbums()
             .test()
             .await()
-            .assertComplete()
+            .assertValue(emptyList())
     }
 
     @Test

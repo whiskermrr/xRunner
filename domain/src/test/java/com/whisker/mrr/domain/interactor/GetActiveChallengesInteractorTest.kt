@@ -42,7 +42,7 @@ class GetActiveChallengesInteractorTest {
         getActiveChallengesInteractor.getChallenges()
             .test()
             .await()
-            .assertComplete()
+            .assertValue(challenges)
     }
 
     @Test
@@ -55,7 +55,7 @@ class GetActiveChallengesInteractorTest {
         getActiveChallengesInteractor.getChallenges()
             .test()
             .await()
-            .assertComplete()
+            .assertValue(emptyList())
     }
 
     @Test
