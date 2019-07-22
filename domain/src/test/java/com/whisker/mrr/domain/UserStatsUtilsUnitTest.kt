@@ -1,4 +1,4 @@
-package com.whisker.mrr.infrastructure
+package com.whisker.mrr.domain
 
 import com.whisker.mrr.domain.common.utils.UserStatsUtils
 import com.whisker.mrr.domain.model.RouteStats
@@ -9,8 +9,8 @@ import org.junit.Test
 
 class UserStatsUtilsUnitTest {
 
-    lateinit var routeStats: RouteStats
-    lateinit var userStats: UserStats
+    private lateinit var routeStats: RouteStats
+    private lateinit var userStats: UserStats
 
     @Before
     fun setUp() {
@@ -32,7 +32,8 @@ class UserStatsUtilsUnitTest {
 
     @Test
     fun updateUserStatsTest() {
-        UserStatsUtils.updateUserStats(userStats, routeStats)
+        val statsProgress = UserStatsUtils.getUserStatsProgress(routeStats, 0)
+        UserStatsUtils.updateUserStats(userStats, statsProgress)
 
         Assert.assertEquals(userStats.totalTime, 36000)
         Assert.assertEquals(userStats.averagePace, 5.0f)
