@@ -8,6 +8,7 @@ import com.whisker.mrr.domain.model.ChallengeDifficulty
 import com.whisker.mrr.domain.repository.ChallengeRepository
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
+import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
 import org.junit.After
 import org.junit.Before
@@ -18,9 +19,11 @@ class GetActiveChallengesInteractorTest {
 
     private val mockChallengeRepository = mock<ChallengeRepository>()
 
-    lateinit var transformer: SingleTransformer<List<Challenge>, List<Challenge>>
+    private lateinit var transformer: SingleTransformer<List<Challenge>, List<Challenge>>
 
-    lateinit var getActiveChallengesInteractor: GetActiveChallengesInteractor
+    private lateinit var getActiveChallengesInteractor: GetActiveChallengesInteractor
+
+    private val testObserver = TestObserver<List<Challenge>>()
 
     @Before
     fun setUp() {
@@ -40,9 +43,13 @@ class GetActiveChallengesInteractorTest {
             .thenReturn(Single.just(challenges))
 
         getActiveChallengesInteractor.getChallenges()
-            .test()
+            .subscribe(testObserver)
+
+        testObserver.assertNoValues()
             .await()
+            .assertNoErrors()
             .assertValue(challenges)
+            .assertComplete()
     }
 
     @Test
@@ -53,9 +60,13 @@ class GetActiveChallengesInteractorTest {
             .thenReturn(Single.just(challenges))
 
         getActiveChallengesInteractor.getChallenges()
-            .test()
+            .subscribe(testObserver)
+
+        testObserver.assertNoValues()
             .await()
+            .assertNoErrors()
             .assertValue(emptyList())
+            .assertComplete()
     }
 
     @Test
@@ -66,9 +77,12 @@ class GetActiveChallengesInteractorTest {
             .thenReturn(Single.error(error))
 
         getActiveChallengesInteractor.getChallenges()
-            .test()
+            .subscribe(testObserver)
+
+        testObserver.assertNoValues()
             .await()
             .assertError(error)
+            .assertTerminated()
     }
 
     @After
