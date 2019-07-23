@@ -16,6 +16,8 @@ import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USER_STATS
 import com.whisker.mrr.domain.model.UserStats
 import com.whisker.mrr.data.source.RemoteUserSource
+import com.whisker.mrr.domain.common.utils.UserStatsUtils
+import com.whisker.mrr.domain.model.UserStatsProgress
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
@@ -118,6 +120,44 @@ class RemoteUserDataSource
         .observeOn(Schedulers.io())
     }
 
+    override fun updateUserStats(progressList: List<UserStatsProgress>): Completable {
+        return checkConnection().andThen(
+            getUserStats().flatMapCompletable { userStats ->
+                Completable.create { emitter ->
+                    var userReference: DatabaseReference = databaseReference
+                    try {
+                        userReference = getReference()
+                    } catch (e : FirebaseAuthInvalidUserException) {
+                        emitter.onError(e)
+                    }
+
+                    val map = HashMap<String, Any>()
+                    val distance = userStats.totalDistance + progressList.map { it.distanceProgress }.sum()
+                    val time = userStats.totalTime + progressList.map { it.timeProgress }.sum()
+                    val exp = userStats.experience + progressList.map { it.expProgress }.sum()
+                    map[DB_TOTAL_DISTANCE] = distance
+                    map[DB_TOTAL_TIME] = time
+                    map[DB_EXPERIENCE] = exp
+                    map[DB_AVERAGE_PACE] = UserStatsUtils.calculateAveragePace(distance, time)
+
+                    userReference.updateChildren(map).addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            task.exception?.let {
+                                emitter.onError(it)
+                            }
+                        }
+                    }.addOnFailureListener {
+                        emitter.onError(it)
+                    }
+                }.observeOn(Schedulers.io())
+            }
+
+        )
+    }
+
+    //TODO: AuthException in domain
     @Throws(FirebaseAuthInvalidUserException::class)
     private fun getReference() : DatabaseReference {
         return databaseReference

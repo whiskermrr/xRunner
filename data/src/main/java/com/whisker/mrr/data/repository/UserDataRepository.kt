@@ -39,8 +39,12 @@ class UserDataRepository(
     }
 
     override fun synchronizeUserStats(): Completable {
-        return remoteUserSource.getUserStats()
-            .flatMapCompletable { localUserSource.saveUserStats(it) }
+        return localUserSource.getLocalUserStatsProgressList()
+            .flatMapCompletable { progressList -> remoteUserSource.updateUserStats(progressList) }
+            .andThen(
+                remoteUserSource.getUserStats()
+                    .flatMapCompletable { localUserSource.saveUserStats(it) })
+            .andThen(localUserSource.removeUserStatsProgressList())
     }
 
     override fun saveUserStatsProgressLocally(statsProgress: UserStatsProgress) : Completable {
