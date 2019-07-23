@@ -16,7 +16,7 @@ import com.whisker.mrr.room.model.*
         RouteEntity::class,
         UserStatsEntity::class,
         Preferences::class,
-        ChallengeProgressDao::class,
+        ChallengeProgressEntity::class,
         UserStatsProgressEntity::class
     ],
     version = 1,
