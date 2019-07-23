@@ -11,7 +11,7 @@ import io.reactivex.Single
 
 object ChallengeUtils {
 
-    fun calculateChallengeDifficultyAndExp(challenge: Challenge) : Single<Challenge> {
+    fun calculateChallengeDifficultyAndExp(challenge: Challenge) : Challenge {
         var exp: Long = ((challenge.time ?: 0) / 1000) + (challenge.distance?.toLong() ?: 0L)
         val speed: Float = ((challenge.speed ?: DEFAULT_SPEED) / 10)
         exp = (exp * speed).toLong()
@@ -24,7 +24,7 @@ object ChallengeUtils {
 
         challenge.experience = exp.toInt()
 
-        return Single.just(challenge)
+        return challenge
     }
 
     fun getSelectedChallenges(stats: RouteStats, challenges: List<Challenge>) : List<Challenge> {
