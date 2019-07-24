@@ -81,7 +81,10 @@ ext {
 
             //Stetho
             stetho:              'com.facebook.stetho:stetho:1.5.1',
-            stethoOkHttp:        'com.facebook.stetho:stetho-okhttp3:1.5.1'
+            stethoOkHttp:        'com.facebook.stetho:stetho-okhttp3:1.5.1',
+
+            workManager:        "androidx.work:work-runtime-ktx:$work_version",
+            rxWorkManager:      "androidx.work:work-rxjava2:$work_version"
     ]
 
     presentationTestDependencies = [
@@ -90,7 +93,8 @@ ext {
             assertj:            "org.assertj:assertj-core:${assertJVersion}",
             mockito:            "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
             robolectric:        "org.robolectric:robolectric:${robolectricVersion}",
-            testRoom:           "androidx.room:room-testing:$room_version"
+            testRoom:           "androidx.room:room-testing:$room_version",
+            testWorkManager:    "androidx.work:work-testing:$work_version"
     ]
 
     firebaseDependencies = [

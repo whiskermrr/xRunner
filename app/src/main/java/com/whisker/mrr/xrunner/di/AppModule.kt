@@ -22,6 +22,7 @@ import com.whisker.mrr.data.source.*
 import com.whisker.mrr.firebase.datasource.*
 import com.whisker.mrr.firebase.repository.LoginDataRepository
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.infrastructure.di.WorkManagerModule
 import com.whisker.mrr.infrastructure.source.LocationDataManager
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
 import com.whisker.mrr.music.MusicDataManager
@@ -34,7 +35,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Singleton
 
 // TODO: move some stuff to separate modules
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [ViewModelModule::class, WorkManagerModule::class])
 class AppModule {
 
     @Provides
