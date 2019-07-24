@@ -5,6 +5,6 @@ import androidx.work.WorkInfo
 import com.whisker.mrr.infrastructure.synchronization.observer.WorkInfoStateCompletable
 import io.reactivex.Completable
 
-fun LiveData<List<WorkInfo>>.toWorkInfoStateSingle() : Completable {
+fun LiveData<List<WorkInfo>>.toWorkInfoStateCompletable() : Completable {
     return WorkInfoStateCompletable(this)
 }
