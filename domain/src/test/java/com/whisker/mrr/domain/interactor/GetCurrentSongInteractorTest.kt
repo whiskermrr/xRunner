@@ -23,6 +23,8 @@ class GetCurrentSongInteractorTest {
 
     private lateinit var getCurrentSongInteractor: GetCurrentSongInteractor
 
+    private val testSubscriber = TestSubscriber<Song>()
+
     private val songs = listOf(
         Song(1L, "Deadmau5", "Avaritia", "12.12.2012", "Deadmau5 - Avaritia", 19820, 1L),
         Song(1L, "Deadmau5", "Phantoms Can’t Hang", "12.12.2012", "Deadmau5 - Phantoms Can’t Hang", 11820, 1L),
@@ -54,7 +56,6 @@ class GetCurrentSongInteractorTest {
     fun getCurrentSongSuccessAndThenNextSong() {
         val currentSong = songs[0]
         val nextSong = songs[1]
-        val testSubscriber = TestSubscriber<Song>()
 
         val result = Flowable.merge(
             Flowable.just(currentSong),
@@ -80,7 +81,6 @@ class GetCurrentSongInteractorTest {
     @Test
     fun getCurrentSongFailed() {
         val error = Throwable("DB Access Denied.")
-        val testSubscriber = TestSubscriber<Song>()
 
         val result = Flowable.error<Song>(error)
 
@@ -100,7 +100,6 @@ class GetCurrentSongInteractorTest {
     @Test
     fun getCurrentSongSuccessThenFailed() {
         val error = Throwable("DB Access Denied.")
-        val testSubscriber = TestSubscriber<Song>()
 
         val result = Flowable.merge(
             Flowable.just(songs[0]),

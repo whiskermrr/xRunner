@@ -57,9 +57,7 @@ class RouteDataRepository(
         return Completable.concatArray(
             localRouteSource.markRouteAsDeleted(routeID),
             remoteRouteSource.removeRouteById(routeID)
-                .andThen {
-                    localRouteSource.removeRouteById(routeID)
-                }
+                .andThen(localRouteSource.removeRouteById(routeID))
         )
     }
 
@@ -87,5 +85,13 @@ class RouteDataRepository(
         return Completable.fromAction {
             snapshotLocalDataSource.saveSnapshotLocal(bitmap, fileName)
         }
+    }
+
+    override fun synchronizeRoutes(): Completable {
+        return localRouteSource.getRoutesSavedLocally()
+            .flatMap { remoteRouteSource.saveRoutes(it) }
+            .flatMap { remoteRouteSource.getRoutes() }
+            .flatMapCompletable { localRouteSource.saveRoutes(it) }
+            .andThen(localRouteSource.removeLocallySavedRoutes())
     }
 }

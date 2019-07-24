@@ -3,6 +3,7 @@ package com.whisker.mrr.room.dao
 import androidx.room.*
 import com.whisker.mrr.room.model.RouteEntity
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 abstract class RouteDao : BaseDao<RouteEntity> {
@@ -27,4 +28,10 @@ abstract class RouteDao : BaseDao<RouteEntity> {
 
     @Query("SELECT MIN(routeID) - 1 FROM Route WHERE routeID < 0")
     abstract fun getNextLocalID() : Long?
+
+    @Query("SELECT * FROM Route WHERE routeID < 0")
+    abstract fun getRoutesSavedLocally() : Single<List<RouteEntity>>
+
+    @Query("DELETE FROM Route WHERE routeID < 0")
+    abstract fun removeRoutesSavedLocally()
 }

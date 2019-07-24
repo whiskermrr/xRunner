@@ -79,6 +79,12 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideUserStatsProgressDao(db: DbRunner) : UserStatsProgressDao {
+        return db.userStatsProgressDao()
+    }
+
+    @Provides
+    @Singleton
     fun providePreferencesDao(db: DbRunner) : PreferencesDao {
         return db.preferencesDao()
     }
@@ -157,8 +163,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalUserSource(userStatsDao: UserStatsDao) : LocalUserSource {
-        return LocalUserDataSource(userStatsDao)
+    fun provideLocalUserSource(userStatsDao: UserStatsDao, userStatsProgressDao: UserStatsProgressDao) : LocalUserSource {
+        return LocalUserDataSource(userStatsDao, userStatsProgressDao)
     }
 
     @Provides

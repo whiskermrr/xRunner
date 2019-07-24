@@ -25,6 +25,12 @@ class GetChallengesInteractorTest {
 
     private lateinit var getChallengesInteractor: GetChallengesInteractor
 
+    private val testSubscriber = TestSubscriber<List<Challenge>>()
+
+    private val error = Throwable("DB access denied.")
+
+    private val noConnectivityException = NoConnectivityException()
+
     private val challenges = listOf(
         Challenge(1L, false, null, "Challenge1", 10000f, null, null, 0, ChallengeDifficulty.EASY, 1000),
         Challenge(2L, false, null, "Challenge1", 10000f, 5.5f, null, 0, ChallengeDifficulty.EASY, 2100),
@@ -43,8 +49,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getActiveChallengesSuccess() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
-
         whenever(mockChallengeRepository.getActiveChallenges())
             .thenReturn(Flowable.fromIterable(listOf(challenges, remoteChallenges)))
 
@@ -62,7 +66,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getActiveChallengesSuccess2() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
         val result = Flowable.merge(
             Flowable.just(challenges),
             Flowable.just(remoteChallenges).delay(100, TimeUnit.MILLISECONDS)
@@ -78,6 +81,7 @@ class GetChallengesInteractorTest {
             .assertNotComplete()
             .awaitCount(1)
             .assertValueCount(1)
+            .assertValue(challenges)
             .await()
             .assertComplete()
             .assertNoErrors()
@@ -87,8 +91,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getChallengesSuccess() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
-
         whenever(mockChallengeRepository.getChallenges())
             .thenReturn(Flowable.fromIterable(listOf(challenges, remoteChallenges)))
 
@@ -106,7 +108,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getChallengesSuccess2() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
         val result = Flowable.merge(
             Flowable.just(challenges),
             Flowable.just(remoteChallenges).delay(100, TimeUnit.MILLISECONDS)
@@ -122,6 +123,7 @@ class GetChallengesInteractorTest {
             .assertNotComplete()
             .awaitCount(1)
             .assertValueCount(1)
+            .assertValue(challenges)
             .await()
             .assertComplete()
             .assertNoErrors()
@@ -131,7 +133,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getActiveChallengesSuccessThenFailed() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
         val error = NoConnectivityException()
         val result = Flowable.just(challenges)
             .concatWith(Flowable.error<List<Challenge>>(error).delay(100, TimeUnit.MILLISECONDS))
@@ -147,6 +148,7 @@ class GetChallengesInteractorTest {
             .assertNotComplete()
             .awaitCount(1)
             .assertValueCount(1)
+            .assertValue(challenges)
             .await()
             .assertError(error)
             .assertTerminated()
@@ -154,7 +156,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getChallengesSuccessThenFailed() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
         val noConnectivityException = NoConnectivityException()
         val result = Flowable.just(challenges)
             .concatWith(Flowable.error<List<Challenge>>(noConnectivityException).delay(100, TimeUnit.MILLISECONDS))
@@ -170,6 +171,7 @@ class GetChallengesInteractorTest {
             .assertNotComplete()
             .awaitCount(1)
             .assertValueCount(1)
+            .assertValue(challenges)
             .await()
             .assertError(noConnectivityException)
             .assertTerminated()
@@ -177,8 +179,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getActiveChallengesFailedFirst() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
-        val error = Throwable("DB access denied.")
         val result = Flowable.error<List<Challenge>>(error)
             .concatWith(Flowable.just(remoteChallenges).delay(100, TimeUnit.MILLISECONDS))
 
@@ -197,8 +197,6 @@ class GetChallengesInteractorTest {
 
     @Test
     fun getChallengesFailedFirst() {
-        val testSubscriber = TestSubscriber<List<Challenge>>()
-        val error = Throwable("DB access denied.")
         val result = Flowable.error<List<Challenge>>(error)
             .concatWith(Flowable.just(remoteChallenges).delay(100, TimeUnit.MILLISECONDS))
 
@@ -218,8 +216,6 @@ class GetChallengesInteractorTest {
     @Test
     fun getActiveChallengesFailedBoth() {
         val testSubscriber = TestSubscriber<List<Challenge>>()
-        val error = Throwable("DB access denied.")
-        val noConnectivityException = NoConnectivityException()
         val result = Flowable.error<List<Challenge>>(error)
             .concatWith(Flowable.error<List<Challenge>>(noConnectivityException).delay(100, TimeUnit.MILLISECONDS))
 
@@ -239,8 +235,6 @@ class GetChallengesInteractorTest {
     @Test
     fun getChallengesFailedBoth() {
         val testSubscriber = TestSubscriber<List<Challenge>>()
-        val error = Throwable("DB access denied.")
-        val noConnectivityException = NoConnectivityException()
         val result = Flowable.error<List<Challenge>>(error)
             .concatWith(Flowable.error<List<Challenge>>(noConnectivityException).delay(100, TimeUnit.MILLISECONDS))
 

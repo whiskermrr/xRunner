@@ -25,12 +25,10 @@ class SaveChallengeInteractor(
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
         val challenge = data?.get(PARAM_CHALLENGE)
-
         challenge?.let {
-            return ChallengeUtils.calculateChallengeDifficultyAndExp(challenge as Challenge)
-                .flatMapCompletable { challenge ->
-                    challengeRepository.saveChallenge(challenge)
-                }
+            return challengeRepository.saveChallenge(
+                ChallengeUtils.calculateChallengeDifficultyAndExp(challenge as Challenge)
+            )
 
         } ?: return Completable.error(IllegalArgumentException("Argument @challenge must be provided."))
     }

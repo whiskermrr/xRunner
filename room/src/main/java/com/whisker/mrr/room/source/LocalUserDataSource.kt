@@ -47,4 +47,16 @@ class LocalUserDataSource(
             userStatsProgressDao.insert(UserStatsProgressMapper.trasnformToEntity(statsProgress))
         }
     }
+
+    override fun getLocalUserStatsProgressList(): Single<List<UserStatsProgress>> {
+        return userStatsProgressDao.getUserStatsProgressList()
+            .map { UserStatsProgressMapper.transformListFromEntities(it) }
+            .onErrorReturn { listOf() }
+    }
+
+    override fun removeUserStatsProgressList(): Completable {
+        return Completable.fromAction {
+            userStatsProgressDao.clearUserStatsProgressTable()
+        }
+    }
 }

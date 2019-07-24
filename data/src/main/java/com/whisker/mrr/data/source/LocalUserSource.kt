@@ -13,4 +13,6 @@ interface LocalUserSource {
     fun getUserStatsSingle() : Single<UserStats>
     fun createUserStats(userStats: UserStats) : Completable
     fun saveUserStatsProgressLocally(statsProgress: UserStatsProgress) : Completable
+    fun getLocalUserStatsProgressList() : Single<List<UserStatsProgress>>
+    fun removeUserStatsProgressList() : Completable
 }
