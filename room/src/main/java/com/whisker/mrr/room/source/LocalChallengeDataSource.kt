@@ -80,6 +80,7 @@ class LocalChallengeDataSource(
     override fun getChallengesProgressList(): Single<List<ChallengeProgress>> {
         return challengeProgressDao.getChallengeProgressList()
             .map { ChallengeProgressEntityMapper.transformListFromEntities(it) }
+            .onErrorReturn { listOf() }
     }
 
     override fun removeChallengesProgressList(): Completable {

@@ -52,4 +52,16 @@ class LocalRouteDataSource(
             }
         }
     }
+
+    override fun getRoutesSavedLocally(): Single<List<Route>> {
+        return routeDao.getRoutesSavedLocally()
+            .map { RouteEntityMapper.transformListFromEntities(it) }
+            .onErrorReturn { listOf() }
+    }
+
+    override fun removeLocallySavedRoutes(): Completable {
+        return Completable.fromAction {
+            routeDao.removeRoutesSavedLocally()
+        }
+    }
 }
