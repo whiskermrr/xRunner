@@ -9,6 +9,8 @@ import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_CHALLENGES
 import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.data.source.RemoteChallengeSource
+import com.whisker.mrr.domain.common.utils.ChallengeUtils
+import com.whisker.mrr.domain.model.ChallengeProgress
 import io.reactivex.*
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
@@ -84,6 +86,19 @@ class RemoteChallengeDataSource(
             )
         }
         return checkConnection().andThen(Completable.concat(completableList))
+    }
+
+    override fun updateChallengesProgress(progressList: List<ChallengeProgress>): Completable {
+        return getChallenges()
+            .map { challenges ->
+                val activeChallenges = challenges.filter { !it.isFinished }
+                for(challenge in activeChallenges) {
+                    ChallengeUtils.updateChallengeProgress(progressList.filter { it.challengeID == challenge.id }, challenge)
+                }
+                challenges
+            }.flatMapCompletable {
+                updateChallenges(it)
+            }
     }
 
     override fun getChallenges(): Single<List<Challenge>> {

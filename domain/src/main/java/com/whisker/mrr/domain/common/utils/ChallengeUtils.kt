@@ -40,35 +40,45 @@ object ChallengeUtils {
 
     fun updateChallengesProgress(stats: RouteStats, selectedChallenges: List<Challenge>) : List<Challenge> {
         for(challenge in selectedChallenges) {
-            var challengeRatio = 0
-            var timeProgress = 0f
-            var distanceProgress = 0f
-
-            challenge.time?.let {
-                challenge.finishedTime += stats.routeTime
-                timeProgress = if(challenge.finishedTime < it) {
-                    challenge.finishedTime.toFloat() / it
-                } else {
-                    1f
-                }
-                challengeRatio++
-            }
-            challenge.distance?.let {
-                challenge.finishedDistance += stats.wgs84distance
-                distanceProgress = if(challenge.finishedDistance < it) {
-                    challenge.finishedDistance / it
-                } else {
-                    1f
-                }
-                challengeRatio++
-            }
-            challenge.progress = (((timeProgress + distanceProgress) * 100) / challengeRatio).toInt()
-            if(challenge.progress == 100) {
-                challenge.isFinished = true
-            }
+            updateChallengeProgress(stats.routeTime, stats.wgs84distance, challenge)
         }
-
         return selectedChallenges
+    }
+
+    fun updateChallengeProgress(progressList: List<ChallengeProgress>, challenge: Challenge) : Challenge {
+        for(progress in progressList) {
+            updateChallengeProgress(progress.timeProgress ?: 0L, progress.distanceProgress ?: 0f, challenge)
+        }
+        return challenge
+    }
+
+    fun updateChallengeProgress(time: Long, distance: Float, challenge: Challenge) {
+        var challengeRatio = 0
+        var timeProgress = 0f
+        var distanceProgress = 0f
+
+        challenge.time?.let {
+            challenge.finishedTime += time
+            timeProgress = if(challenge.finishedTime < it) {
+                challenge.finishedTime.toFloat() / it
+            } else {
+                1f
+            }
+            challengeRatio++
+        }
+        challenge.distance?.let {
+            challenge.finishedDistance += distance
+            distanceProgress = if(challenge.finishedDistance < it) {
+                challenge.finishedDistance / it
+            } else {
+                1f
+            }
+            challengeRatio++
+        }
+        challenge.progress = (((timeProgress + distanceProgress) * 100) / challengeRatio).toInt()
+        if(challenge.progress == 100) {
+            challenge.isFinished = true
+        }
     }
 
     fun getChallengesProgress(stats: RouteStats, selectedChallenges: List<Challenge>) : List<ChallengeProgress> {

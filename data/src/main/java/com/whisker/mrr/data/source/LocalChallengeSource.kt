@@ -17,4 +17,6 @@ interface LocalChallengeSource {
     fun updateChallenges(challenges: List<Challenge>) : Completable
     fun updateChallengeID(oldID: Long, newID: Long) : Completable
     fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>): Completable
+    fun getChallengesProgressList() : Single<List<ChallengeProgress>>
+    fun removeChallengesProgressList() : Completable
 }

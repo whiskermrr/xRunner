@@ -76,4 +76,15 @@ class LocalChallengeDataSource(
             challengeProgressDao.insertAll(ChallengeProgressEntityMapper.transofrmListToEntities(progressList))
         }
     }
+
+    override fun getChallengesProgressList(): Single<List<ChallengeProgress>> {
+        return challengeProgressDao.getChallengeProgressList()
+            .map { ChallengeProgressEntityMapper.transformListFromEntities(it) }
+    }
+
+    override fun removeChallengesProgressList(): Completable {
+        return Completable.fromAction {
+            challengeProgressDao.clearChallengeProgressTable()
+        }
+    }
 }

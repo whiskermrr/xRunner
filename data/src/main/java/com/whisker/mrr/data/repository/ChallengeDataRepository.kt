@@ -59,4 +59,14 @@ class ChallengeDataRepository(
     override fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>): Completable {
         return localChallengeSource.saveChallengesProgressListLocally(progressList)
     }
+
+    override fun synchronizeChallenges(): Completable {
+        return localChallengeSource.getChallengesProgressList()
+            .flatMapCompletable { remoteChallengeSource.updateChallengesProgress(it) }
+            .andThen(
+                remoteChallengeSource.getChallenges()
+                    .flatMapCompletable { localChallengeSource.saveChallenges(it) }
+            )
+            .andThen(localChallengeSource.removeChallengesProgressList())
+    }
 }

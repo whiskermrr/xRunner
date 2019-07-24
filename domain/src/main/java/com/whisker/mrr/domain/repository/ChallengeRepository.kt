@@ -14,4 +14,5 @@ interface ChallengeRepository {
     fun getActiveChallenges() : Flowable<List<Challenge>>
     fun getActiveChallengesSingle() : Single<List<Challenge>>
     fun saveChallengesProgressListLocally(progressList: List<ChallengeProgress>) : Completable
+    fun synchronizeChallenges() : Completable
 }
