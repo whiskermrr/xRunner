@@ -91,12 +91,16 @@ dependencies {
     implementation presentationDependencies.stetho
     implementation presentationDependencies.stethoOkHttp
 
+    implementation presentationDependencies.workManager
+    implementation presentationDependencies.rxWorkManager
+
     testImplementation presentationTestDependencies.junit
     testImplementation presentationTestDependencies.kotlinJUnit
     testImplementation presentationTestDependencies.assertj
     testImplementation presentationTestDependencies.mockito
     testImplementation presentationTestDependencies.robolectric
     testImplementation presentationTestDependencies.testRoom
+    testImplementation presentationTestDependencies.testWorkManager
 
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

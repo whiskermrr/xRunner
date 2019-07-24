@@ -2,6 +2,8 @@ package com.whisker.mrr.xrunner.di
 
 import android.app.IntentService
 import android.app.Service
+import com.whisker.mrr.infrastructure.di.WorkManagerModule
+import com.whisker.mrr.infrastructure.synchronization.factory.XRunnerWorkerFactory
 import com.whisker.mrr.xrunner.App
 import com.whisker.mrr.xrunner.presentation.views.MainActivity
 import dagger.BindsInstance
@@ -32,4 +34,5 @@ interface AppComponent : AndroidInjector<App> {
     fun inject(mainActivity: MainActivity)
     fun inject(service: Service)
     fun inject(service: IntentService)
+    fun workerFactory() : XRunnerWorkerFactory
 }

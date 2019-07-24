@@ -1,5 +1,7 @@
 package com.whisker.mrr.xrunner
 
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.facebook.stetho.Stetho
 import com.whisker.mrr.xrunner.di.DaggerAppComponent
 import com.whisker.mrr.xrunner.di.applyAutoInjector
@@ -15,8 +17,13 @@ class App : DaggerApplication() {
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder()
+        val androidInjector = DaggerAppComponent.builder()
             .application(this)
             .build()
+
+        val factory = androidInjector.workerFactory()
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(factory).build())
+
+        return androidInjector
     }
 }

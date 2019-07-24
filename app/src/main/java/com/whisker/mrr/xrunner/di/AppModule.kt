@@ -2,6 +2,7 @@ package com.whisker.mrr.xrunner.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -19,11 +20,14 @@ import com.whisker.mrr.domain.manager.LocationManager
 import com.whisker.mrr.domain.manager.MusicManager
 import com.whisker.mrr.domain.repository.*
 import com.whisker.mrr.data.source.*
+import com.whisker.mrr.domain.manager.SynchronizationManager
 import com.whisker.mrr.firebase.datasource.*
 import com.whisker.mrr.firebase.repository.LoginDataRepository
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.infrastructure.di.WorkManagerModule
 import com.whisker.mrr.infrastructure.source.LocationDataManager
 import com.whisker.mrr.infrastructure.source.SnapshotLocalDataSource
+import com.whisker.mrr.infrastructure.synchronization.SynchronizationDataManager
 import com.whisker.mrr.music.MusicDataManager
 import com.whisker.mrr.music.repository.MusicDataRepository
 import com.whisker.mrr.room.dao.*
@@ -34,7 +38,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Singleton
 
 // TODO: move some stuff to separate modules
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [ViewModelModule::class, WorkManagerModule::class])
 class AppModule {
 
     @Provides
@@ -45,6 +49,18 @@ class AppModule {
     @Singleton
     fun provideSharedPreferences(context: Context) : SharedPreferences {
         return context.getSharedPreferences(XRunnerConstants.XRUNNER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkManager() : WorkManager {
+        return WorkManager.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSynchronizationManager(workManager: WorkManager) : SynchronizationManager {
+        return SynchronizationDataManager(workManager)
     }
 
     @Provides
