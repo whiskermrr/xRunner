@@ -12,6 +12,6 @@ interface LocalRouteSource {
     fun markRouteAsDeleted(routeID: Long) : Completable
     fun removeRouteById(routeID: Long) : Completable
     fun updateRouteID(oldID: Long, newID: Long) : Completable
-    fun getRoutesSavedLocally() : Single<List<Route>>
+    fun getRoutesSavedLocallyAndDeleted() : Single<List<Route>>
     fun removeLocallySavedRoutes() : Completable
 }

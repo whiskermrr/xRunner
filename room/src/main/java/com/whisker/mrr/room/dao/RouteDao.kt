@@ -29,8 +29,8 @@ abstract class RouteDao : BaseDao<RouteEntity> {
     @Query("SELECT MIN(routeID) - 1 FROM Route WHERE routeID < 0")
     abstract fun getNextLocalID() : Long?
 
-    @Query("SELECT * FROM Route WHERE routeID < 0")
-    abstract fun getRoutesSavedLocally() : Single<List<RouteEntity>>
+    @Query("SELECT * FROM Route WHERE routeID < 0 OR isDeleted = 1")
+    abstract fun getRoutesSavedLocallyAndDeleted() : Single<List<RouteEntity>>
 
     @Query("DELETE FROM Route WHERE routeID < 0")
     abstract fun removeRoutesSavedLocally()

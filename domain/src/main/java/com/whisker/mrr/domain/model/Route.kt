@@ -6,5 +6,6 @@ data class Route(
     var routeId: Long = -1L,
     var waypoints: List<Coords> = listOf(),
     var routeStats: RouteStats = RouteStats(),
-    var date: Long = 0L
+    var date: Long = 0L,
+    var isDeleted: Boolean = false
 )

@@ -53,8 +53,8 @@ class LocalRouteDataSource(
         }
     }
 
-    override fun getRoutesSavedLocally(): Single<List<Route>> {
-        return routeDao.getRoutesSavedLocally()
+    override fun getRoutesSavedLocallyAndDeleted(): Single<List<Route>> {
+        return routeDao.getRoutesSavedLocallyAndDeleted()
             .map { RouteEntityMapper.transformListFromEntities(it) }
             .onErrorReturn { listOf() }
     }
