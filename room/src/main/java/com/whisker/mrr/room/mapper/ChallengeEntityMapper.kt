@@ -35,6 +35,7 @@ object ChallengeEntityMapper {
         entity.experience?.let { challenge.experience = it }
         entity.finishedDistance?.let { challenge.finishedDistance = it }
         entity.finishedTime?.let { challenge.finishedTime = it }
+        challenge.isDeleted = entity.isDeleted
 
         return challenge
     }
@@ -53,6 +54,7 @@ object ChallengeEntityMapper {
         entity.experience = challenge.experience
         entity.finishedDistance = challenge.finishedDistance
         entity.finishedTime = challenge.finishedTime
+        entity.isDeleted = challenge.isDeleted
 
         return entity
     }

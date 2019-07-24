@@ -5,4 +5,4 @@ data class RouteHolder(
     var totalDistance: Float = 0f,
     var totalTime: Long = 0L,
     var routes: List<Route> = listOf()
-    )
+)

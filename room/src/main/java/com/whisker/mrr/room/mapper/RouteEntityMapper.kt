@@ -28,6 +28,8 @@ object RouteEntityMapper {
         routeEntity.waypoints?.let { route.waypoints = it }
         routeEntity.routeStats?.let { route.routeStats = it }
         routeEntity.date?.let { route.date = it }
+        route.isDeleted = routeEntity.isDeleted
+
 
         return route
     }
@@ -39,6 +41,7 @@ object RouteEntityMapper {
         routeEntity.waypoints = route.waypoints
         routeEntity.routeStats = route.routeStats
         routeEntity.date = route.date
+        routeEntity.isDeleted = route.isDeleted
 
         return routeEntity
     }

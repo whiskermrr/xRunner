@@ -12,5 +12,6 @@ data class Challenge(
     var difficulty: ChallengeDifficulty = ChallengeDifficulty.EASY,
     var experience: Int = 0,
     var finishedDistance: Float = 0f,
-    var finishedTime: Long = 0
+    var finishedTime: Long = 0,
+    var isDeleted: Boolean = false
 )

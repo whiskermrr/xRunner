@@ -61,7 +61,9 @@ class ChallengeDataRepository(
     }
 
     override fun synchronizeChallenges(): Completable {
-        return localChallengeSource.getChallengesProgressList()
+        return localChallengeSource.getChallengesSavedLocallyAndDeleted()
+            .flatMap { remoteChallengeSource.saveChallenges(it) }
+            .flatMap { localChallengeSource.getChallengesProgressList() }
             .flatMapCompletable { remoteChallengeSource.updateChallengesProgress(it) }
             .andThen(
                 remoteChallengeSource.getChallenges()
