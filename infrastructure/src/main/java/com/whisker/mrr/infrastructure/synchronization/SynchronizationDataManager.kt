@@ -6,6 +6,7 @@ import androidx.work.WorkManager
 import com.whisker.mrr.domain.manager.SynchronizationManager
 import com.whisker.mrr.infrastructure.synchronization.worker.ChallengeRxWorker
 import com.whisker.mrr.infrastructure.synchronization.worker.RouteRxWorker
+import com.whisker.mrr.infrastructure.synchronization.worker.SnapshotRxWorker
 import com.whisker.mrr.infrastructure.synchronization.worker.UserStatsRxWorker
 import com.whisker.mrr.infrastructure.toWorkInfoStateCompletable
 import io.reactivex.Completable
@@ -30,6 +31,13 @@ class SynchronizationDataManager(private val workManager: WorkManager) : Synchro
     }
 
     override fun imageSynchronization() : Completable {
-        return Completable.complete()
+        workManager.beginUniqueWork(
+            SnapshotRxWorker::class.java.simpleName,
+            ExistingWorkPolicy.REPLACE,
+            OneTimeWorkRequestBuilder<SnapshotRxWorker>().build()
+        ).enqueue()
+
+        return workManager.getWorkInfosForUniqueWorkLiveData(SnapshotRxWorker::class.java.simpleName)
+            .toWorkInfoStateCompletable()
     }
 }
