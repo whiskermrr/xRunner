@@ -7,7 +7,6 @@ import io.reactivex.Flowable
 
 interface RouteRepository {
     fun saveRoute(route: Route) : Completable
-    fun saveSnapshot(bitmap: ByteArray, fileName: String) : Completable
     fun getRouteList() : Flowable<List<RouteHolder>>
     fun removeRoute(routeID: Long) : Completable
     fun synchronizeRoutes() : Completable
