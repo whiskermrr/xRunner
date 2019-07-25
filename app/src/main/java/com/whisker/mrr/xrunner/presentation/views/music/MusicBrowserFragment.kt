@@ -1,8 +1,23 @@
 package com.whisker.mrr.xrunner.presentation.views.music
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.whisker.mrr.xrunner.R
+import com.whisker.mrr.xrunner.presentation.adapters.MusicBrowserPagerAdapter
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import kotlinx.android.synthetic.main.fragment_music_browser.*
 
 class MusicBrowserFragment : BaseFragment() {
 
-    private lateinit var viewModel: MusicBrowserViewModel
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_music_browser, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        musicViewPager.adapter = MusicBrowserPagerAdapter(requireContext(), activity?.supportFragmentManager)
+        musicTabLayout.setupWithViewPager(musicViewPager)
+    }
 }

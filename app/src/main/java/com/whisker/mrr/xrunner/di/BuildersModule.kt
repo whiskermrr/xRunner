@@ -7,6 +7,9 @@ import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
+import com.whisker.mrr.xrunner.presentation.views.music.BrowseAlbumsFragment
+import com.whisker.mrr.xrunner.presentation.views.music.BrowseArtistsFragment
+import com.whisker.mrr.xrunner.presentation.views.music.MusicBrowserFragment
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
@@ -45,4 +48,13 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun bindMusicPlayerFragment() : MusicPlayerFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindMusicBrowserFragment() : MusicBrowserFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindBrowseAlbumsFragment() : BrowseAlbumsFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun bindBrowseArtistsFragment() : BrowseArtistsFragment
 }

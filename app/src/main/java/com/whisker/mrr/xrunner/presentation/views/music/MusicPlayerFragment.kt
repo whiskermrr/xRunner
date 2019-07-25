@@ -48,6 +48,7 @@ class MusicPlayerFragment : BaseFragment() {
 
         ibNextSong.setOnClickListener { viewModel.nextSong() }
         ibPreviousSong.setOnClickListener { viewModel.previousSong() }
+        ibMusic.setOnClickListener { mainActivity.switchContent(MusicBrowserFragment()) }
 
         viewModel.getMusic()
     }

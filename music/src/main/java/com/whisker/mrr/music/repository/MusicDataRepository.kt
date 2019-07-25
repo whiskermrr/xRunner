@@ -8,7 +8,6 @@ import com.whisker.mrr.domain.model.Album
 import com.whisker.mrr.domain.model.Artist
 import com.whisker.mrr.domain.model.Song
 import com.whisker.mrr.domain.repository.MusicRepository
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
