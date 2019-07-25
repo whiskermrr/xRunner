@@ -8,6 +8,7 @@ import com.whisker.mrr.domain.model.Album
 import com.whisker.mrr.domain.model.Artist
 import com.whisker.mrr.domain.model.Song
 import com.whisker.mrr.domain.repository.MusicRepository
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -63,10 +64,9 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
             musicCursor?.close()
             songsList
         }
-
     }
 
-    override fun getAlbums(artistID: String?): Single<List<Album>> {
+    override fun getAlbums(artistName: String?): Single<List<Album>> {
         return Single.fromCallable {
             val externalUri: Uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
 
@@ -81,9 +81,9 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
             var selection: String? = null
             var selectionArgs: Array<String>? = null
 
-            if(artistID != null) {
+            if(artistName != null) {
                 selection = MediaStore.Audio.Albums.ARTIST + "= ?"
-                selectionArgs = arrayOf(artistID)
+                selectionArgs = arrayOf(artistName)
             }
             val albumCursor = context.contentResolver.query(
                 externalUri, albumsProjection, selection, selectionArgs, null)
@@ -126,14 +126,16 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
             val artistList: MutableList<Artist> = mutableListOf()
 
             artistCursor?.let { cursor ->
-                artistList.add(
-                    Artist(
-                        cursor.getString(0),
-                        cursor.getString(1),
-                        cursor.getInt(2),
-                        cursor.getInt(3)
+                while(cursor.moveToNext()) {
+                    artistList.add(
+                        Artist(
+                            cursor.getString(0),
+                            cursor.getString(1),
+                            cursor.getInt(2),
+                            cursor.getInt(3)
+                        )
                     )
-                )
+                }
             }
 
             artistCursor?.close()
@@ -141,7 +143,7 @@ class MusicDataRepository(private val context: Context) : MusicRepository {
         }
         .flatMapObservable { Observable.fromIterable(it) }
         .flatMapSingle {  artist ->
-            getAlbums(artist.artistKey).map {
+            getAlbums(artist.artistName).map {
                 artist.albums = it
                 artist
             }
