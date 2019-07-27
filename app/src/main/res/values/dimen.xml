@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<dimen name="challenge_grid_spacing">8dp</dimen>
+	<dimen name="music_grid_spacing">8dp</dimen>
 </resources>

@@ -11,7 +11,7 @@ class AddChallengeViewModel
 @Inject constructor(private val saveChallengeInteractor: SaveChallengeInteractor)
 : ViewModel() {
 
-    private val isChallengeSaved =  MutableLiveData<Boolean> ()
+    private val isChallengeSaved =  MutableLiveData<Boolean>()
     private val disposables = CompositeDisposable()
 
     fun saveChallenge(challenge: Challenge) {

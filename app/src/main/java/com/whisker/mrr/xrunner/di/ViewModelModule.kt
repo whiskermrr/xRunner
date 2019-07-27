@@ -7,6 +7,8 @@ import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeViewModel
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.views.login.LoginViewModel
 import com.whisker.mrr.xrunner.presentation.views.map.RunViewModel
+import com.whisker.mrr.xrunner.presentation.views.music.BrowseAlbumsViewModel
+import com.whisker.mrr.xrunner.presentation.views.music.BrowseArtistsViewModel
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerViewModel
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileViewModel
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunViewModel
@@ -59,4 +61,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MusicPlayerViewModel::class)
     internal abstract fun bindMusicPlayerViewModel(musicPlayerViewModel: MusicPlayerViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BrowseAlbumsViewModel::class)
+    internal abstract fun bindBrowseAlbumsViewModel(browseAlbumsViewModel: BrowseAlbumsViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BrowseArtistsViewModel::class)
+    internal abstract fun bindBrowseArtistsViewModel(browseArtistsViewModel: BrowseArtistsViewModel) : ViewModel
 }

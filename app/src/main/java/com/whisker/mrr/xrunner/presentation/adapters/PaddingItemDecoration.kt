@@ -5,7 +5,7 @@ import android.view.View
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class ChallengeItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
+class PaddingItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         if(view is CardView) {

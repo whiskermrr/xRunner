@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.MusicBrowserPagerAdapter
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_music_browser.*
 
 class MusicBrowserFragment : BaseFragment() {
@@ -17,6 +18,7 @@ class MusicBrowserFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.toolbar.title = getString(R.string.title_music)
         musicViewPager.adapter = MusicBrowserPagerAdapter(requireContext(), activity?.supportFragmentManager)
         musicTabLayout.setupWithViewPager(musicViewPager)
     }
