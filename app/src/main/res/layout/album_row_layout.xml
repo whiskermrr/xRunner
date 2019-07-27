@@ -7,10 +7,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/albumTitleBackground"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.whisker.mrr.xrunner.presentation.layout.SquereImageView
             android:id="@+id/ivAlbumArt"
             android:contentDescription="@null"
             android:layout_width="200dp"
@@ -18,7 +19,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             />
 
         <TextView
@@ -28,11 +28,29 @@
             tools:text="Album Title Goes Here"
             android:textColor="@android:color/white"
             android:textAlignment="center"
-            android:background="@color/albumTitleBackground"
-            android:padding="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/ivAlbumArt"
+            app:layout_constraintTop_toBottomOf="@id/ivAlbumArt"
+            />
+
+        <TextView
+            android:id="@+id/tvAlbumArtist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Deadmau5"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvAlbumTitle"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

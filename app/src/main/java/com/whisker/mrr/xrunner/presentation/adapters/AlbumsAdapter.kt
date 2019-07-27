@@ -37,6 +37,8 @@ class AlbumsAdapter : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
         fun bind(album: Album) {
             itemView.tvAlbumTitle.text = album.title
+            itemView.tvAlbumArtist.text = album.artist
+
             if(!album.albumArt.isNullOrEmpty()) {
                 Picasso.get().load(Uri.fromFile(File(album.albumArt)))
                         .into(itemView.ivAlbumArt)
