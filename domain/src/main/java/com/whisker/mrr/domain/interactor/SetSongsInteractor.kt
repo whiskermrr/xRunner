@@ -13,20 +13,32 @@ class SetSongsInteractor(
 
     companion object {
         const val KEY_SONGS = "key_songs"
+        const val KEY_CURRENT_POSITION = "key_current_position"
+        const val KEY_IS_START_PLAYING = "key_is_start_playing"
     }
 
-    fun setSongs(songs: List<Song>) : Completable {
-        val data = HashMap<String, List<Song>>()
+    fun setSongs(songs: List<Song>, isStartPlaying: Boolean, currentPosition: Int? = null) : Completable {
+        val data = HashMap<String, Any>()
         data[KEY_SONGS] = songs
+        data[KEY_IS_START_PLAYING] = isStartPlaying
+        if(currentPosition != null) {
+            data[KEY_CURRENT_POSITION] = currentPosition
+        }
         return completable(data)
     }
 
     override fun createCompletable(data: Map<String, Any>?): Completable {
-        val param = data?.get(KEY_SONGS)
+        val dataSongs = data?.get(KEY_SONGS)
+        val currentPosition = data?.get(KEY_CURRENT_POSITION)
+        val isStartPlaying = data?.get(KEY_IS_START_PLAYING) as Boolean
 
-        param?.let { songs ->
+        dataSongs?.let { songs ->
             return if(songs is List<*>) {
-                musicManager.setSongs(songs.filterIsInstance<Song>())
+                if(currentPosition != null) {
+                    musicManager.setSongs(songs.filterIsInstance<Song>(), isStartPlaying, currentPosition as Int)
+                } else {
+                    musicManager.setSongs(songs.filterIsInstance<Song>(), isStartPlaying)
+                }
             } else {
                 Completable.error(ClassCastException("Cannot cost parameter @songs to List<Song>"))
             }

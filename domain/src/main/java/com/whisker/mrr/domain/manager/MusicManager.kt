@@ -5,7 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 interface MusicManager {
-    fun setSongs(songs: List<Song>) : Completable
+    fun setSongs(songs: List<Song>, isStartPlaying: Boolean, currentPosition: Int = 0) : Completable
     fun nextSong() : Completable
     fun previousSong() : Completable
     fun play() : Completable

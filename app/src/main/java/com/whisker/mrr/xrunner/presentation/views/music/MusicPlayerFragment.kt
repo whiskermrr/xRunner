@@ -13,12 +13,14 @@ import kotlinx.android.synthetic.main.fragment_music_player.*
 class MusicPlayerFragment : BaseFragment() {
 
     companion object {
-        private var isMusicPlaying: Boolean = false
+        private var isMusicSet = false
     }
 
     private lateinit var viewModel: MusicPlayerViewModel
+    private var isMusicPlaying: Boolean = false
 
     private val currentSongObserver = Observer<String> {
+        isMusicSet = true
         tvSongName.text = it
     }
 
@@ -53,7 +55,7 @@ class MusicPlayerFragment : BaseFragment() {
         ibPreviousSong.setOnClickListener { viewModel.previousSong() }
         ibMusic.setOnClickListener { mainActivity.switchContent(MusicBrowserFragment()) }
 
-        if(!isMusicPlaying) {
+        if(!isMusicSet) {
             viewModel.getMusic()
         }
     }

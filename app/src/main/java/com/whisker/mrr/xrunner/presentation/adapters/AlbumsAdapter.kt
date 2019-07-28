@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.whisker.mrr.domain.model.Album
 import com.whisker.mrr.xrunner.R
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.album_row_layout.view.*
 import org.jetbrains.anko.layoutInflater
 import java.io.File
@@ -14,10 +16,19 @@ import java.io.File
 class AlbumsAdapter : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
     private var albums: List<Album> = listOf()
+    private val clickSubject: PublishSubject<Int> = PublishSubject.create()
 
     fun setAlbums(newAlbums: List<Album>) {
         albums = newAlbums
         notifyDataSetChanged()
+    }
+
+    fun getAlbums() : List<Album> {
+        return albums
+    }
+
+    fun clickEvent() : Observable<Int> {
+        return clickSubject
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
@@ -46,6 +57,8 @@ class AlbumsAdapter : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
                 Picasso.get().load(R.drawable.no_artwork)
                         .into(itemView.ivAlbumArt)
             }
+
+            itemView.setOnClickListener { clickSubject.onNext(adapterPosition) }
         }
     }
 }

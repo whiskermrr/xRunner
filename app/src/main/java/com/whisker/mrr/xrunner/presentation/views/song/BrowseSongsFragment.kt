@@ -11,15 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.SongsAdapter
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_browse_songs.*
 
 class BrowseSongsFragment : BaseFragment() {
 
     private lateinit var viewModel: BrowseSongsViewModel
     private lateinit var songsAdapter: SongsAdapter
+    private lateinit var disposables: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        disposables = CompositeDisposable()
         songsAdapter = SongsAdapter()
     }
 
@@ -31,6 +35,8 @@ class BrowseSongsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseSongsViewModel::class.java)
 
+
+
         val layoutManager = LinearLayoutManager(context)
         rvSongs.layoutManager = layoutManager
         rvSongs.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
@@ -39,5 +45,24 @@ class BrowseSongsFragment : BaseFragment() {
         viewModel.getSongList().observe(this, Observer { songs ->
             songsAdapter.setSongs(songs)
         })
+
+        viewModel.getIsSongListSet().observe(this, Observer { isSet ->
+            if(isSet) {
+                mainActivity.popBackStackToFragment(RunFragment::class.java.name)
+            }
+        })
+
+        disposables.add(
+            songsAdapter.clickEvent()
+                .subscribe({ position ->
+                    viewModel.setSongs(songsAdapter.getSongs(), position)
+                }, Throwable::printStackTrace)
+        )
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        disposables.dispose()
     }
 }

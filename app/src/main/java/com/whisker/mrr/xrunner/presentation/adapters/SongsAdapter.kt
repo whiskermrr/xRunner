@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.whisker.mrr.domain.model.Song
 import com.whisker.mrr.xrunner.R
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.song_row_layout.view.*
 import org.jetbrains.anko.layoutInflater
 
@@ -15,10 +17,19 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
 
     private var songs: List<Song> = mutableListOf()
     private val metaReceiver = MediaMetadataRetriever()
+    private val clickSubject: PublishSubject<Int> = PublishSubject.create()
 
     fun setSongs(newSongs: List<Song>) {
         songs = newSongs
         notifyDataSetChanged()
+    }
+
+    fun getSongs() : List<Song> {
+        return songs
+    }
+
+    fun clickEvent() : Observable<Int> {
+        return clickSubject
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
@@ -51,7 +62,7 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
                 Picasso.get().load(R.drawable.no_artwork)
                     .into(itemView.ivSongImage)
             }
-
+            itemView.setOnClickListener { clickSubject.onNext(adapterPosition) }
         }
     }
 }

@@ -35,7 +35,7 @@ class MusicPlayerViewModel
                     if(it.isNotEmpty()) {
                         currentSong.postValue(it[0].displayName)
                     }
-                    setSongsInteractor.setSongs(it)
+                    setSongsInteractor.setSongs(it, false)
                 }
                 .subscribe({
                     isMusicPlaying.postValue(false)
