@@ -7,8 +7,8 @@ import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeViewModel
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesViewModel
 import com.whisker.mrr.xrunner.presentation.views.login.LoginViewModel
 import com.whisker.mrr.xrunner.presentation.views.map.RunViewModel
-import com.whisker.mrr.xrunner.presentation.views.music.BrowseAlbumsViewModel
-import com.whisker.mrr.xrunner.presentation.views.music.BrowseArtistsViewModel
+import com.whisker.mrr.xrunner.presentation.views.album.BrowseAlbumsViewModel
+import com.whisker.mrr.xrunner.presentation.views.artist.BrowseArtistsViewModel
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerViewModel
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileViewModel
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunViewModel

@@ -13,4 +13,5 @@ interface MusicManager {
     fun pause() : Completable
     fun seekTo(time: Int) : Completable
     fun currentSong() : Flowable<Song>
+    fun isMusicPlaying() : Flowable<Boolean>
 }

@@ -7,8 +7,8 @@ import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
-import com.whisker.mrr.xrunner.presentation.views.music.BrowseAlbumsFragment
-import com.whisker.mrr.xrunner.presentation.views.music.BrowseArtistsFragment
+import com.whisker.mrr.xrunner.presentation.views.album.BrowseAlbumsFragment
+import com.whisker.mrr.xrunner.presentation.views.artist.BrowseArtistsFragment
 import com.whisker.mrr.xrunner.presentation.views.music.MusicBrowserFragment
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment

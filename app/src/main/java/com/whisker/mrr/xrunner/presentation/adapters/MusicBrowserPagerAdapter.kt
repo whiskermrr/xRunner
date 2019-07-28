@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.views.music.BrowseAlbumsFragment
-import com.whisker.mrr.xrunner.presentation.views.music.BrowseArtistsFragment
+import com.whisker.mrr.xrunner.presentation.views.album.BrowseAlbumsFragment
+import com.whisker.mrr.xrunner.presentation.views.artist.BrowseArtistsFragment
 
 class MusicBrowserPagerAdapter(private val context: Context, fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
 

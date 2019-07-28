@@ -15,12 +15,18 @@ class MusicPlayerViewModel
     private val previousSongInteractor: PreviousSongInteractor,
     private val pauseMusicInteractor: PauseMusicInteractor,
     private val stopMusicInteractor: StopMusicInteractor,
-    private val getCurrentSongInteractor: GetCurrentSongInteractor
+    private val getCurrentSongInteractor: GetCurrentSongInteractor,
+    private val isMusicPlayingInteractor: IsMusicPlayingInteractor
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
     private val currentSong = MutableLiveData<String>()
     private val isMusicPlaying = MutableLiveData<Boolean>()
+
+    init {
+        isMusicPlaying()
+        subscribeToCurrentSong()
+    }
 
     fun getMusic() {
         disposables.add(
@@ -37,6 +43,15 @@ class MusicPlayerViewModel
         )
     }
 
+    private fun isMusicPlaying() {
+        disposables.add(
+            isMusicPlayingInteractor.isMusicPlaying()
+                .subscribe({ isPlaying ->
+                    isMusicPlaying.postValue(isPlaying)
+                }, Throwable::printStackTrace)
+        )
+    }
+
     private fun subscribeToCurrentSong() {
         disposables.add(
             getCurrentSongInteractor.getCurrentSong()
@@ -49,37 +64,28 @@ class MusicPlayerViewModel
     fun startPlayingMusic() {
         disposables.add(
             playMusicInteractor.playMusic()
-                .subscribe({
-                    isMusicPlaying.postValue(true)
-                    subscribeToCurrentSong()
-                }, Throwable::printStackTrace)
+                .subscribe({}, Throwable::printStackTrace)
         )
     }
 
     fun pausePlayingMusic() {
         disposables.add(
             pauseMusicInteractor.pauseMusic()
-                .subscribe({
-                    isMusicPlaying.postValue(false)
-                }, Throwable::printStackTrace)
+                .subscribe({}, Throwable::printStackTrace)
         )
     }
 
     fun nextSong() {
         disposables.add(
             nextSongInteractor.nextSong()
-                .subscribe({
-                    isMusicPlaying.postValue(true)
-                }, Throwable::printStackTrace)
+                .subscribe({}, Throwable::printStackTrace)
         )
     }
 
     fun previousSong() {
         disposables.add(
             previousSongInteractor.previousSong()
-                .subscribe({
-                    isMusicPlaying.postValue(true)
-                }, Throwable::printStackTrace)
+                .subscribe({}, Throwable::printStackTrace)
         )
     }
 

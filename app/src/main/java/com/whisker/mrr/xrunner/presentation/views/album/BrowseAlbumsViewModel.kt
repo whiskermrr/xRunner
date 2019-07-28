@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.views.music
+package com.whisker.mrr.xrunner.presentation.views.album
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_run.*
 class RunFragment : BaseMapFragment() {
 
     private lateinit var viewModel: RunViewModel
+    private lateinit var trackingState: TrackingState
     private var isMapShown: Boolean = false
 
     private val lastLocationObserver = Observer<LatLng> { lastLocation ->
@@ -41,19 +42,13 @@ class RunFragment : BaseMapFragment() {
     }
 
     private val trackingStateObserver = Observer<TrackingState> { state ->
+        trackingState = state
         if((state == TrackingState.RESUME || state == TrackingState.START) && mainActivity.isBottomNavEnabled) {
             mainActivity.disableBottomNavigation()
         } else if((state == TrackingState.STOP || state == TrackingState.PAUSE) && !mainActivity.isBottomNavEnabled) {
             mainActivity.enableBottomNavigation()
         }
-        state?.let {
-            when(it) {
-                TrackingState.START -> onStartTracking()
-                TrackingState.PAUSE -> onPauseTracking()
-                TrackingState.STOP -> onStopTracking()
-                TrackingState.RESUME -> onResumeTracking()
-            }
-        }
+        setViewAccordingToTrackingState()
     }
 
     private val runTimeObserver = Observer<String> {
@@ -76,6 +71,8 @@ class RunFragment : BaseMapFragment() {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.toolbar.title = getString(R.string.title_run)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RunViewModel::class.java)
+
+        setViewAccordingToTrackingState()
 
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
@@ -120,6 +117,17 @@ class RunFragment : BaseMapFragment() {
         musicPlayerContainer.visibility = View.VISIBLE
         mapView.visibility = View.GONE
         bDismiss.visibility = View.GONE
+    }
+
+    private fun setViewAccordingToTrackingState() {
+        if(::trackingState.isInitialized) {
+            when(trackingState) {
+                TrackingState.START -> onStartTracking()
+                TrackingState.PAUSE -> onPauseTracking()
+                TrackingState.STOP -> onStopTracking()
+                TrackingState.RESUME -> onResumeTracking()
+            }
+        }
     }
 
     private fun onStartTracking() {

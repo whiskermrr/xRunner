@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.views.music
+package com.whisker.mrr.xrunner.presentation.views.artist
 
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject

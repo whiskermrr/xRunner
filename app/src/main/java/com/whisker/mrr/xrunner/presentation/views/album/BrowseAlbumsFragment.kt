@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.views.music
+package com.whisker.mrr.xrunner.presentation.views.album
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.AlbumsAdapter
 import com.whisker.mrr.xrunner.presentation.adapters.PaddingItemDecoration
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_browse_albums.*
 
 class BrowseAlbumsFragment : BaseFragment() {

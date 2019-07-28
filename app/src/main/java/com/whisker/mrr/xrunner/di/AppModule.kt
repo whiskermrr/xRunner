@@ -383,6 +383,12 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideIsMusicPlayingInteractor(musicManager: MusicManager) : IsMusicPlayingInteractor {
+        return IsMusicPlayingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), musicManager)
+    }
+
+    @Provides
+    @Singleton
     fun provideGetCurrentSongInteractor(musicManager: MusicManager) : GetCurrentSongInteractor {
         return GetCurrentSongInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), musicManager)
     }
