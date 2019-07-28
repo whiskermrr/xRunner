@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.SongsAdapter
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
-import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_browse_songs.*
 
@@ -54,7 +53,6 @@ class BrowseSongsFragment : BaseFragment() {
                     viewModel.setSongs(songsAdapter.getSongs(), position)
                 }, Throwable::printStackTrace)
         )
-
     }
 
     override fun onDestroyView() {
