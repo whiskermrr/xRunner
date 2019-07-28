@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 
-class SquereImageView : ImageView {
+class SquareImageView : ImageView {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrSet: AttributeSet?) : super(context, attrSet)
