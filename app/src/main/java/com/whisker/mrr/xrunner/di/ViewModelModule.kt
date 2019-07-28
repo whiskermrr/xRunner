@@ -11,6 +11,7 @@ import com.whisker.mrr.xrunner.presentation.views.album.BrowseAlbumsViewModel
 import com.whisker.mrr.xrunner.presentation.views.artist.BrowseArtistsViewModel
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerViewModel
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileViewModel
+import com.whisker.mrr.xrunner.presentation.views.song.BrowseSongsViewModel
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunViewModel
 import dagger.Binds
 import dagger.Module
@@ -71,4 +72,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(BrowseArtistsViewModel::class)
     internal abstract fun bindBrowseArtistsViewModel(browseArtistsViewModel: BrowseArtistsViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BrowseSongsViewModel::class)
+    internal abstract fun bindBrowseSongsViewModel(browseSongsViewModel: BrowseSongsViewModel) : ViewModel
 }
