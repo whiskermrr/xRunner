@@ -11,15 +11,18 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.AlbumsAdapter
 import com.whisker.mrr.xrunner.presentation.adapters.PaddingItemDecoration
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_browse_albums.*
 
 class BrowseAlbumsFragment : BaseFragment() {
 
     private lateinit var viewModel: BrowseAlbumsViewModel
     private lateinit var albumsAdapter: AlbumsAdapter
+    private lateinit var disposables: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        disposables = CompositeDisposable()
         albumsAdapter = AlbumsAdapter()
     }
 
@@ -39,5 +42,18 @@ class BrowseAlbumsFragment : BaseFragment() {
         viewModel.getAlbumList().observe(this, Observer { albums ->
             albumsAdapter.setAlbums(albums)
         })
+
+        viewModel.getIsSongListSet().observe(this, Observer { isSet ->
+            if(isSet) mainActivity.onBackPressed()
+        })
+
+        disposables.add(
+            albumsAdapter.clickEvent()
+                .subscribe({
+                    val albumID = albumsAdapter.getAlbums()[it].id
+                    viewModel.setSongs(albumID)
+                }, Throwable::printStackTrace)
+        )
+
     }
 }

@@ -35,8 +35,6 @@ class BrowseSongsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseSongsViewModel::class.java)
 
-
-
         val layoutManager = LinearLayoutManager(context)
         rvSongs.layoutManager = layoutManager
         rvSongs.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
@@ -47,9 +45,7 @@ class BrowseSongsFragment : BaseFragment() {
         })
 
         viewModel.getIsSongListSet().observe(this, Observer { isSet ->
-            if(isSet) {
-                mainActivity.popBackStackToFragment(RunFragment::class.java.name)
-            }
+            if(isSet) mainActivity.onBackPressed()
         })
 
         disposables.add(

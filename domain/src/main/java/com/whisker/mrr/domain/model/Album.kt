@@ -1,10 +1,10 @@
 package com.whisker.mrr.domain.model
 
 data class Album(
-    var id: Long? = null,
-    var title: String? = null,
-    var artist: String? = null,
-    var numberOfSongs: Int? = null,
+    var id: Long,
+    var title: String,
+    var artist: String,
+    var numberOfSongs: Int,
     var albumArt: String? = null
 ) {
     override fun toString(): String {
