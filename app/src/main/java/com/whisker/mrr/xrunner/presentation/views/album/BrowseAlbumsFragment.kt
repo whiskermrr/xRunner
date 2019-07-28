@@ -18,6 +18,11 @@ class BrowseAlbumsFragment : BaseFragment() {
     private lateinit var viewModel: BrowseAlbumsViewModel
     private lateinit var albumsAdapter: AlbumsAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        albumsAdapter = AlbumsAdapter()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_browse_albums, container, false)
     }
@@ -26,7 +31,6 @@ class BrowseAlbumsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseAlbumsViewModel::class.java)
 
-        albumsAdapter = AlbumsAdapter()
         val gridLayoutManager = GridLayoutManager(context, 2)
         rvAlbums.layoutManager = gridLayoutManager
         rvAlbums.adapter = albumsAdapter

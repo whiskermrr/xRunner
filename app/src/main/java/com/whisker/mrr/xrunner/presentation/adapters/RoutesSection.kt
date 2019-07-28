@@ -12,7 +12,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
 import java.util.*
 
-class RoutesAdapter(private val routeHolder: RouteHolderModel) :
+class RoutesSection(private val routeHolder: RouteHolderModel) :
     StatelessSection(SectionParameters.builder()
         .itemResourceId(R.layout.route_list_item)
         .headerResourceId(R.layout.route_list_header)
