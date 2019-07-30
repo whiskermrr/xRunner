@@ -341,6 +341,18 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideGetArtistsInteractor(musicRepository: MusicRepository) : GetArtistsInteractor {
+        return GetArtistsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSongsByArtistIdInteractor(musicRepository: MusicRepository) : GetSongsByArtistIdInteractor {
+        return GetSongsByArtistIdInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
+    }
+
+    @Provides
+    @Singleton
     fun provideGetAlbumsInteractor(musicRepository: MusicRepository) : GetAlbumsInteractor {
         return GetAlbumsInteractor(IOSingleTransformer(AndroidSchedulers.mainThread()), musicRepository)
     }
@@ -379,6 +391,12 @@ class AppModule {
     @Singleton
     fun provideStopMusicInteractor(musicManager: MusicManager) : StopMusicInteractor {
         return StopMusicInteractor(musicManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIsMusicPlayingInteractor(musicManager: MusicManager) : IsMusicPlayingInteractor {
+        return IsMusicPlayingInteractor(IOFlowableTransformer(AndroidSchedulers.mainThread()), musicManager)
     }
 
     @Provides

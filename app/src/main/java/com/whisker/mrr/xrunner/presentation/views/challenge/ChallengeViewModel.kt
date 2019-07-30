@@ -9,8 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class ChallengeViewModel
-@Inject constructor(private val getChallengesInteractor: GetChallengesInteractor)
-: ViewModel() {
+@Inject constructor(private val getChallengesInteractor: GetChallengesInteractor) : ViewModel() {
 
     private val challengeList = MutableLiveData<ChallengeHolder>()
     private val disposables = CompositeDisposable()

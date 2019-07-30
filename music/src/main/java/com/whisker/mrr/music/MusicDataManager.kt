@@ -11,12 +11,12 @@ import com.whisker.mrr.domain.model.Song
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.BehaviorSubject
 
 class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer.OnCompletionListener {
 
-    private val currentSongSubject: PublishSubject<Song> = PublishSubject.create()
+    private val currentSongSubject: BehaviorSubject<Song> = BehaviorSubject.create()
+    private val isMusicPlayingSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
     private lateinit var musicService: MusicService
     private var isServiceBounded = false
     private lateinit var songs: List<Song>
@@ -24,27 +24,36 @@ class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer
 
     private lateinit var serviceConnection: ServiceConnection
 
-    override fun setSongs(songs: List<Song>) : Completable {
+    override fun setSongs(songs: List<Song>, isStartPlaying: Boolean, currentPosition: Int) : Completable {
         return Completable.fromAction {
             this.songs = songs
-            currentPlayerPosition = 0
+            currentPlayerPosition = currentPosition
             if(this.songs.isNotEmpty()) {
-                currentSongSubject.onNext(songs[0])
+                currentSongSubject.onNext(songs[currentPosition])
             }
-        }
+        }.andThen(
+            if(isStartPlaying) {
+                if(isServiceBounded) {
+                    Completable.fromAction { playSong(this.songs[currentPosition]) }
+                } else {
+                    play()
+                }
+            } else {
+                Completable.fromAction { stop() }
+            }
+        )
     }
 
     private fun initMusicService() : Completable {
-        return Completable.fromAction {
+        return Completable.create { emitter ->
             serviceConnection = object : ServiceConnection {
                 override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                    Completable.fromAction {
-                        val binder = service as MusicService.MusicBinder
-                        musicService = binder.getService()
-                        musicService.setOnCompletionListener(this@MusicDataManager)
-                        musicService.playSong(songs[currentPlayerPosition])
-                        isServiceBounded = true
-                    }.subscribeOn(Schedulers.io()).subscribe()
+                    val binder = service as MusicService.MusicBinder
+                    musicService = binder.getService()
+                    musicService.setOnCompletionListener(this@MusicDataManager)
+                    musicService.playSong(songs[currentPlayerPosition])
+                    isServiceBounded = true
+                    emitter.onComplete()
                 }
                 override fun onServiceDisconnected(name: ComponentName?) {
                     isServiceBounded = false
@@ -59,20 +68,25 @@ class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer
     override fun nextSong() : Completable {
         return Completable.fromAction {
             val song = getNextSong()
-            currentSongSubject.onNext(song)
-            musicService.playSong(song)
+            playSong(song)
         }
     }
 
     override fun previousSong() : Completable {
         return Completable.fromAction {
             val song = getPreviousSong()
-            currentSongSubject.onNext(song)
-            musicService.playSong(song)
+            playSong(song)
         }
     }
 
+    private fun playSong(song: Song) {
+        currentSongSubject.onNext(song)
+        musicService.playSong(song)
+        isMusicPlayingSubject.onNext(true)
+    }
+
     override fun play() : Completable {
+        isMusicPlayingSubject.onNext(true)
         return when {
             isServiceBounded -> Completable.fromAction { musicService.play() }
             ::songs.isInitialized -> initMusicService()
@@ -83,6 +97,7 @@ class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer
     override fun stop() {
         if(isServiceBounded) {
             context.unbindService(serviceConnection)
+            isMusicPlayingSubject.onNext(false)
             isServiceBounded = false
         }
     }
@@ -90,6 +105,7 @@ class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer
     override fun pause() : Completable {
         return Completable.fromAction {
             musicService.pause()
+            isMusicPlayingSubject.onNext(false)
         }
     }
 
@@ -120,7 +136,12 @@ class MusicDataManager(private val context: Context) : MusicManager, MediaPlayer
         return songs[currentPlayerPosition]
     }
 
+    override fun isMusicPlaying(): Flowable<Boolean> {
+        return isMusicPlayingSubject.toFlowable(BackpressureStrategy.LATEST)
+    }
+
     override fun onCompletion(mp: MediaPlayer?) {
-        nextSong().subscribeOn(Schedulers.io()).subscribe()
+        val song = getNextSong()
+        playSong(song)
     }
 }

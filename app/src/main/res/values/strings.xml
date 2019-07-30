@@ -29,7 +29,6 @@
 	<string name="sync">Sync…</string>
 	<string name="running">Running</string>
 	<string name="run_history">Run History</string>
-	<string name="example_song_name">Deadmau5 - Message from nowhere</string>
 	<string name="cant_load_snapshot">No Internet connection.\nCan\'t load snapshot.</string>
 	<string name="name_label">Name:</string>
 	<string name="total_distance">distance:</string>
@@ -48,6 +47,7 @@
 	<string name="hint_deadline">deadline</string>
 	<string name="submit_label">Submit</string>
 	<string name="challenge_deadline_format">MM/dd/yyy</string>
+	<string name="title_music">Music</string>
 	<string name="title_challenges">Challenges</string>
 	<string name="title_history">History</string>
 	<string name="title_run">xRunner</string>
@@ -55,4 +55,7 @@
 	<string name="title_summary">Summary</string>
 	<string name="challenge_deadline_days_format">%d days left</string>
 	<string name="challenge_deadline_day_format">%d day left</string>
+	<string name="tab_artists">Artists</string>
+	<string name="tab_albums">Albums</string>
+	<string name="tab_songs">Songs</string>
 </resources>

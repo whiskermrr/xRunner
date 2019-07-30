@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
-import com.whisker.mrr.xrunner.presentation.adapters.RoutesAdapter
+import com.whisker.mrr.xrunner.presentation.adapters.RoutesSection
 import com.whisker.mrr.xrunner.presentation.common.SwipeToDeleteCallback
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,7 +37,7 @@ class PastRoutesFragment : BaseFragment() {
 
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val section = routesAdapter.getSectionForPosition(viewHolder.adapterPosition) as RoutesAdapter
+                val section = routesAdapter.getSectionForPosition(viewHolder.adapterPosition) as RoutesSection
                 val globalPosition = routesAdapter.getPositionInAdapter(section, 0)
                 val route = section.removeItem(viewHolder.adapterPosition - globalPosition)
 
@@ -58,7 +58,7 @@ class PastRoutesFragment : BaseFragment() {
             progressBar.visibility = View.GONE
             routesAdapter.removeAllSections()
             for(holder in holders) {
-                routesAdapter.addSection(RoutesAdapter(holder))
+                routesAdapter.addSection(RoutesSection(holder))
                 routesAdapter.notifyDataSetChanged()
             }
         })

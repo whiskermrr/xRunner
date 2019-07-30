@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.adapters.ChallengeItemDecoration
+import com.whisker.mrr.xrunner.presentation.adapters.PaddingItemDecoration
 import com.whisker.mrr.xrunner.presentation.adapters.ChallengeSection
 import com.whisker.mrr.xrunner.presentation.views.BaseFragment
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
@@ -43,7 +43,7 @@ class ChallengeFragment : BaseFragment() {
         }
         rvChallenges.layoutManager = gridLayoutManager
         rvChallenges.adapter = challengeAdapter
-        rvChallenges.addItemDecoration(ChallengeItemDecoration(resources.getDimensionPixelOffset(R.dimen.challenge_grid_spacing)))
+        rvChallenges.addItemDecoration(PaddingItemDecoration(resources.getDimensionPixelOffset(R.dimen.challenge_grid_spacing)))
 
         viewModel.getChallengeList().observe(this, Observer { challengeHolder ->
             progressBar.visibility = View.GONE

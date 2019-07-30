@@ -12,7 +12,7 @@ import com.whisker.mrr.domain.common.toLongDate
 import com.whisker.mrr.domain.model.Challenge
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.views.BaseDialogFragment
-import com.whisker.mrr.xrunner.utils.TextValidator
+import com.whisker.mrr.xrunner.presentation.layout.TextValidator
 import kotlinx.android.synthetic.main.fragment_add_challenge.*
 import java.text.SimpleDateFormat
 import java.util.*
