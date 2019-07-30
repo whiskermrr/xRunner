@@ -9,6 +9,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.whisker.mrr.room.DbRunner
 import com.whisker.mrr.data.repository.ChallengeDataRepository
 import com.whisker.mrr.data.repository.RouteDataRepository
+import com.whisker.mrr.data.repository.SnapshotDataRepository
 import com.whisker.mrr.data.repository.UserDataRepository
 import com.whisker.mrr.room.source.LocalChallengeDataSource
 import com.whisker.mrr.room.source.LocalRouteDataSource
@@ -187,11 +188,18 @@ class AppModule {
     @Singleton
     fun provideRouteRepository(
         localRouteSource: LocalRouteSource,
-        remoteRouteSource: RemoteRouteSource,
+        remoteRouteSource: RemoteRouteSource
+    ) : RouteRepository {
+        return RouteDataRepository(localRouteSource, remoteRouteSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSnapshotRepository(
         snapshotRemoteDataSource: SnapshotRemoteSource,
         snapshotLocalDataSource: SnapshotLocalSource
-    ) : RouteRepository {
-        return RouteDataRepository(localRouteSource, remoteRouteSource, snapshotRemoteDataSource, snapshotLocalDataSource)
+    ) : SnapshotRepository {
+        return SnapshotDataRepository(snapshotLocalDataSource, snapshotRemoteDataSource)
     }
 
     @Provides
@@ -263,8 +271,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSaveSnapshotInteractor(routeRepository: RouteRepository) : SaveSnapshotInteractor {
-        return SaveSnapshotInteractor(ComputationCompletableTransformer(AndroidSchedulers.mainThread()), routeRepository)
+    fun provideSaveSnapshotInteractor(snapshotRepository: SnapshotRepository) : SaveSnapshotInteractor {
+        return SaveSnapshotInteractor(ComputationCompletableTransformer(AndroidSchedulers.mainThread()), snapshotRepository)
     }
 
     @Provides

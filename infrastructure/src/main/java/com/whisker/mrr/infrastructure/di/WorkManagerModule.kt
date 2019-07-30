@@ -3,6 +3,7 @@ package com.whisker.mrr.infrastructure.di
 import com.whisker.mrr.infrastructure.synchronization.factory.RxWorkerFactory
 import com.whisker.mrr.infrastructure.synchronization.worker.ChallengeRxWorker
 import com.whisker.mrr.infrastructure.synchronization.worker.RouteRxWorker
+import com.whisker.mrr.infrastructure.synchronization.worker.SnapshotRxWorker
 import com.whisker.mrr.infrastructure.synchronization.worker.UserStatsRxWorker
 import dagger.Binds
 import dagger.Module
@@ -25,4 +26,9 @@ interface WorkManagerModule {
     @IntoMap
     @WorkerKey(UserStatsRxWorker::class)
     fun bindUserStatsRxWorker(userStatsWorkerFactory: UserStatsRxWorker.Factory) : RxWorkerFactory
+
+    @Binds
+    @IntoMap
+    @WorkerKey(SnapshotRxWorker::class)
+    fun bindSnapshotRxWorker(snapshotWorkerFactory: SnapshotRxWorker.Factory) : RxWorkerFactory
 }
