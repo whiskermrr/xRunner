@@ -7,6 +7,7 @@ import io.reactivex.Single
 
 interface MusicRepository {
     fun getSongs(albumID: Long? = null) : Single<List<Song>>
+    fun getSongsByArtistID(artistID: Long) : Single<List<Song>>
     fun getAlbums(artistName: String? = null) : Single<List<Album>>
     fun getArtists() : Single<List<Artist>>
     fun getLastPlaylist() : Single<List<Song>>

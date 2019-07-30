@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/ivSongImage"
+        android:id="@+id/ivMusicImage"
         android:layout_width="75dp"
         android:layout_height="75dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,13 +18,13 @@
         />
 
     <TextView
-        android:id="@+id/tvSongTitle"
+        android:id="@+id/tvMusicTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/ivSongImage"
+        app:layout_constraintStart_toEndOf="@id/ivMusicImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvSongArtist"
+        app:layout_constraintBottom_toTopOf="@id/tvMusicDescription"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginEnd="16dp"
         tools:text="I Remember (Original Mix)"
@@ -34,12 +34,12 @@
         />
 
     <TextView
-        android:id="@+id/tvSongArtist"
+        android:id="@+id/tvMusicDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/ivSongImage"
+        app:layout_constraintStart_toEndOf="@id/ivMusicImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSongTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvMusicTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginEnd="16dp"

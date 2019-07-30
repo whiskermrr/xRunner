@@ -1,23 +1,20 @@
 package com.whisker.mrr.xrunner.presentation.views.album
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.GetAlbumsInteractor
 import com.whisker.mrr.domain.interactor.GetSongsInteractor
 import com.whisker.mrr.domain.interactor.SetSongsInteractor
 import com.whisker.mrr.domain.model.Album
-import io.reactivex.disposables.CompositeDisposable
+import com.whisker.mrr.xrunner.presentation.views.music.BaseBrowseMusicViewModel
 import javax.inject.Inject
 
 class BrowseAlbumsViewModel @Inject constructor(
         private val getAlbumsInteractor: GetAlbumsInteractor,
         private val setSongsInteractor: SetSongsInteractor,
         private val getSongsInteractor: GetSongsInteractor
-) : ViewModel() {
+) : BaseBrowseMusicViewModel() {
 
     private val albumList = MutableLiveData<List<Album>>()
-    private val isSongListSet = MutableLiveData<Boolean>()
-    private val disposables = CompositeDisposable()
 
     init {
         fetchAlbums()
@@ -44,11 +41,5 @@ class BrowseAlbumsViewModel @Inject constructor(
         )
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        disposables.dispose()
-    }
-
     fun getAlbumList() = albumList
-    fun getIsSongListSet() = isSongListSet
 }

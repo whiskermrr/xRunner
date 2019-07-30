@@ -16,18 +16,14 @@ import java.io.File
 class AlbumsAdapter : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
     private var albums: List<Album> = listOf()
-    private val clickSubject: PublishSubject<Int> = PublishSubject.create()
+    private val clickSubject: PublishSubject<Album> = PublishSubject.create()
 
     fun setAlbums(newAlbums: List<Album>) {
         albums = newAlbums
         notifyDataSetChanged()
     }
 
-    fun getAlbums() : List<Album> {
-        return albums
-    }
-
-    fun clickEvent() : Observable<Int> {
+    fun clickEvent() : Observable<Album> {
         return clickSubject
     }
 
@@ -51,14 +47,14 @@ class AlbumsAdapter : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
             itemView.tvAlbumArtist.text = album.artist
 
             if(!album.albumArt.isNullOrEmpty()) {
-                Picasso.get().load(Uri.fromFile(File(album.albumArt)))
+                Picasso.get().load(File(album.albumArt))
                         .into(itemView.ivAlbumArt)
             } else {
                 Picasso.get().load(R.drawable.no_artwork)
                         .into(itemView.ivAlbumArt)
             }
 
-            itemView.setOnClickListener { clickSubject.onNext(adapterPosition) }
+            itemView.setOnClickListener { clickSubject.onNext(album) }
         }
     }
 }

@@ -48,19 +48,19 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.SongViewHolder>() {
     inner class SongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(song: Song) {
-            itemView.tvSongTitle.text = song.title
-            itemView.tvSongArtist.text = song.artist
+            itemView.tvMusicTitle.text = song.title
+            itemView.tvMusicDescription.text = song.artist
             metaReceiver.setDataSource(song.data)
 
             val coverArt = metaReceiver.embeddedPicture
             if(coverArt != null) {
                 val options = BitmapFactory.Options()
                 options.inSampleSize = 2
-                itemView.ivSongImage
+                itemView.ivMusicImage
                     .setImageBitmap(BitmapFactory.decodeByteArray(coverArt, 0, coverArt.size, options))
             } else {
                 Picasso.get().load(R.drawable.no_artwork)
-                    .into(itemView.ivSongImage)
+                    .into(itemView.ivMusicImage)
             }
             itemView.setOnClickListener { clickSubject.onNext(adapterPosition) }
         }

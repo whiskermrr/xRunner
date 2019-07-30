@@ -49,11 +49,10 @@ class BrowseAlbumsFragment : BaseFragment() {
 
         disposables.add(
             albumsAdapter.clickEvent()
-                .subscribe({
-                    val albumID = albumsAdapter.getAlbums()[it].id
+                .subscribe({ album ->
+                    val albumID = album.id
                     viewModel.setSongs(albumID)
                 }, Throwable::printStackTrace)
         )
-
     }
 }

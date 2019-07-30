@@ -32,6 +32,6 @@ class GetChallengesInteractor(
                 challengeRepository.getChallenges()
             }
         }
-        return Flowable.error(Throwable(IllegalArgumentException("Argument @active (Boolean) must be provided.")))
+        return Flowable.error(IllegalArgumentException("Argument @active (Boolean) must be provided."))
     }
 }
