@@ -53,7 +53,7 @@ class MediaPlayerHolder(private val context: Context) {
     }
 
     fun seekTo(position: Int) {
-        mediaPlayer.apply {
+        mediaPlayer?.apply {
             seekTo(position)
         }
     }
