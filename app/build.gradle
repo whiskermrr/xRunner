@@ -5,7 +5,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
+
 apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -79,6 +82,7 @@ dependencies {
     implementation presentationDependencies.firebaseCore
     implementation presentationDependencies.firebaseDatabase
     implementation presentationDependencies.firebaseStorage
+    implementation presentationDependencies.crashlytics
 
     implementation presentationDependencies.picasso
 
