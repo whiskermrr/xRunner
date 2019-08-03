@@ -68,6 +68,7 @@ ext {
             firebaseCore:       'com.google.firebase:firebase-core:16.0.9',
             firebaseDatabase:   'com.google.firebase:firebase-database:17.0.0',
             firebaseStorage:    'com.google.firebase:firebase-storage:17.0.0',
+            crashlytics:        'com.crashlytics.sdk.android:crashlytics:2.10.1',
 
             // Picasso
             picasso:            'com.squareup.picasso:picasso:2.71828',
