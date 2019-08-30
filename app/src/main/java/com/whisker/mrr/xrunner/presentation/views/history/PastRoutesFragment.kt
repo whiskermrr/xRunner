@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
 import com.whisker.mrr.xrunner.presentation.adapters.RoutesSection
 import com.whisker.mrr.xrunner.presentation.common.SwipeToDeleteCallback
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter

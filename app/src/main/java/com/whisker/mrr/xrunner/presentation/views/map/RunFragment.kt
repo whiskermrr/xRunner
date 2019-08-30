@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import com.whisker.mrr.xrunner.presentation.model.TrackingState
-import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
 import com.whisker.mrr.xrunner.utils.XRunnerConstants

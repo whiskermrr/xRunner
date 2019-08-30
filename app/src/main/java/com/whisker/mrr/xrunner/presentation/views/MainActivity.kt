@@ -18,6 +18,7 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.SyncEvent
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.presentation.views.base.BaseActivity
 import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment

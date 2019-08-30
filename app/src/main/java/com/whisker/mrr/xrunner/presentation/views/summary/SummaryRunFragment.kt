@@ -13,12 +13,11 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.NetworkStateEvent
 import com.whisker.mrr.xrunner.presentation.model.RouteModel
-import com.whisker.mrr.xrunner.presentation.views.BaseMapFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseMapFragment
 import com.whisker.mrr.xrunner.utils.getScreenWidth
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import com.whisker.mrr.xrunner.utils.calculateZoom
 import io.reactivex.Single
-import io.reactivex.SingleOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
