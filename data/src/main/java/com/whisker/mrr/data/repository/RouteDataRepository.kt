@@ -16,21 +16,15 @@ class RouteDataRepository(
 
     override fun saveRoute(route: Route): Completable {
         return localRouteSource.saveRoute(route)
-            .flatMapCompletable { localID ->
-                route.routeId = localID
-                remoteRouteSource.saveRoute(route)
-                    .flatMapCompletable { localRouteSource.updateRouteID(localID, it) }
-            }
+            .flatMapCompletable { synchronizeRoutes() }
     }
 
     override fun getRouteList(): Flowable<List<RouteHolder>> {
         val localFlowable = localRouteSource.getRoutes()
             .map { RouteHolderMapper.transformToRouteHolderList(it) }
 
-        val remoteFlowable = remoteRouteSource.getRoutes()
-            .flatMapCompletable { routes ->
-                localRouteSource.saveRoutes(routes)
-            }.andThen(Flowable.empty<List<RouteHolder>>())
+        val remoteFlowable =  synchronizeRoutes()
+            .andThen(Flowable.empty<List<RouteHolder>>())
 
         return localFlowable.mergeWith(remoteFlowable)
     }
@@ -49,5 +43,6 @@ class RouteDataRepository(
             .flatMap { remoteRouteSource.getRoutes() }
             .flatMapCompletable { localRouteSource.saveRoutes(it) }
             .andThen(localRouteSource.removeLocallySavedRoutes())
+            .onErrorComplete()
     }
 }

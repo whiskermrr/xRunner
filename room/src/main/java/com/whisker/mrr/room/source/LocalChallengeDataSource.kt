@@ -89,6 +89,12 @@ class LocalChallengeDataSource(
         }
     }
 
+    override fun removeChallengesSavedLocally(): Completable {
+        return Completable.fromAction {
+            challengeDao.removeChallengesSavedLocally()
+        }
+    }
+
     override fun getChallengesSavedLocallyAndDeleted(): Single<List<Challenge>> {
         return challengeDao.getChallengesSavedLocallyAndDeleted()
             .map { ChallengeEntityMapper.transformListFromEntities(it) }

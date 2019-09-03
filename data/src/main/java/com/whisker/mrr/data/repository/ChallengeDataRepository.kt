@@ -16,11 +16,7 @@ class ChallengeDataRepository(
 
     override fun saveChallenge(challenge: Challenge): Completable {
         return localChallengeSource.saveChallenge(challenge)
-            .flatMapCompletable { localID ->
-                challenge.id = localID
-                remoteChallengeSource.saveChallenge(challenge)
-                    .flatMapCompletable { localChallengeSource.updateChallengeID(localID, it) }
-            }
+            .flatMapCompletable { synchronizeChallenges() }
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
@@ -33,10 +29,8 @@ class ChallengeDataRepository(
     override fun getChallenges(): Flowable<List<Challenge>> {
         val localFlowable = localChallengeSource.getChallenges()
 
-        val remoteFlowable = remoteChallengeSource.getChallenges()
-            .flatMapCompletable { challenges ->
-                localChallengeSource.saveChallenges(challenges)
-            }.andThen(Flowable.empty<List<Challenge>>())
+        val remoteFlowable = synchronizeChallenges()
+            .andThen(Flowable.empty<List<Challenge>>())
 
         return localFlowable.mergeWith(remoteFlowable)
     }
@@ -44,10 +38,8 @@ class ChallengeDataRepository(
     override fun getActiveChallenges(): Flowable<List<Challenge>> {
         val localFlowable = localChallengeSource.getActiveChallenges()
 
-        val remoteFlowable = remoteChallengeSource.getChallenges()
-            .flatMapCompletable { challenges ->
-                localChallengeSource.saveChallenges(challenges)
-            }.andThen(Flowable.empty<List<Challenge>>())
+        val remoteFlowable = synchronizeChallenges()
+            .andThen(Flowable.empty<List<Challenge>>())
 
         return localFlowable.mergeWith(remoteFlowable)
     }
@@ -63,12 +55,11 @@ class ChallengeDataRepository(
     override fun synchronizeChallenges(): Completable {
         return localChallengeSource.getChallengesSavedLocallyAndDeleted()
             .flatMap { remoteChallengeSource.saveChallenges(it) }
-            .flatMap { localChallengeSource.getChallengesProgressList() }
+            .flatMapCompletable { localChallengeSource.removeChallengesSavedLocally() }
+            .andThen(localChallengeSource.getChallengesProgressList())
             .flatMapCompletable { remoteChallengeSource.updateChallengesProgress(it) }
-            .andThen(
-                remoteChallengeSource.getChallenges()
-                    .flatMapCompletable { localChallengeSource.saveChallenges(it) }
-            )
             .andThen(localChallengeSource.removeChallengesProgressList())
+            .andThen(remoteChallengeSource.getChallenges().flatMapCompletable { localChallengeSource.saveChallenges(it) })
+            .onErrorComplete()
     }
 }

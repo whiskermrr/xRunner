@@ -63,6 +63,8 @@ class RemoteChallengeDataSource(
     }
 
     override fun updateChallenges(challenges: List<Challenge>): Completable {
+        if(challenges.isEmpty()) return Completable.complete()
+
         val reference = getReference()
         val completableList = mutableListOf<Completable>()
         for(challenge in challenges) {
@@ -128,6 +130,8 @@ class RemoteChallengeDataSource(
     }
 
     override fun saveChallenges(challenges: List<Challenge>): Single<List<Long>> {
+        if(challenges.isEmpty()) return Single.just(listOf())
+
         val singles = mutableListOf<Single<Long>>()
         for(challenge in challenges) {
             singles.add(saveChallenge(challenge))
