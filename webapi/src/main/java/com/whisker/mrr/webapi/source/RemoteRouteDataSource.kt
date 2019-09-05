@@ -4,6 +4,7 @@ import com.whisker.mrr.webapi.request.GetDataRequest
 import com.whisker.mrr.domain.manager.PreferencesManager
 import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.data.source.RemoteRouteSource
+import com.whisker.mrr.domain.common.exception.NoConnectivityException
 import com.whisker.mrr.webapi.mapper.RouteDtoMapper
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -18,15 +19,16 @@ class RemoteRouteDataSource(
     }
 
     override fun saveRoute(route: Route): Single<Long> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(NoConnectivityException())
     }
 
     override fun saveRoutes(routes: List<Route>): Single<List<Long>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(NoConnectivityException())
     }
 
     override fun getRoutes(): Single<List<Route>> {
-        return preferencesManager.getStringValue(KEY_ROUTES_TIMESTAMP)
+        return Single.error(NoConnectivityException())
+        /*return preferencesManager.getStringValue(KEY_ROUTES_TIMESTAMP)
             .flatMap { lastTimestamp ->
                 xRunnerHttpService.getRoutes(GetDataRequest(lastTimestamp).getQueryMap())
                     .doOnSuccess { response ->
@@ -38,10 +40,10 @@ class RemoteRouteDataSource(
                         } ?: return@map listOf<Route>()
                     }
                     .onErrorReturn { listOf() }
-            }
+            }*/
     }
 
     override fun removeRouteById(routeId: Long): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.error(NoConnectivityException())
     }
 }

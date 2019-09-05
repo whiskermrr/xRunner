@@ -30,7 +30,7 @@ class LocalRouteDataSource(
     }
 
     override fun getRoutes(): Flowable<List<Route>> {
-        return routeDao.gerRoutes().map { RouteEntityMapper.transformListFromEntities(it) }
+        return routeDao.getRoutes().map { RouteEntityMapper.transformListFromEntities(it) }
     }
 
     override fun removeRouteById(routeID: Long): Completable {

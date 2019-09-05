@@ -121,6 +121,8 @@ class RemoteUserDataSource
     }
 
     override fun updateUserStats(progressList: List<UserStatsProgress>): Completable {
+        if(progressList.isEmpty()) return Completable.complete()
+
         return checkConnection().andThen(
             getUserStats().flatMapCompletable { userStats ->
                 Completable.create { emitter ->

@@ -9,7 +9,7 @@ import io.reactivex.Single
 abstract class RouteDao : BaseDao<RouteEntity> {
 
     @Query("SELECT * FROM Route WHERE isDeleted = 0")
-    abstract fun gerRoutes() : Flowable<List<RouteEntity>>
+    abstract fun getRoutes() : Flowable<List<RouteEntity>>
 
     @Query("DELETE FROM Route WHERE routeID = :routeID")
     abstract fun deleteRouteById(routeID: Long)
