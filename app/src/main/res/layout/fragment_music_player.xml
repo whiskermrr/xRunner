@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorPrimary"
     android:paddingStart="16dp"
     android:paddingTop="8dp"
@@ -15,12 +16,9 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/ibPlayPauseMusic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/ibPreviousSong"
@@ -55,13 +53,24 @@
         app:layout_constraintStart_toEndOf="@id/ibPlayPauseMusic"
         app:layout_constraintTop_toTopOf="@id/ibPlayPauseMusic" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupPlayerButtons"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ibPlayPauseMusic, ibPreviousSong, ibNextSong"
+    />
+
     <ImageView
         android:id="@+id/ibMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_music"
         android:contentDescription="@null"
+        android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ibPlayPauseMusic" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSongName"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

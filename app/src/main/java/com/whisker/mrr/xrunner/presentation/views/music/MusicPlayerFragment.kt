@@ -1,13 +1,17 @@
 package com.whisker.mrr.xrunner.presentation.views.music
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
+import com.whisker.mrr.xrunner.utils.PermissionsUtils
 import kotlinx.android.synthetic.main.fragment_music_player.*
 
 class MusicPlayerFragment : BaseFragment() {
@@ -22,6 +26,7 @@ class MusicPlayerFragment : BaseFragment() {
     private val currentSongObserver = Observer<String> {
         isMusicSet = true
         tvSongName.text = it
+        groupPlayerButtons.visibility = View.VISIBLE
     }
 
     private val isMusicPlayingObserver = Observer<Boolean> {
@@ -53,10 +58,29 @@ class MusicPlayerFragment : BaseFragment() {
 
         ibNextSong.setOnClickListener { viewModel.nextSong() }
         ibPreviousSong.setOnClickListener { viewModel.previousSong() }
-        ibMusic.setOnClickListener { mainActivity.switchContent(MusicBrowserFragment()) }
+        ibMusic.setOnClickListener {
+            if(PermissionsUtils.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                mainActivity.switchContent(MusicBrowserFragment())
+            }
+        }
 
         if(!isMusicSet) {
-            viewModel.getMusic()
+            if(PermissionsUtils.isPermissionGranted(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                viewModel.getMusic()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when(requestCode) {
+            PermissionsUtils.REQUEST_CODE -> {
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mainActivity.switchContent(MusicBrowserFragment())
+                } else {
+                    val rationalMessage = getString(R.string.permission_music_info)
+                    PermissionsUtils.onRequestPermissionDenied(this, permissions, rationalMessage)
+                }
+            }
         }
     }
 

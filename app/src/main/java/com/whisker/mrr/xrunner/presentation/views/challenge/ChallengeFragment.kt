@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.PaddingItemDecoration
 import com.whisker.mrr.xrunner.presentation.adapters.ChallengeSection
-import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_challenges.*

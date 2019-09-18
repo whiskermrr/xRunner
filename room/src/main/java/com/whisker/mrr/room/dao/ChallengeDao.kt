@@ -40,6 +40,9 @@ abstract class ChallengeDao : BaseDao<ChallengeEntity> {
     @Query("SELECT * FROM Challenge WHERE id < 0 OR isDeleted = 1")
     abstract fun getChallengesSavedLocallyAndDeleted() : Single<List<ChallengeEntity>>
 
+    @Query("DELETE FROM Challenge WHERE id < 0")
+    abstract fun removeChallengesSavedLocally()
+
     @Query("DELETE FROM Challenge")
     abstract fun clearTable()
 }

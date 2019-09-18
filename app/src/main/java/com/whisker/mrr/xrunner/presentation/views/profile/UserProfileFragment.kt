@@ -12,7 +12,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.*

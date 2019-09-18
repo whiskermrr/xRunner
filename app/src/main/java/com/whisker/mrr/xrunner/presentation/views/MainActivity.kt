@@ -1,15 +1,9 @@
 package com.whisker.mrr.xrunner.presentation.views
 
-import android.Manifest
 import android.content.IntentFilter
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.IdRes
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
@@ -18,12 +12,12 @@ import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.domain.common.bus.RxBus
 import com.whisker.mrr.domain.common.bus.event.SyncEvent
 import com.whisker.mrr.infrastructure.NetworkStateReceiver
+import com.whisker.mrr.xrunner.presentation.views.base.BaseActivity
 import com.whisker.mrr.xrunner.presentation.views.challenge.ChallengeFragment
 import com.whisker.mrr.xrunner.presentation.views.history.PastRoutesFragment
 import com.whisker.mrr.xrunner.presentation.views.login.LoginFragment
 import com.whisker.mrr.xrunner.presentation.views.map.RunFragment
 import com.whisker.mrr.xrunner.presentation.views.profile.UserProfileFragment
-import com.whisker.mrr.xrunner.utils.XRunnerConstants.REQUEST_LOCATION_CODE
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -61,10 +55,6 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkLocationPermission()
-        }
 
         if(FirebaseAuth.getInstance().currentUser != null) {
             loggedIn()
@@ -149,42 +139,6 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
 
     fun addContent(fragment: Fragment, @IdRes transaction: Int = FragmentTransaction.TRANSIT_FRAGMENT_FADE, isAddToBackStack: Boolean = true) {
         addContent(mainContainer.id, fragment, transaction, isAddToBackStack)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode) {
-            REQUEST_LOCATION_CODE -> {
-                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    } else {
-                        Toast.makeText(this, "Permission denied!", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                }
-            }
-        }
-
-    }
-
-    private fun checkLocationPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                    REQUEST_LOCATION_CODE
-                )
-            } else {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_LOCATION_CODE
-                )
-            }
-            return false
-        }
-        return true
     }
 
     override fun onPause() {

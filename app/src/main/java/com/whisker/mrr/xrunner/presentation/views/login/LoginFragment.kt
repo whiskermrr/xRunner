@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.whisker.mrr.xrunner.R
-import com.whisker.mrr.xrunner.presentation.views.BaseFragment
+import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : BaseFragment() {

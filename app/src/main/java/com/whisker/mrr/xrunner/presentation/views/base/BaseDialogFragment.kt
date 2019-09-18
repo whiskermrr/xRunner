@@ -1,4 +1,4 @@
-package com.whisker.mrr.xrunner.presentation.views
+package com.whisker.mrr.xrunner.presentation.views.base
 
 import android.app.Dialog
 import android.content.Context
@@ -7,6 +7,7 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.whisker.mrr.xrunner.di.Injectable
 import com.whisker.mrr.xrunner.di.ViewModelFactory
+import com.whisker.mrr.xrunner.presentation.views.MainActivity
 import javax.inject.Inject
 
 open class BaseDialogFragment : DialogFragment(), Injectable {

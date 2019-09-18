@@ -54,6 +54,8 @@ class RemoteRouteDataSource
     }
 
     override fun saveRoutes(routes: List<Route>): Single<List<Long>> {
+        if(routes.isEmpty()) return Single.just(listOf())
+
         val singles = mutableListOf<Single<Long>>()
         for(route in routes) {
             singles.add(saveRoute(route))
@@ -62,30 +64,32 @@ class RemoteRouteDataSource
     }
 
     override fun getRoutes() : Single<List<Route>> {
-        return Single.create<List<Route>> { emitter ->
-            var routeReference: DatabaseReference = databaseReference
-            try {
-                routeReference = getReference()
-            } catch (e : FirebaseAuthInvalidUserException) {
-                emitter.onError(e)
-            }
-            routeReference.addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val routes = mutableListOf<Route>()
-                    dataSnapshot.children.forEach { child ->
-                        val route = child.getValue(Route::class.java)
-                        route?.let {
-                            routes.add(it)
+        return checkConnection().andThen(
+            Single.create<List<Route>> { emitter ->
+                var routeReference: DatabaseReference = databaseReference
+                try {
+                    routeReference = getReference()
+                } catch (e : FirebaseAuthInvalidUserException) {
+                    emitter.onError(e)
+                }
+                routeReference.addListenerForSingleValueEvent(object: ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val routes = mutableListOf<Route>()
+                        dataSnapshot.children.forEach { child ->
+                            val route = child.getValue(Route::class.java)
+                            route?.let {
+                                routes.add(it)
+                            }
                         }
+                        emitter.onSuccess(routes)
                     }
-                    emitter.onSuccess(routes)
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    emitter.onError(databaseError.toException())
-                }
-            })
-        }.observeOn(Schedulers.io()).onErrorReturn { emptyList() }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        emitter.onError(databaseError.toException())
+                    }
+                })
+            }.observeOn(Schedulers.io()).onErrorReturn { emptyList() }
+        )
     }
 
     override fun removeRouteById(routeId: Long): Completable {

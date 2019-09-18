@@ -22,10 +22,8 @@ class UserDataRepository(
 
     override fun getUserStats(): Flowable<UserStats> {
         val localFlowable = localUserSource.getUserStats()
-        val remoteFlowable = remoteUserSource.getUserStats()
-            .flatMapCompletable {  stats ->
-                localUserSource.saveUserStats(stats)
-            }.andThen(Flowable.empty<UserStats>())
+        val remoteFlowable = synchronizeUserStats()
+            .andThen(Flowable.empty<UserStats>())
 
         return localFlowable.mergeWith(remoteFlowable)
     }
@@ -41,10 +39,9 @@ class UserDataRepository(
     override fun synchronizeUserStats(): Completable {
         return localUserSource.getLocalUserStatsProgressList()
             .flatMapCompletable { progressList -> remoteUserSource.updateUserStats(progressList) }
-            .andThen(
-                remoteUserSource.getUserStats()
-                    .flatMapCompletable { localUserSource.saveUserStats(it) })
             .andThen(localUserSource.removeUserStatsProgressList())
+            .andThen(remoteUserSource.getUserStats().flatMapCompletable { localUserSource.saveUserStats(it) })
+            .onErrorComplete()
     }
 
     override fun saveUserStatsProgressLocally(statsProgress: UserStatsProgress) : Completable {
