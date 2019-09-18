@@ -1,8 +1,6 @@
 package com.whisker.mrr.xrunner.utils
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,9 +19,6 @@ object PermissionsUtils {
 
     fun checkPermission(fragment: Fragment, permission: String, requestCode: Int) : Boolean {
         if(!isPermissionGranted(fragment, permission)) {
-            if(fragment.shouldShowRequestPermissionRationale(permission)) {
-
-            }
             fragment.requestPermissions(arrayOf(permission), requestCode)
         } else {
             return true
@@ -59,7 +54,7 @@ object PermissionsUtils {
             }
         }
 
-        val message = rationaleMessage ?: R.string.permission_required_info.toString()
+        val message = rationaleMessage ?: fragment.requireContext().getString(R.string.permission_required_info)
 
         showPermissionDialog(fragment, permissions, message, isShowRationale)
     }
@@ -78,6 +73,9 @@ object PermissionsUtils {
                 settingsAction(fragment)
             }
         }
+
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
     }
 
     private fun okAction(fragment: Fragment, permissions: Array<String>) {

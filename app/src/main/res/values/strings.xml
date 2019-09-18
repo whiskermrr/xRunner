@@ -60,5 +60,8 @@
 	<string name="tab_songs">Songs</string>
 	<string name="button_ok">OK</string>
 	<string name="button_settings">Settings</string>
+	<string name="permission_required_title">Permission required</string>
 	<string name="permission_required_info">Permission required</string>
+	<string name="permission_music_info">Without storage permission the app is unable to access your music</string>
+	<string name="permission_location_info">Without location permission the app is useless</string>
 </resources>

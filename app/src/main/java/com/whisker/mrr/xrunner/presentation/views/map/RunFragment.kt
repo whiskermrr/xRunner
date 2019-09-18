@@ -1,5 +1,7 @@
 package com.whisker.mrr.xrunner.presentation.views.map
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import com.whisker.mrr.xrunner.presentation.model.TrackingState
 import com.whisker.mrr.xrunner.presentation.views.base.BaseMapFragment
 import com.whisker.mrr.xrunner.presentation.views.music.MusicPlayerFragment
 import com.whisker.mrr.xrunner.presentation.views.summary.SummaryRunFragment
+import com.whisker.mrr.xrunner.utils.PermissionsUtils
 import com.whisker.mrr.xrunner.utils.XRunnerConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_run.*
@@ -74,24 +77,26 @@ class RunFragment : BaseMapFragment() {
 
         setViewAccordingToTrackingState()
 
-        mapView.onCreate(savedInstanceState)
-        mapView.onResume()
-        mapView.getMapAsync(this)
+        if(PermissionsUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            initMap(savedInstanceState)
+        }
 
         viewModel.getRoute().observe(this, routeObserver)
         viewModel.getTrackingState().observe(this, trackingStateObserver)
         viewModel.getTime().observe(this, runTimeObserver)
         viewModel.getFinalRoute().observe(this, onRunFinishedObserver)
 
-        bStartRun.setOnClickListener { viewModel.startTracking() }
+        bStartRun.setOnClickListener {
+            if(PermissionsUtils.checkPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                viewModel.startTracking()
+            }
+        }
 
         bPauseRun.setOnClickListener { viewModel.pauseTracking() }
 
         bResumeRun.setOnClickListener { viewModel.resumeTracking() }
 
         bStopRun.setOnClickListener { viewModel.stopTracking() }
-
-        bLocation.setOnClickListener { showMap() }
 
         bDismiss.setOnClickListener { hideMap() }
 
@@ -100,9 +105,16 @@ class RunFragment : BaseMapFragment() {
             .commit()
     }
 
+    private fun initMap(savedInstanceState: Bundle? = null) {
+        mapView.onCreate(savedInstanceState)
+        mapView.onResume()
+        mapView.getMapAsync(this)
+    }
+
     override fun onMapCreated() {
         viewModel.getLastKnownLocation().observe(this, lastLocationObserver)
         viewModel.onMapShown()
+        bLocation.setOnClickListener { showMap() }
     }
 
     private fun showMap() {
@@ -157,6 +169,19 @@ class RunFragment : BaseMapFragment() {
         super.onDestroyView()
         if(!mainActivity.isBottomNavEnabled) {
             mainActivity.enableBottomNavigation()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when(requestCode) {
+            PermissionsUtils.REQUEST_CODE -> {
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initMap(null)
+                } else {
+                    val rationalMessage = getString(R.string.permission_location_info)
+                    PermissionsUtils.onRequestPermissionDenied(this, permissions, rationalMessage)
+                }
+            }
         }
     }
 }
