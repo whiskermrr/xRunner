@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.whisker.mrr.domain.interactor.GetAlbumsInteractor
 import com.whisker.mrr.domain.interactor.GetSongsInteractor
 import com.whisker.mrr.domain.interactor.SetSongsInteractor
-import com.whisker.mrr.domain.model.Album
 import com.whisker.mrr.xrunner.presentation.views.music.BaseBrowseMusicViewModel
 import javax.inject.Inject
 
@@ -14,7 +13,7 @@ class BrowseAlbumsViewModel @Inject constructor(
         private val getSongsInteractor: GetSongsInteractor
 ) : BaseBrowseMusicViewModel() {
 
-    private val albumList = MutableLiveData<List<Album>>()
+    private val albumList = MutableLiveData<BrowseAlbumsViewState>()
 
     init {
         fetchAlbums()
@@ -24,9 +23,9 @@ class BrowseAlbumsViewModel @Inject constructor(
         disposables.add(
             getAlbumsInteractor.getAlbums()
                 .subscribe({ albums ->
-                    albumList.postValue(albums)
+                    albumList.postValue(BrowseAlbumsViewState.Albums(albums))
                 }, {
-                    it.printStackTrace()
+                    albumList.postValue(BrowseAlbumsViewState.Error(it.message))
                 })
         )
     }

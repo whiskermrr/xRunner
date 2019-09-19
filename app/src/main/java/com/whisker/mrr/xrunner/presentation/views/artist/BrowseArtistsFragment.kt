@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.presentation.views.artist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.ArtistsAdapter
 import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
+import com.whisker.mrr.xrunner.utils.TAG
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_browse_artists.*
+import kotlinx.android.synthetic.main.fragment_browse_music.*
 
 class BrowseArtistsFragment : BaseFragment() {
 
@@ -28,7 +30,7 @@ class BrowseArtistsFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_browse_artists, container, false)
+        return inflater.inflate(R.layout.fragment_browse_music, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,15 +38,28 @@ class BrowseArtistsFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseArtistsViewModel::class.java)
 
         val layoutManager = LinearLayoutManager(context)
-        rvArtists.layoutManager = layoutManager
-        rvArtists.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
-        rvArtists.adapter = artistsAdapter
+        rvMusic.layoutManager = layoutManager
+        rvMusic.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
+        rvMusic.adapter = artistsAdapter
 
-        viewModel.getArtistList().observe(this, Observer { artists ->
-            artistsAdapter.setArtists(artists)
+        viewModel.getArtistList().observe(viewLifecycleOwner, Observer { viewState ->
+            when(viewState) {
+                is BrowseArtistsViewState.Artists -> {
+                    val artists = viewState.artists
+                    if(artists.isNotEmpty()) {
+                        artistsAdapter.setArtists(artists)
+                    } else {
+                        tvMusicNoResult.visibility = View.VISIBLE
+                    }
+                }
+                is BrowseArtistsViewState.Error -> {
+                    // TODO: dialog showing error
+                    Log.e(TAG(), viewState.msg ?: "Unknown Error")
+                }
+            }
         })
 
-        viewModel.getIsSongListSet().observe(this, Observer { isSet ->
+        viewModel.getIsSongListSet().observe(viewLifecycleOwner, Observer { isSet ->
             if(isSet) mainActivity.onBackPressed()
         })
 
