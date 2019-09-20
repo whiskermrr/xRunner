@@ -1,5 +1,6 @@
 package com.whisker.mrr.firebase.datasource
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.*
@@ -10,10 +11,10 @@ import com.whisker.mrr.firebase.common.DataConstants.REFERENCE_USERS
 import com.whisker.mrr.domain.model.Route
 import com.whisker.mrr.data.source.RemoteRouteSource
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
 class RemoteRouteDataSource
@@ -30,37 +31,49 @@ class RemoteRouteDataSource
         })
     }
 
-    override fun saveRoute(route: Route) : Single<Long> {
+    override fun saveRoute(route: Route) : Completable {
         return checkConnection().andThen(
-            Single.create<Long> { emitter ->
+            Completable.create { emitter ->
                 var routeReference: DatabaseReference = databaseReference
                 try {
                     routeReference = getReference()
                 } catch (e : FirebaseAuthInvalidUserException) {
                     emitter.onError(e)
                 }
-                route.routeId = System.currentTimeMillis()
-                routeReference.child(route.routeId.toString()).setValue(route).addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        emitter.onSuccess(route.routeId)
-                    } else {
-                        task.exception?.let {
-                            emitter.onError(it)
+                if(route.routeId < 0) {
+                    route.routeId = System.currentTimeMillis()
+                    routeReference.child(route.routeId.toString()).setValue(route).addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            task.exception?.let {
+                                emitter.onError(it)
+                            }
                         }
                     }
+                } else {
+                    routeReference.child(route.routeId.toString()).removeValue().addOnCompleteListener { task ->
+                        if(task.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            task.exception?.let {
+                                emitter.onError(it)
+                            }
+                        }
+                    }.addOnFailureListener {
+                        emitter.onError(it)
+                    }
                 }
+
             }.observeOn(Schedulers.io())
         )
     }
 
-    override fun saveRoutes(routes: List<Route>): Single<List<Long>> {
-        if(routes.isEmpty()) return Single.just(listOf())
+    override fun saveRoutes(routes: List<Route>): Completable {
+        if(routes.isEmpty()) return Completable.complete()
 
-        val singles = mutableListOf<Single<Long>>()
-        for(route in routes) {
-            singles.add(saveRoute(route))
-        }
-        return checkConnection().andThen(Single.zip(singles) { args -> Arrays.asList(args) as List<Long> })
+        return checkConnection().andThen(Flowable.fromIterable(routes))
+            .flatMapCompletable { saveRoute(it) }
     }
 
     override fun getRoutes() : Single<List<Route>> {
@@ -97,6 +110,7 @@ class RemoteRouteDataSource
             Completable.create { emitter ->
                 var routeReference: DatabaseReference = databaseReference
                 try {
+                    Log.e("MRRR", routeId.toString())
                     routeReference = getReference().child(routeId.toString())
                 } catch (e: FirebaseAuthInvalidUserException) {
                     emitter.onError(e)

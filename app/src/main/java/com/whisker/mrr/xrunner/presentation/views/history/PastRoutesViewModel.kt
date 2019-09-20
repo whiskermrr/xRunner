@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.whisker.mrr.domain.interactor.GetRouteListInteractor
 import com.whisker.mrr.domain.interactor.RemoveRouteInteractor
 import com.whisker.mrr.xrunner.presentation.mapper.RouteMapper
+import com.whisker.mrr.xrunner.presentation.model.RouteModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -37,11 +38,11 @@ class PastRoutesViewModel
             })
     }
 
-    fun removeRoute(routeId: Long) {
+    fun removeRoute(route: RouteModel, position: Int) {
         disposables.add(
-            removeRouteInteractor.removeRoute(routeId)
+            removeRouteInteractor.removeRoute(route.routeId)
                 .subscribe({
-                    routeRemoved.postValue(RemoveRouteViewState.RouteRemoved(routeId))
+                    routeRemoved.postValue(RemoveRouteViewState.RouteRemoved(route, position))
                 }, { error ->
                     routeRemoved.postValue(RemoveRouteViewState.Error(error.message))
                 })

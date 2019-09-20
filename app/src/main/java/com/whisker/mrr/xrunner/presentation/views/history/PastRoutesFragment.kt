@@ -59,7 +59,10 @@ class PastRoutesFragment : BaseFragment() {
         viewModel.getRouteRemoved().observe(viewLifecycleOwner, Observer { viewState ->
             when(viewState) {
                 is RemoveRouteViewState.RouteRemoved -> {
-
+                    val section = routesAdapter.getSectionForPosition(viewState.position) as RoutesSection
+                    val globalPosition = routesAdapter.getPositionInAdapter(section, 0)
+                    section.insertItem(viewState.route, viewState.position - globalPosition)
+                    routesAdapter.notifyItemInsertedInSection(section, viewState.position - globalPosition)
                 }
             }
         })
@@ -89,7 +92,7 @@ class PastRoutesFragment : BaseFragment() {
                     routesAdapter.notifyDataSetChanged()
                 }
 
-                viewModel.removeRoute(route.routeId)
+                viewModel.removeRoute(route, viewHolder.adapterPosition)
             }
         }
     }
