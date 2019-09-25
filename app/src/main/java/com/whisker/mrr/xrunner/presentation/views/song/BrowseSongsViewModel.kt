@@ -12,7 +12,7 @@ class BrowseSongsViewModel @Inject constructor(
     private val setSongsInteractor: SetSongsInteractor
 ) : BaseBrowseMusicViewModel() {
 
-    private val songList = MutableLiveData<List<Song>>()
+    private val songList = MutableLiveData<BrowseSongsViewState>()
 
     init {
         fetchSongs()
@@ -22,8 +22,10 @@ class BrowseSongsViewModel @Inject constructor(
         disposables.add(
             getSongsInteractor.getSongs()
                 .subscribe({ songs ->
-                    songList.postValue(songs)
-                }, Throwable::printStackTrace)
+                    songList.postValue(BrowseSongsViewState.Songs(songs))
+                }, { error ->
+                    songList.postValue(BrowseSongsViewState.Error(error.message))
+                })
         )
     }
 
@@ -32,7 +34,9 @@ class BrowseSongsViewModel @Inject constructor(
             setSongsInteractor.setSongs(songs, true, currentPosition)
                 .subscribe({
                     isSongListSet.postValue(true)
-                }, Throwable::printStackTrace)
+                }, { error ->
+                    songList.postValue(BrowseSongsViewState.Error(error.message))
+                })
         )
     }
 

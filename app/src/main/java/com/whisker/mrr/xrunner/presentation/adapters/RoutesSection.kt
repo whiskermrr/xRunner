@@ -22,6 +22,10 @@ class RoutesSection(private val routeHolder: RouteHolderModel) :
         return routeHolder.routes.removeAt(position)
     }
 
+    fun insertItem(route: RouteModel, position: Int) {
+        routeHolder.routes.add(position, route)
+    }
+
     override fun getContentItemsTotal(): Int {
         return routeHolder.routes.size
     }

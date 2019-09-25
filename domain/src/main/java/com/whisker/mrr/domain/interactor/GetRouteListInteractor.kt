@@ -11,6 +11,10 @@ class GetRouteListInteractor(
     private val routeRepository: RouteRepository
 ) : FlowableUseCase<List<RouteHolder>>(transformer) {
 
+    fun getRoutes() : Flowable<List<RouteHolder>> {
+        return flowable()
+    }
+
     override fun createFlowable(data: Map<String, Any>?): Flowable<List<RouteHolder>> {
         return routeRepository.getRouteList()
     }

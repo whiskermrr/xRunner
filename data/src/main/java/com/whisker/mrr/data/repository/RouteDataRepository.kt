@@ -39,8 +39,8 @@ class RouteDataRepository(
 
     override fun synchronizeRoutes(): Completable {
         return localRouteSource.getRoutesSavedLocallyAndDeleted()
-            .flatMap { remoteRouteSource.saveRoutes(it) }
-            .flatMap { remoteRouteSource.getRoutes() }
+            .flatMapCompletable { remoteRouteSource.saveRoutes(it) }
+            .andThen(remoteRouteSource.getRoutes())
             .flatMapCompletable { localRouteSource.saveRoutes(it) }
             .andThen(localRouteSource.removeLocallySavedRoutes())
             .onErrorComplete()

@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.presentation.views.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,9 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.adapters.AlbumsAdapter
 import com.whisker.mrr.xrunner.presentation.adapters.PaddingItemDecoration
 import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
+import com.whisker.mrr.xrunner.utils.TAG
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_browse_albums.*
+import kotlinx.android.synthetic.main.fragment_browse_music.*
 
 class BrowseAlbumsFragment : BaseFragment() {
 
@@ -27,7 +29,7 @@ class BrowseAlbumsFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_browse_albums, container, false)
+        return inflater.inflate(R.layout.fragment_browse_music, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,15 +37,28 @@ class BrowseAlbumsFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(BrowseAlbumsViewModel::class.java)
 
         val gridLayoutManager = GridLayoutManager(context, 2)
-        rvAlbums.layoutManager = gridLayoutManager
-        rvAlbums.adapter = albumsAdapter
-        rvAlbums.addItemDecoration(PaddingItemDecoration(resources.getDimensionPixelOffset(R.dimen.music_grid_spacing)))
+        rvMusic.layoutManager = gridLayoutManager
+        rvMusic.adapter = albumsAdapter
+        rvMusic.addItemDecoration(PaddingItemDecoration(resources.getDimensionPixelOffset(R.dimen.music_grid_spacing)))
 
-        viewModel.getAlbumList().observe(this, Observer { albums ->
-            albumsAdapter.setAlbums(albums)
+        viewModel.getAlbumList().observe(viewLifecycleOwner, Observer { viewState ->
+            when(viewState) {
+                is BrowseAlbumsViewState.Albums -> {
+                    val albums = viewState.albums
+                    if(albums.isNotEmpty()) {
+                        albumsAdapter.setAlbums(albums)
+                    } else {
+                        tvMusicNoResult.visibility = View.VISIBLE
+                    }
+                }
+                is BrowseAlbumsViewState.Error -> {
+                    // TODO: dialog showing error
+                    Log.e(TAG(), viewState.msg ?: "Unknown Error")
+                }
+            }
         })
 
-        viewModel.getIsSongListSet().observe(this, Observer { isSet ->
+        viewModel.getIsSongListSet().observe(viewLifecycleOwner, Observer { isSet ->
             if(isSet) mainActivity.onBackPressed()
         })
 

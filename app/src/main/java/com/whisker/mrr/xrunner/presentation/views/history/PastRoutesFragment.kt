@@ -1,6 +1,7 @@
 package com.whisker.mrr.xrunner.presentation.views.history
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import com.whisker.mrr.xrunner.R
 import com.whisker.mrr.xrunner.presentation.views.base.BaseFragment
 import com.whisker.mrr.xrunner.presentation.adapters.RoutesSection
 import com.whisker.mrr.xrunner.presentation.common.SwipeToDeleteCallback
+import com.whisker.mrr.xrunner.presentation.model.RouteHolderModel
+import com.whisker.mrr.xrunner.utils.TAG
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_past_routes.*
@@ -21,6 +24,8 @@ class PastRoutesFragment : BaseFragment() {
 
     private lateinit var viewModel: PastRoutesViewModel
     private lateinit var routesAdapter: SectionedRecyclerViewAdapter
+    private lateinit var swipeHandler: SwipeToDeleteCallback
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_past_routes, container, false)
@@ -31,11 +36,51 @@ class PastRoutesFragment : BaseFragment() {
         mainActivity.toolbar.title = getString(R.string.title_history)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PastRoutesViewModel::class.java)
 
+        initRecyclerView()
+        initSwipeToDeleteHandler()
+        initTouchHelper()
+
+        viewModel.getRouteList().observe(viewLifecycleOwner, Observer { viewState ->
+            if(swipeRoutesLayout.isRefreshing) {
+                swipeRoutesLayout.isRefreshing = false
+            }
+
+            when(viewState) {
+                is GetRoutesViewState.Routes -> {
+                    setRouteSections(viewState.holders)
+                }
+                is GetRoutesViewState.Error -> {
+                    // TODO: dialog showing error
+                    Log.e(TAG(), viewState.msg ?: "Unknown Error")
+                }
+            }
+        })
+
+        viewModel.getRouteRemoved().observe(viewLifecycleOwner, Observer { viewState ->
+            when(viewState) {
+                is RemoveRouteViewState.RouteRemoved -> {
+                    val section = routesAdapter.getSectionForPosition(viewState.position) as RoutesSection
+                    val globalPosition = routesAdapter.getPositionInAdapter(section, 0)
+                    section.insertItem(viewState.route, viewState.position - globalPosition)
+                    routesAdapter.notifyItemInsertedInSection(section, viewState.position - globalPosition)
+                }
+            }
+        })
+
+        swipeRoutesLayout.isRefreshing = true
+        swipeRoutesLayout.setOnRefreshListener {
+            viewModel.getPastRoutesList()
+        }
+    }
+
+    private fun initRecyclerView() {
         routesAdapter = SectionedRecyclerViewAdapter()
         rvRoutes.layoutManager = LinearLayoutManager(context)
         rvRoutes.adapter = routesAdapter
+    }
 
-        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+    private fun initSwipeToDeleteHandler() {
+        swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val section = routesAdapter.getSectionForPosition(viewHolder.adapterPosition) as RoutesSection
                 val globalPosition = routesAdapter.getPositionInAdapter(section, 0)
@@ -47,20 +92,26 @@ class PastRoutesFragment : BaseFragment() {
                     routesAdapter.notifyDataSetChanged()
                 }
 
-                viewModel.removeRoute(route.routeId)
+                viewModel.removeRoute(route, viewHolder.adapterPosition)
             }
         }
+    }
 
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+    private fun initTouchHelper() {
+        itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(rvRoutes)
+    }
 
-        viewModel.getRouteList().observe(this, Observer {holders ->
-            progressBar.visibility = View.GONE
+    private fun setRouteSections(holders: List<RouteHolderModel>) {
+        if(holders.isNotEmpty()) {
+            tvRouteNoResult.visibility = View.GONE
             routesAdapter.removeAllSections()
             for(holder in holders) {
                 routesAdapter.addSection(RoutesSection(holder))
                 routesAdapter.notifyDataSetChanged()
             }
-        })
+        } else {
+            tvRouteNoResult.visibility = View.VISIBLE
+        }
     }
 }

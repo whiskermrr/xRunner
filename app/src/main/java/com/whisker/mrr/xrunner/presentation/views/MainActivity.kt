@@ -109,6 +109,14 @@ class MainActivity : BaseActivity(), Injectable, HasSupportFragmentInjector {
         }
     }
 
+    fun showToolbar() {
+        toolbar.visibility = View.VISIBLE
+    }
+
+    fun hideToolbar() {
+        toolbar.visibility = View.GONE
+    }
+
     fun showBottomNavigation() {
         navBottom.visibility = View.VISIBLE
     }

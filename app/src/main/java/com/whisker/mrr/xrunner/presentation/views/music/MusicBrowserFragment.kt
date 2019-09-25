@@ -19,7 +19,13 @@ class MusicBrowserFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.toolbar.title = getString(R.string.title_music)
+        mainActivity.hideBottomNavigation()
         musicViewPager.adapter = MusicBrowserPagerAdapter(requireContext(), activity?.supportFragmentManager)
         musicTabLayout.setupWithViewPager(musicViewPager)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mainActivity.showBottomNavigation()
     }
 }

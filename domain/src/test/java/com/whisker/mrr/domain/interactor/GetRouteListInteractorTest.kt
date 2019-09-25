@@ -90,7 +90,7 @@ class GetRouteListInteractorTest {
         whenever(mockRouteRepository.getRouteList())
             .thenReturn(result)
 
-        getRouteListInteractor.flowable()
+        getRouteListInteractor.getRoutes()
             .subscribe(testSubscriber)
 
         testSubscriber.assertNoValues()
@@ -117,7 +117,7 @@ class GetRouteListInteractorTest {
         whenever(mockRouteRepository.getRouteList())
             .thenReturn(result)
 
-        getRouteListInteractor.flowable()
+        getRouteListInteractor.getRoutes()
             .subscribe(testSubscriber)
 
         testSubscriber.assertNoValues()
@@ -145,7 +145,7 @@ class GetRouteListInteractorTest {
         whenever(mockRouteRepository.getRouteList())
             .thenReturn(result)
 
-        getRouteListInteractor.flowable()
+        getRouteListInteractor.getRoutes()
             .subscribe(testSubscriber)
 
         testSubscriber.assertNoValues()
@@ -171,7 +171,7 @@ class GetRouteListInteractorTest {
         whenever(mockRouteRepository.getRouteList())
             .thenReturn(result)
 
-        getRouteListInteractor.flowable()
+        getRouteListInteractor.getRoutes()
             .subscribe(testSubscriber)
 
         testSubscriber.assertNoValues()

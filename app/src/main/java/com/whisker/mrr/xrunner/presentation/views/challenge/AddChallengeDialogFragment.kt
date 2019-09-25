@@ -85,6 +85,7 @@ class AddChallengeDialogFragment : BaseDialogFragment(), DatePickerDialog.OnDate
     }
 
     private fun getChallengeFromInput() : Challenge {
+        // TODO: think about it!
         var distance = etChallengeDistance.text.toString().toFloatOrNull()
         distance?.let { distance *= 1000 }
         var time = etChallengeTime.text.toString().toLongOrNull()
